@@ -8,7 +8,6 @@ const HomePage = () => {
     <div className="min-h-screen bg-gray-100">
       <ThreeColumnLayout>
         <ContentColumn />
-        <RightColumn />
       </ThreeColumnLayout>
     </div>
   );
