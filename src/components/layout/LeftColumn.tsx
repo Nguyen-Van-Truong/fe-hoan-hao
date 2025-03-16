@@ -2,28 +2,31 @@ import React from "react";
 import { Search, Home, Users, UsersRound, GamepadIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Link, useLocation } from "react-router-dom";
 
 interface NavLinkProps {
   icon: React.ReactNode;
   label: string;
-  active?: boolean;
-  href?: string;
+  to: string;
 }
 
-const NavLink = ({ icon, label, active = false, href = "#" }: NavLinkProps) => {
+const NavLink = ({ icon, label, to }: NavLinkProps) => {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+
   return (
-    <a
-      href={href}
+    <Link
+      to={to}
       className={cn(
         "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors",
-        active
+        isActive
           ? "bg-pink-100 text-pink-700 font-medium"
           : "hover:bg-pink-50 text-gray-700 hover:text-pink-600",
       )}
     >
       <div className="text-xl">{icon}</div>
       <span>{label}</span>
-    </a>
+    </Link>
   );
 };
 
@@ -44,7 +47,9 @@ const LeftColumn = ({ className }: LeftColumnProps) => {
     >
       {/* Logo */}
       <div className="mb-6 px-4">
-        <h1 className="text-2xl font-bold text-pink-500">PinkSocial</h1>
+        <Link to="/">
+          <img src="/logoleftcolumn.png" alt="PinkSocial" className="h-10" />
+        </Link>
       </div>
 
       {/* Search Bar */}
@@ -61,10 +66,10 @@ const LeftColumn = ({ className }: LeftColumnProps) => {
 
       {/* Navigation Links */}
       <nav className="flex-1 space-y-1">
-        <NavLink icon={<Home />} label={t("nav.home")} active={true} />
-        <NavLink icon={<Users />} label={t("nav.friends")} />
-        <NavLink icon={<UsersRound />} label={t("nav.groups")} />
-        <NavLink icon={<GamepadIcon />} label={t("nav.games")} />
+        <NavLink icon={<Home />} label={t("nav.home")} to="/" />
+        <NavLink icon={<Users />} label={t("nav.friends")} to="/friends" />
+        <NavLink icon={<UsersRound />} label={t("nav.groups")} to="/groups" />
+        <NavLink icon={<GamepadIcon />} label={t("nav.games")} to="/games" />
       </nav>
 
       {/* Footer */}

@@ -46,15 +46,19 @@ const UserProfileSection = ({
   return (
     <div className="p-4 rounded-lg bg-white shadow-sm w-full">
       <div className="flex items-center gap-3">
-        <Avatar className="h-12 w-12 border-2 border-[#f2a2d2]">
-          <AvatarImage src={user.avatar} alt={user.name} />
-          <AvatarFallback className="bg-[#f2a2d2]/20 text-[#f2a2d2]">
-            {user.name.substring(0, 2).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
+        <a href="/profile">
+          <Avatar className="h-12 w-12 border-2 border-[#f2a2d2]">
+            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarFallback className="bg-[#f2a2d2]/20 text-[#f2a2d2]">
+              {user.name.substring(0, 2).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        </a>
 
         <div className="flex-1">
-          <h3 className="font-medium text-gray-900">{user.name}</h3>
+          <a href="/profile" className="hover:underline">
+            <h3 className="font-medium text-gray-900">{user.name}</h3>
+          </a>
           <p className="text-sm text-gray-500">{user.username}</p>
         </div>
 
@@ -71,7 +75,7 @@ const UserProfileSection = ({
           <DropdownMenuContent className="w-56 p-2" align="end">
             <DropdownMenuItem
               className="cursor-pointer flex items-center gap-2 hover:bg-[#f2a2d2]/10"
-              onClick={() => {}}
+              onClick={() => (window.location.href = "/profile")}
             >
               <span>{t("profile.profile")}</span>
             </DropdownMenuItem>

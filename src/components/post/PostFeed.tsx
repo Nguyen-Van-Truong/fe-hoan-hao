@@ -364,23 +364,15 @@ const PostFeed = ({ posts: propPosts }: PostFeedProps) => {
     <div className="w-full space-y-4 bg-gray-50 p-4">
       {posts.map((post) => (
         <div key={post.id}>
-          {post.type === "regular" ? (
-            <PostCard
-              author={post.author}
-              content={post.content}
-              engagement={post.engagement}
-            />
-          ) : (
-            <PhotoGalleryPost
-              author={post.author}
-              content={post.content}
-              images={post.images}
-              totalImages={post.totalImages}
-              likes={post.engagement.likes}
-              comments={post.engagement.comments}
-              shares={post.engagement.shares}
-            />
-          )}
+          <PhotoGalleryPost
+            author={post.author}
+            content={post.content}
+            images={post.type === "gallery" ? post.images : undefined}
+            totalImages={post.type === "gallery" ? post.totalImages : 0}
+            likes={post.engagement.likes}
+            comments={post.engagement.comments}
+            shares={post.engagement.shares}
+          />
         </div>
       ))}
 

@@ -42,7 +42,10 @@ const ThreeColumnLayout = ({
       {/* Mobile Navigation Bar - Only visible on small screens */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 z-50">
         <div className="flex justify-around items-center">
-          <button className="p-2 text-pink-500">
+          <a
+            href="/"
+            className={`p-2 ${window.location.pathname === "/" ? "text-pink-500" : "text-gray-500"}`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -58,8 +61,11 @@ const ThreeColumnLayout = ({
               <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
-          </button>
-          <button className="p-2 text-gray-500">
+          </a>
+          <a
+            href="/friends"
+            className={`p-2 ${window.location.pathname.includes("/friends") ? "text-pink-500" : "text-gray-500"}`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -77,8 +83,11 @@ const ThreeColumnLayout = ({
               <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
               <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
-          </button>
-          <button className="p-2 text-gray-500">
+          </a>
+          <a
+            href="/groups"
+            className={`p-2 ${window.location.pathname.includes("/groups") ? "text-pink-500" : "text-gray-500"}`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -95,8 +104,11 @@ const ThreeColumnLayout = ({
               <circle cx="10" cy="8" r="5" />
               <path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3" />
             </svg>
-          </button>
-          <button className="p-2 text-gray-500">
+          </a>
+          <a
+            href="/games"
+            className={`p-2 ${window.location.pathname.includes("/games") ? "text-pink-500" : "text-gray-500"}`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -115,7 +127,7 @@ const ThreeColumnLayout = ({
               <line x1="18" x2="18.01" y1="10" y2="10" />
               <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.152A4 4 0 0 0 17.32 5z" />
             </svg>
-          </button>
+          </a>
           <button className="p-2 text-gray-500">
             <svg
               xmlns="http://www.w3.org/2000/svg"

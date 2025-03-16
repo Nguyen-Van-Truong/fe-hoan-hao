@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Avatar } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
@@ -16,6 +17,7 @@ import {
   Share2,
   Send,
   ChevronDown,
+  ExternalLink,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -81,10 +83,16 @@ const PostCard = ({
   ],
 }: PostCardProps) => {
   const { t } = useLanguage();
+  const location = useLocation();
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [visibleComments, setVisibleComments] = useState(2); // Show first 2 comments initially
   const [liked, setLiked] = useState(false);
+
+  // Generate a unique post ID based on content (in a real app, this would come from the database)
+  const postId = btoa(content.substring(0, 20))
+    .replace(/[^a-zA-Z0-9]/g, "")
+    .substring(0, 10);
 
   const toggleComments = () => {
     setShowComments(!showComments);
@@ -110,21 +118,21 @@ const PostCard = ({
     <Card className="w-full mb-4 bg-white border border-gray-200 shadow-sm">
       <CardHeader className="flex flex-row items-center space-x-3 p-4">
         <Avatar className="h-10 w-10">
-          <a href={`/profile/${author.name.toLowerCase().replace(" ", "-")}`}>
+          <Link to={`/profile/${author.name.toLowerCase().replace(" ", "-")}`}>
             <img
               src={author.avatar}
               alt={author.name}
               className="rounded-full"
             />
-          </a>
+          </Link>
         </Avatar>
         <div className="flex flex-col">
-          <a
-            href={`/profile/${author.name.toLowerCase().replace(" ", "-")}`}
+          <Link
+            to={`/profile/${author.name.toLowerCase().replace(" ", "-")}`}
             className="font-semibold text-sm hover:underline"
           >
             {author.name}
-          </a>
+          </Link>
           <span className="text-xs text-gray-500">{author.timestamp}</span>
         </div>
         <div className="ml-auto">
@@ -149,7 +157,22 @@ const PostCard = ({
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <p className="text-sm">{content}</p>
+        {!location.pathname.includes("/post/") ? (
+          <Link
+            to={`/post/${author.name.toLowerCase().replace(" ", "-")}/${postId}`}
+            className="group"
+          >
+            <p className="text-sm group-hover:text-pink-500 transition-colors">
+              {content}
+            </p>
+            <div className="mt-2 text-xs text-gray-500 flex items-center group-hover:text-pink-500">
+              <ExternalLink className="h-3 w-3 mr-1" />
+              {t("post.viewFullPost") || "View full post"}
+            </div>
+          </Link>
+        ) : (
+          <p className="text-sm">{content}</p>
+        )}
       </CardContent>
       <CardFooter className="p-4 pt-0 flex flex-col border-t border-gray-100">
         <div className="flex justify-between w-full">
@@ -162,7 +185,10 @@ const PostCard = ({
             <Heart
               className={`h-4 w-4 mr-1 ${liked ? "fill-pink-500 text-pink-500" : ""}`}
             />
-            <span>{liked ? engagement.likes + 1 : engagement.likes}</span>
+            <span>{t("post.like") || "Like"}</span>
+            <span className="text-xs ml-1">
+              ({liked ? engagement.likes + 1 : engagement.likes})
+            </span>
           </Button>
           <Button
             variant="ghost"
@@ -171,7 +197,8 @@ const PostCard = ({
             onClick={toggleComments}
           >
             <MessageCircle className="h-4 w-4 mr-1" />
-            <span>{engagement.comments}</span>
+            <span>{t("post.comment") || "Comment"}</span>
+            <span className="text-xs ml-1">({engagement.comments})</span>
           </Button>
           <Button
             variant="ghost"
@@ -179,7 +206,8 @@ const PostCard = ({
             className="text-gray-600 hover:text-pink-500"
           >
             <Share2 className="h-4 w-4 mr-1" />
-            <span>{engagement.shares}</span>
+            <span>{t("post.share") || "Share"}</span>
+            <span className="text-xs ml-1">({engagement.shares})</span>
           </Button>
         </div>
 
