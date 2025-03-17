@@ -2,15 +2,34 @@ import React, { useState } from "react";
 import { Avatar } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+import { Textarea } from "../ui/textarea";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Heart, MessageCircle, MoreVertical, Share2 } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  MoreVertical,
+  Share2,
+  Send,
+  ChevronDown,
+} from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PhotoViewer from "./PhotoViewer";
+
+interface Comment {
+  id: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+  content: string;
+  timestamp: string;
+  likes: number;
+}
 
 interface PhotoGalleryPostProps {
   author?: {
@@ -24,6 +43,7 @@ interface PhotoGalleryPostProps {
   likes?: number;
   comments?: number;
   shares?: number;
+  commentsList?: Comment[];
 }
 
 const PhotoGalleryPost = ({
@@ -47,19 +67,66 @@ const PhotoGalleryPost = ({
   likes = 124,
   comments = 43,
   shares = 12,
+  commentsList = [
+    {
+      id: "1",
+      author: {
+        name: "Alex Johnson",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
+      },
+      content: "Looks amazing! Where was this?",
+      timestamp: "1 hour ago",
+      likes: 3,
+    },
+    {
+      id: "2",
+      author: {
+        name: "Sarah Miller",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+      },
+      content: "Beautiful day indeed! I went hiking today.",
+      timestamp: "45 minutes ago",
+      likes: 2,
+    },
+  ],
 }: PhotoGalleryPostProps) => {
   const { t } = useLanguage();
   const [photoViewerOpen, setPhotoViewerOpen] = useState(false);
   const [initialPhotoIndex, setInitialPhotoIndex] = useState(0);
+  const [showComments, setShowComments] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [visibleComments, setVisibleComments] = useState(2);
+  const [liked, setLiked] = useState(false);
 
   // Number of images to display in the gallery
-  const displayCount = Math.min(6, images.length);
-  const displayedImages = images.slice(0, displayCount);
-  const remainingCount = totalImages - displayCount;
+  const hasImages = images && images.length > 0;
+  const displayCount = hasImages ? Math.min(6, images.length) : 0;
+  const displayedImages = hasImages ? images.slice(0, displayCount) : [];
+  const remainingCount = hasImages ? totalImages - displayCount : 0;
 
   const handleImageClick = (index: number) => {
     setInitialPhotoIndex(index);
     setPhotoViewerOpen(true);
+  };
+
+  const toggleComments = () => {
+    setShowComments(!showComments);
+  };
+
+  const handleAddComment = () => {
+    if (commentText.trim()) {
+      // In a real app, you would send this to a server
+      // For now, we'll just clear the input
+      setCommentText("");
+    }
+  };
+
+  const loadMoreComments = () => {
+    setVisibleComments(commentsList.length);
+  };
+
+  const toggleLike = () => {
+    setLiked(!liked);
   };
 
   return (
@@ -69,11 +136,25 @@ const PhotoGalleryPost = ({
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10 border-2 border-[#f2a2d2]">
-              <img src={author.avatar} alt={author.name} />
+              <a
+                href={`/profile/${author.name.toLowerCase().replace(/ /g, "-")}`}
+              >
+                <img src={author.avatar} alt={author.name} />
+              </a>
             </Avatar>
             <div>
-              <h3 className="font-semibold text-sm">{author.name}</h3>
-              <p className="text-xs text-gray-500">{author.timestamp}</p>
+              <a
+                href={`/profile/${author.name.toLowerCase().replace(/ /g, "-")}`}
+                className="hover:underline"
+              >
+                <h3 className="font-semibold text-sm">{author.name}</h3>
+              </a>
+              <a
+                href={`/post/${author.name.toLowerCase().replace(/ /g, "-")}`}
+                className="hover:underline"
+              >
+                <p className="text-xs text-gray-500">{author.timestamp}</p>
+              </a>
             </div>
           </div>
           <DropdownMenu>
@@ -87,6 +168,14 @@ const PhotoGalleryPost = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem>
+                <a
+                  href={`/post/${author.name.toLowerCase().replace(/ /g, "-")}`}
+                  className="w-full"
+                >
+                  {t("post.viewPostDetails") || "View Post Details"}
+                </a>
+              </DropdownMenuItem>
               <DropdownMenuItem>{t("post.savePost")}</DropdownMenuItem>
               <DropdownMenuItem>{t("post.hidePost")}</DropdownMenuItem>
               <DropdownMenuItem>{t("post.reportPost")}</DropdownMenuItem>
@@ -99,74 +188,157 @@ const PhotoGalleryPost = ({
           <p className="text-sm">{content}</p>
         </div>
 
-        {/* Photo Gallery */}
-        <div
-          className={`grid ${images.length === 1 ? "grid-cols-1" : images.length === 2 ? "grid-cols-2" : "grid-cols-3"} gap-1 mb-3`}
-        >
-          {displayedImages.map((image, index) => (
-            <div
-              key={index}
-              className={`relative aspect-square overflow-hidden ${index === displayCount - 1 && remainingCount > 0 ? "relative" : ""} cursor-pointer`}
-              onClick={() => handleImageClick(index)}
-            >
-              <img
-                src={image}
-                alt={`Gallery image ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-              {index === displayCount - 1 && remainingCount > 0 && (
-                <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
-                  <span className="text-white font-semibold text-xl">
-                    +{remainingCount}
-                  </span>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+        {/* Photo Gallery - Only show if there are images */}
+        {hasImages && (
+          <div
+            className={`grid ${displayedImages.length === 1 ? "grid-cols-1" : displayedImages.length === 2 ? "grid-cols-2" : "grid-cols-3"} gap-1 mb-3`}
+          >
+            {displayedImages.map((image, index) => (
+              <div
+                key={index}
+                className={`relative aspect-square overflow-hidden ${index === displayCount - 1 && remainingCount > 0 ? "relative" : ""} cursor-pointer`}
+                onClick={() => handleImageClick(index)}
+              >
+                <img
+                  src={image}
+                  alt={`Gallery image ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                {index === displayCount - 1 && remainingCount > 0 && (
+                  <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+                    <span className="text-white font-semibold text-xl">
+                      +{remainingCount}
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Photo Viewer */}
-        <PhotoViewer
-          isOpen={photoViewerOpen}
-          onClose={() => setPhotoViewerOpen(false)}
-          images={images}
-          initialIndex={initialPhotoIndex}
-        />
-
-        {/* Engagement Metrics */}
-        <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
-          <div>
-            {likes} {t("post.likes")}
-          </div>
-          <div>
-            {comments} {t("post.comments")} • {shares} {t("post.shares")}
-          </div>
-        </div>
+        {hasImages && (
+          <PhotoViewer
+            isOpen={photoViewerOpen}
+            onClose={() => setPhotoViewerOpen(false)}
+            images={images}
+            initialIndex={initialPhotoIndex}
+          />
+        )}
 
         {/* Action Buttons */}
         <div className="flex border-t border-gray-100 pt-3">
           <Button
             variant="ghost"
-            className="flex-1 flex items-center justify-center gap-2 text-gray-600 hover:bg-pink-50"
+            className={`flex-1 flex items-center justify-center gap-2 text-gray-600 hover:bg-pink-50 ${liked ? "text-pink-500" : ""}`}
+            onClick={toggleLike}
           >
-            <Heart className="h-5 w-5" />
-            <span>{t("post.like")}</span>
+            <Heart
+              className={`h-5 w-5 ${liked ? "fill-pink-500 text-pink-500" : ""}`}
+            />
+            <span className="text-xs ml-1">{liked ? likes + 1 : likes}</span>
+            <span>{t("post.like") || "Like"}</span>
           </Button>
           <Button
             variant="ghost"
             className="flex-1 flex items-center justify-center gap-2 text-gray-600 hover:bg-pink-50"
+            onClick={toggleComments}
           >
             <MessageCircle className="h-5 w-5" />
-            <span>{t("post.comment")}</span>
+            <span className="text-xs ml-1">{comments}</span>
+            <span>{t("post.comment") || "Comment"}</span>
           </Button>
           <Button
             variant="ghost"
             className="flex-1 flex items-center justify-center gap-2 text-gray-600 hover:bg-pink-50"
           >
             <Share2 className="h-5 w-5" />
-            <span>{t("post.share")}</span>
+            <span className="text-xs ml-1">{shares}</span>
+            <span>{t("post.share") || "Share"}</span>
           </Button>
         </div>
+
+        {/* Comments Section */}
+        {showComments && (
+          <div className="mt-3 w-full border-t border-gray-100 pt-3">
+            <div className="flex items-center space-x-2 mb-3">
+              <Avatar className="h-8 w-8">
+                <img
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=CurrentUser"
+                  alt="Current User"
+                  className="rounded-full"
+                />
+              </Avatar>
+              <div className="flex-1 relative">
+                <Textarea
+                  placeholder={t("post.writeAComment") || "Write a comment..."}
+                  className="min-h-[40px] py-2 pr-10 resize-none rounded-full bg-gray-100 border-0 focus-visible:ring-0"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                />
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 text-pink-500"
+                  onClick={handleAddComment}
+                  disabled={!commentText.trim()}
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-3 max-h-[300px] overflow-y-auto">
+              {commentsList.slice(0, visibleComments).map((comment) => (
+                <div key={comment.id} className="flex space-x-2">
+                  <Avatar className="h-8 w-8">
+                    <a
+                      href={`/profile/${comment.author.name.toLowerCase().replace(/ /g, "-")}`}
+                    >
+                      <img
+                        src={comment.author.avatar}
+                        alt={comment.author.name}
+                        className="rounded-full"
+                      />
+                    </a>
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="bg-gray-100 rounded-2xl px-3 py-2">
+                      <a
+                        href={`/profile/${comment.author.name.toLowerCase().replace(/ /g, "-")}`}
+                        className="font-semibold text-xs hover:underline"
+                      >
+                        {comment.author.name}
+                      </a>
+                      <p className="text-sm">{comment.content}</p>
+                    </div>
+                    <div className="flex items-center mt-1 text-xs text-gray-500 space-x-3">
+                      <span>{comment.timestamp}</span>
+                      <button className="font-semibold hover:text-gray-700">
+                        {t("post.like") || "Like"}
+                      </button>
+                      <button className="font-semibold hover:text-gray-700">
+                        {t("post.reply") || "Reply"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {commentsList.length > visibleComments && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-pink-500 hover:text-pink-600 flex items-center mx-auto"
+                  onClick={loadMoreComments}
+                >
+                  <ChevronDown className="h-4 w-4 mr-1" />
+                  {t("post.viewMoreComments") || "View more comments"}
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </Card>
   );

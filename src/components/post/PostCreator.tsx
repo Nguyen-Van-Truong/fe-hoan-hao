@@ -72,7 +72,9 @@ const PostCreator = ({
       <div className="w-full rounded-lg shadow-md p-4 mb-4 bg-white">
         <div className="flex items-center gap-3 mb-3">
           <Avatar className="h-10 w-10">
-            <img src={userAvatar} alt={userName} />
+            <a href="/profile">
+              <img src={userAvatar} alt={userName} />
+            </a>
           </Avatar>
           <div
             className="flex-1 bg-gray-100 hover:bg-gray-200 rounded-full px-4 py-2 text-gray-500 cursor-pointer"
@@ -118,7 +120,7 @@ const PostCreator = ({
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[500px] p-0 bg-white">
+        <DialogContent className="sm:max-w-[500px] p-0 bg-white max-h-[90vh] overflow-y-auto">
           <div className="border-b border-gray-200 p-4 relative">
             <h2 className="text-xl font-semibold text-center">
               {t("post.createPost")}

@@ -75,15 +75,24 @@ const SuggestedFriendsSection = ({
           <div key={friend.id} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full overflow-hidden">
-                <img
-                  src={friend.avatar}
-                  alt={friend.name}
-                  className="h-full w-full object-cover"
-                />
+                <a
+                  href={`/profile/${friend.name.toLowerCase().replace(" ", "-")}`}
+                >
+                  <img
+                    src={friend.avatar}
+                    alt={friend.name}
+                    className="h-full w-full object-cover"
+                  />
+                </a>
               </div>
               <div>
                 <p className="font-medium text-sm text-gray-800">
-                  {friend.name}
+                  <a
+                    href={`/profile/${friend.name.toLowerCase().replace(" ", "-")}`}
+                    className="hover:underline"
+                  >
+                    {friend.name}
+                  </a>
                 </p>
                 <p className="text-xs text-gray-500">
                   {friend.mutualFriends} {t("friends.mutualFriends")}
