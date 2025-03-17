@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
 import { Avatar } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
@@ -18,7 +18,7 @@ import {
   UserX,
   MessageCircle,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 interface Friend {
   id: string;
@@ -34,8 +34,17 @@ interface FriendsProps {
 
 const Friends = ({ initialTab = "all" }: FriendsProps) => {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState(initialTab);
+  const [searchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get("tab");
+  const [activeTab, setActiveTab] = useState(tabFromUrl || initialTab);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Update active tab when URL parameter changes
+  useEffect(() => {
+    if (tabFromUrl && ["all", "requests", "suggestions"].includes(tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [tabFromUrl]);
 
   // Mock friends data
   const allFriends: Friend[] = [

@@ -29,6 +29,21 @@ const translations: Record<Language, Record<string, string>> = {
     "search.games": "Games",
     "search.game": "Game",
     "search.viewAll": "View all results",
+    "search.results": "Search Results",
+    "search.placeholder": "Search on PinkSocial...",
+    "search.search": "Search",
+    "search.all": "All",
+    "search.filters": "Filters",
+    "search.date": "Date",
+    "search.anyTime": "Any time",
+    "search.past24h": "Past 24 hours",
+    "search.pastWeek": "Past week",
+    "search.pastMonth": "Past month",
+    "search.source": "Source",
+    "search.fromFriends": "From friends",
+    "search.fromGroups": "From groups",
+    "search.public": "Public",
+    "search.seeAll": "See all",
 
     // Time translations
     "time.just now": "just now",
@@ -140,6 +155,8 @@ const translations: Record<Language, Record<string, string>> = {
     "friends.accept": "Accept",
     "friends.decline": "Decline",
     "friends.addFriend": "Add Friend",
+    "friends.online": "Online",
+    "friends.offline": "Offline",
 
     // Groups Page
     "groups.title": "Groups",
@@ -188,6 +205,21 @@ const translations: Record<Language, Record<string, string>> = {
     "search.games": "Trò chơi",
     "search.game": "Trò chơi",
     "search.viewAll": "Xem tất cả kết quả",
+    "search.results": "Kết quả tìm kiếm",
+    "search.placeholder": "Tìm kiếm trên PinkSocial...",
+    "search.search": "Tìm kiếm",
+    "search.all": "Tất cả",
+    "search.filters": "Bộ lọc",
+    "search.date": "Thời gian",
+    "search.anyTime": "Bất kỳ lúc nào",
+    "search.past24h": "24 giờ qua",
+    "search.pastWeek": "Tuần qua",
+    "search.pastMonth": "Tháng qua",
+    "search.source": "Nguồn",
+    "search.fromFriends": "Từ bạn bè",
+    "search.fromGroups": "Từ nhóm",
+    "search.public": "Công khai",
+    "search.seeAll": "Xem tất cả",
 
     // Time translations
     "time.just now": "vừa xong",
@@ -299,6 +331,8 @@ const translations: Record<Language, Record<string, string>> = {
     "friends.accept": "Chấp nhận",
     "friends.decline": "Từ chối",
     "friends.addFriend": "Kết bạn",
+    "friends.online": "Trực tuyến",
+    "friends.offline": "Ngoại tuyến",
 
     // Groups Page
     "groups.title": "Nhóm",
