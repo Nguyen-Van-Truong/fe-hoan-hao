@@ -18,6 +18,12 @@ import {
   Send,
   ChevronDown,
   ExternalLink,
+  Link as LinkIcon,
+  Facebook,
+  Twitter,
+  Mail,
+  Copy,
+  Check,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -88,9 +94,11 @@ const PostCard = ({
   const [commentText, setCommentText] = useState("");
   const [visibleComments, setVisibleComments] = useState(2); // Show first 2 comments initially
   const [liked, setLiked] = useState(false);
+  const [showShareOptions, setShowShareOptions] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Generate a unique post ID based on content (in a real app, this would come from the database)
-  const postId = btoa(content.substring(0, 20))
+  const postId = btoa(encodeURIComponent(content.substring(0, 20)))
     .replace(/[^a-zA-Z0-9]/g, "")
     .substring(0, 10);
 
@@ -114,6 +122,17 @@ const PostCard = ({
     setLiked(!liked);
   };
 
+  const handleCopyLink = () => {
+    const postUrl = `${window.location.origin}/post/${author.name.toLowerCase().replace(" ", "-")}/${postId}`;
+    navigator.clipboard.writeText(postUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const toggleShareOptions = () => {
+    setShowShareOptions(!showShareOptions);
+  };
+
   return (
     <Card className="w-full mb-4 bg-white border border-gray-200 shadow-sm">
       <CardHeader className="flex flex-row items-center space-x-3 p-4">
@@ -133,7 +152,6 @@ const PostCard = ({
           >
             {author.name}
           </Link>
-          <span className="text-xs text-gray-500">{author.timestamp}</span>
         </div>
         <div className="ml-auto">
           <DropdownMenu>
@@ -151,6 +169,13 @@ const PostCard = ({
               </DropdownMenuItem>
               <DropdownMenuItem>
                 {t("post.reportPost") || "Report Post"}
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  to={`/post/${author.name.toLowerCase().replace(" ", "-")}/${postId}`}
+                >
+                  {t("post.viewDetails") || "View Post Details"}
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -200,15 +225,96 @@ const PostCard = ({
             <span>{t("post.comment") || "Comment"}</span>
             <span className="text-xs ml-1">({engagement.comments})</span>
           </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-gray-600 hover:text-pink-500"
-          >
-            <Share2 className="h-4 w-4 mr-1" />
-            <span>{t("post.share") || "Share"}</span>
-            <span className="text-xs ml-1">({engagement.shares})</span>
-          </Button>
+          <div className="relative">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-gray-600 hover:text-pink-500"
+              onClick={toggleShareOptions}
+            >
+              <Share2 className="h-4 w-4 mr-1" />
+              <span>{t("post.share") || "Share"}</span>
+              <span className="text-xs ml-1">({engagement.shares})</span>
+            </Button>
+
+            {showShareOptions && (
+              <div className="absolute bottom-full left-0 mb-2 bg-white shadow-lg rounded-lg p-2 w-48 z-10 border border-gray-200">
+                <div className="flex flex-col space-y-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="justify-start text-gray-600 hover:text-pink-500"
+                    onClick={handleCopyLink}
+                  >
+                    {copied ? (
+                      <Check className="h-4 w-4 mr-2 text-green-500" />
+                    ) : (
+                      <Copy className="h-4 w-4 mr-2" />
+                    )}
+                    {copied
+                      ? t("post.linkCopied") || "Link copied!"
+                      : t("post.copyLink") || "Copy link"}
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="justify-start text-gray-600 hover:text-blue-600"
+                    onClick={() =>
+                      window.open(
+                        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}/post/${author.name.toLowerCase().replace(" ", "-")}/${postId}`)}`,
+                      )
+                    }
+                  >
+                    <Facebook className="h-4 w-4 mr-2 text-blue-600" />
+                    {t("post.shareOnFacebook") || "Share on Facebook"}
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="justify-start text-gray-600 hover:text-blue-400"
+                    onClick={() =>
+                      window.open(
+                        `https://twitter.com/intent/tweet?url=${encodeURIComponent(`${window.location.origin}/post/${author.name.toLowerCase().replace(" ", "-")}/${postId}`)}`,
+                      )
+                    }
+                  >
+                    <Twitter className="h-4 w-4 mr-2 text-blue-400" />
+                    {t("post.shareOnTwitter") || "Share on Twitter"}
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="justify-start text-gray-600 hover:text-gray-800"
+                    onClick={() =>
+                      window.open(
+                        `mailto:?subject=${encodeURIComponent(author.name + "'s post")}&body=${encodeURIComponent(`Check out this post: ${window.location.origin}/post/${author.name.toLowerCase().replace(" ", "-")}/${postId}`)}`,
+                      )
+                    }
+                  >
+                    <Mail className="h-4 w-4 mr-2" />
+                    {t("post.shareViaEmail") || "Share via email"}
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="justify-start text-gray-600 hover:text-pink-500"
+                    asChild
+                  >
+                    <Link
+                      to={`/post/${author.name.toLowerCase().replace(" ", "-")}/${postId}`}
+                    >
+                      <LinkIcon className="h-4 w-4 mr-2 text-pink-500" />
+                      {t("post.viewFullPost") || "View full post"}
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {showComments && (

@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from "react";
-import { useRoutes, Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useRoutes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Profile from "./pages/Profile";
 import Friends from "./pages/Friends";
@@ -34,6 +34,9 @@ function App() {
     <Suspense fallback={<p>Loading...</p>}>
       <LanguageProvider>
         <>
+          {/* For the tempo routes */}
+          {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
+
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/profile" element={<Profile isCurrentUser={true} />} />
@@ -48,8 +51,8 @@ function App() {
               element={<Friends initialTab="requests" />}
             />
             <Route path="/post/:username/:postId" element={<PostDetail />} />
+            <Route path="/post/:username" element={<PostDetail />} />
           </Routes>
-          {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
         </>
       </LanguageProvider>
     </Suspense>

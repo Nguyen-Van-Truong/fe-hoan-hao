@@ -17,6 +17,33 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.games": "Games",
     "nav.search": "Search...",
 
+    // Time translations
+    "time.just now": "just now",
+    "time.1 minute ago": "1 minute ago",
+    "time.2 minutes ago": "2 minutes ago",
+    "time.5 minutes ago": "5 minutes ago",
+    "time.10 minutes ago": "10 minutes ago",
+    "time.15 minutes ago": "15 minutes ago",
+    "time.30 minutes ago": "30 minutes ago",
+    "time.45 minutes ago": "45 minutes ago",
+    "time.1 hour ago": "1 hour ago",
+    "time.2 hours ago": "2 hours ago",
+    "time.3 hours ago": "3 hours ago",
+    "time.4 hours ago": "4 hours ago",
+    "time.5 hours ago": "5 hours ago",
+    "time.yesterday": "yesterday",
+    "time.2 days ago": "2 days ago",
+    "time.3 days ago": "3 days ago",
+    "time.last week": "last week",
+    "time.2 weeks ago": "2 weeks ago",
+    "time.last month": "last month",
+    "time.2 months ago": "2 months ago",
+    "time.3 months ago": "3 months ago",
+    "time.last year": "last year",
+    "time.2 years ago": "2 years ago",
+    "time.3 years ago": "3 years ago",
+    "time.a long time ago": "a long time ago",
+
     // User Profile
     "profile.profile": "Profile",
     "profile.language": "Language",
@@ -70,6 +97,14 @@ const translations: Record<Language, Record<string, string>> = {
     "post.backToFeed": "Back to Feed",
     "post.relatedPosts": "Related Posts",
     "post.noRelatedPosts": "No related posts to show right now.",
+    "post.viewDetails": "View Post Details",
+    "post.copyLink": "Copy link",
+    "post.linkCopied": "Link copied!",
+    "post.shareOnFacebook": "Share on Facebook",
+    "post.shareOnTwitter": "Share on Twitter",
+    "post.shareViaEmail": "Share via email",
+    "post.shareOptions": "Share options",
+    "post.closeShareOptions": "Close share options",
 
     // Friends Page
     "friends.title": "Friends",
@@ -127,6 +162,33 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.games": "Trò chơi",
     "nav.search": "Tìm kiếm...",
 
+    // Time translations
+    "time.just now": "vừa xong",
+    "time.1 minute ago": "1 phút trước",
+    "time.2 minutes ago": "2 phút trước",
+    "time.5 minutes ago": "5 phút trước",
+    "time.10 minutes ago": "10 phút trước",
+    "time.15 minutes ago": "15 phút trước",
+    "time.30 minutes ago": "30 phút trước",
+    "time.45 minutes ago": "45 phút trước",
+    "time.1 hour ago": "1 giờ trước",
+    "time.2 hours ago": "2 giờ trước",
+    "time.3 hours ago": "3 giờ trước",
+    "time.4 hours ago": "4 giờ trước",
+    "time.5 hours ago": "5 giờ trước",
+    "time.yesterday": "hôm qua",
+    "time.2 days ago": "2 ngày trước",
+    "time.3 days ago": "3 ngày trước",
+    "time.last week": "tuần trước",
+    "time.2 weeks ago": "2 tuần trước",
+    "time.last month": "tháng trước",
+    "time.2 months ago": "2 tháng trước",
+    "time.3 months ago": "3 tháng trước",
+    "time.last year": "năm trước",
+    "time.2 years ago": "2 năm trước",
+    "time.3 years ago": "3 năm trước",
+    "time.a long time ago": "rất lâu trước đây",
+
     // User Profile
     "profile.profile": "Trang cá nhân",
     "profile.language": "Ngôn ngữ",
@@ -180,6 +242,14 @@ const translations: Record<Language, Record<string, string>> = {
     "post.backToFeed": "Quay lại bảng tin",
     "post.relatedPosts": "Bài viết liên quan",
     "post.noRelatedPosts": "Không có bài viết liên quan nào để hiển thị.",
+    "post.viewDetails": "Xem chi tiết bài viết",
+    "post.copyLink": "Sao chép liên kết",
+    "post.linkCopied": "Đã sao chép liên kết!",
+    "post.shareOnFacebook": "Chia sẻ lên Facebook",
+    "post.shareOnTwitter": "Chia sẻ lên Twitter",
+    "post.shareViaEmail": "Chia sẻ qua email",
+    "post.shareOptions": "Tùy chọn chia sẻ",
+    "post.closeShareOptions": "Đóng tùy chọn chia sẻ",
 
     // Friends Page
     "friends.title": "Bạn bè",
@@ -235,24 +305,27 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
   undefined,
 );
 
-export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+// Export as a named function component for consistent exports
+export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>("english");
 
-  const t = (key: string): string => {
+  // Define t function directly in the component body
+  function t(key: string): string {
     return translations[language][key] || key;
-  };
+  }
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
-};
+}
 
-export const useLanguage = (): LanguageContextType => {
+// Export as a named function for consistent exports
+export function useLanguage(): LanguageContextType {
   const context = useContext(LanguageContext);
   if (context === undefined) {
     throw new Error("useLanguage must be used within a LanguageProvider");
   }
   return context;
-};
+}

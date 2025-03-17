@@ -137,19 +137,24 @@ const PhotoGalleryPost = ({
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10 border-2 border-[#f2a2d2]">
               <a
-                href={`/profile/${author.name.toLowerCase().replace(" ", "-")}`}
+                href={`/profile/${author.name.toLowerCase().replace(/ /g, "-")}`}
               >
                 <img src={author.avatar} alt={author.name} />
               </a>
             </Avatar>
             <div>
               <a
-                href={`/profile/${author.name.toLowerCase().replace(" ", "-")}`}
+                href={`/profile/${author.name.toLowerCase().replace(/ /g, "-")}`}
                 className="hover:underline"
               >
                 <h3 className="font-semibold text-sm">{author.name}</h3>
               </a>
-              <p className="text-xs text-gray-500">{author.timestamp}</p>
+              <a
+                href={`/post/${author.name.toLowerCase().replace(/ /g, "-")}`}
+                className="hover:underline"
+              >
+                <p className="text-xs text-gray-500">{author.timestamp}</p>
+              </a>
             </div>
           </div>
           <DropdownMenu>
@@ -163,6 +168,14 @@ const PhotoGalleryPost = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem>
+                <a
+                  href={`/post/${author.name.toLowerCase().replace(/ /g, "-")}`}
+                  className="w-full"
+                >
+                  {t("post.viewPostDetails") || "View Post Details"}
+                </a>
+              </DropdownMenuItem>
               <DropdownMenuItem>{t("post.savePost")}</DropdownMenuItem>
               <DropdownMenuItem>{t("post.hidePost")}</DropdownMenuItem>
               <DropdownMenuItem>{t("post.reportPost")}</DropdownMenuItem>
@@ -280,7 +293,7 @@ const PhotoGalleryPost = ({
                 <div key={comment.id} className="flex space-x-2">
                   <Avatar className="h-8 w-8">
                     <a
-                      href={`/profile/${comment.author.name.toLowerCase().replace(" ", "-")}`}
+                      href={`/profile/${comment.author.name.toLowerCase().replace(/ /g, "-")}`}
                     >
                       <img
                         src={comment.author.avatar}
@@ -292,7 +305,7 @@ const PhotoGalleryPost = ({
                   <div className="flex-1">
                     <div className="bg-gray-100 rounded-2xl px-3 py-2">
                       <a
-                        href={`/profile/${comment.author.name.toLowerCase().replace(" ", "-")}`}
+                        href={`/profile/${comment.author.name.toLowerCase().replace(/ /g, "-")}`}
                         className="font-semibold text-xs hover:underline"
                       >
                         {comment.author.name}

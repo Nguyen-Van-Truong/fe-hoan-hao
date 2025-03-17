@@ -10,7 +10,7 @@ interface PostDetailProps {}
 
 const PostDetail: React.FC<PostDetailProps> = () => {
   const { postId, username } = useParams<{
-    postId: string;
+    postId?: string;
     username: string;
   }>();
   const navigate = useNavigate();
