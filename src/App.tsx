@@ -5,6 +5,7 @@ import Profile from "./pages/Profile";
 import Friends from "./pages/Friends";
 import PostDetail from "./pages/PostDetail";
 import SearchPage from "./pages/SearchPage";
+import Messages from "./pages/Messages";
 import routes from "tempo-routes";
 import { LanguageProvider } from "./contexts/LanguageContext";
 
@@ -23,6 +24,8 @@ function App() {
       pageTitle = "Nhóm";
     } else if (location.pathname === "/games") {
       pageTitle = "Trò chơi";
+    } else if (location.pathname === "/messages") {
+      pageTitle = "Tin nhắn";
     } else if (location.pathname.startsWith("/post/")) {
       // Post detail pages will set their own title in the component
       return;
@@ -42,6 +45,7 @@ function App() {
 
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/messages" element={<Messages />} />
             <Route path="/profile" element={<Profile isCurrentUser={true} />} />
             <Route path="/profile/:userId" element={<Profile />} />
             <Route path="/friends" element={<Friends />} />

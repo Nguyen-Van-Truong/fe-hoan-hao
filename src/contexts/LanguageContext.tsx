@@ -12,6 +12,7 @@ const translations: Record<Language, Record<string, string>> = {
   english: {
     // Navigation
     "nav.home": "Home",
+    "nav.messages": "Messages",
     "nav.friends": "Friends",
     "nav.groups": "Groups",
     "nav.games": "Games",
@@ -44,6 +45,19 @@ const translations: Record<Language, Record<string, string>> = {
     "search.fromGroups": "From groups",
     "search.public": "Public",
     "search.seeAll": "See all",
+
+    // Messages
+    "messages.timeline": "Timeline",
+    "messages.messages": "Messages",
+    "messages.conversations": "Conversations",
+    "messages.searchMessages": "Search messages",
+    "messages.whatsHappening": "What's happening?",
+    "messages.send": "Send",
+    "messages.typeMessage": "Type a message...",
+    "messages.noMessages": "No messages yet.",
+    "messages.noSearchResults": "No messages match your search.",
+    "messages.noConversations": "No conversations yet.",
+    "messages.selectConversation": "Select a conversation to start messaging",
 
     // Time translations
     "time.just now": "just now",
@@ -188,6 +202,7 @@ const translations: Record<Language, Record<string, string>> = {
   vietnamese: {
     // Navigation
     "nav.home": "Trang chủ",
+    "nav.messages": "Tin nhắn",
     "nav.friends": "Bạn bè",
     "nav.groups": "Nhóm",
     "nav.games": "Trò chơi",
@@ -220,6 +235,21 @@ const translations: Record<Language, Record<string, string>> = {
     "search.fromGroups": "Từ nhóm",
     "search.public": "Công khai",
     "search.seeAll": "Xem tất cả",
+
+    // Messages
+    "messages.timeline": "Dòng thời gian",
+    "messages.messages": "Tin nhắn",
+    "messages.conversations": "Cuộc trò chuyện",
+    "messages.searchMessages": "Tìm kiếm tin nhắn",
+    "messages.whatsHappening": "Điều gì đang xảy ra?",
+    "messages.send": "Gửi",
+    "messages.typeMessage": "Nhập tin nhắn...",
+    "messages.noMessages": "Chưa có tin nhắn nào.",
+    "messages.noSearchResults":
+      "Không có tin nhắn nào phù hợp với tìm kiếm của bạn.",
+    "messages.noConversations": "Chưa có cuộc trò chuyện nào.",
+    "messages.selectConversation":
+      "Chọn một cuộc trò chuyện để bắt đầu nhắn tin",
 
     // Time translations
     "time.just now": "vừa xong",
