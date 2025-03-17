@@ -239,110 +239,114 @@ const Messages = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <ThreeColumnLayout>
-        <div className="w-full max-w-[950px] mx-auto bg-white min-h-screen flex flex-col">
-          {/* Search Bar */}
-          <div className="p-4 border-b border-gray-200">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <Input
-                placeholder={
-                  t("messages.searchMessages") || "Tìm kiếm tin nhắn"
-                }
-                className="pl-10"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* Messages Interface */}
-          <div className="flex-1 flex flex-col">
-            <div className="flex h-full">
-              <div className="w-1/3 border-r border-gray-200 h-full">
-                <ConversationList
-                  conversations={conversations}
-                  onSelectConversation={handleSelectConversation}
-                  selectedConversationId={selectedConversation}
+        <div className="w-full max-w-[950px] mx-auto p-4">
+          <div className="bg-white rounded-lg shadow-sm p-4 min-h-screen flex flex-col">
+            {/* Search Bar */}
+            <div className="p-4 border-b border-gray-200">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <Input
+                  placeholder={
+                    t("messages.searchMessages") || "Tìm kiếm tin nhắn"
+                  }
+                  className="pl-10"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
+            </div>
 
-              <div className="w-2/3 h-full flex flex-col">
-                {selectedConversation ? (
-                  <>
-                    <div className="p-4 border-b border-gray-200">
-                      <div className="flex items-center gap-2">
-                        <div className="h-10 w-10 rounded-full overflow-hidden">
-                          <img
-                            src={
+            {/* Messages Interface */}
+            <div className="flex-1 flex flex-col">
+              <div className="flex h-full">
+                <div className="w-1/3 border-r border-gray-200 h-full">
+                  <ConversationList
+                    conversations={conversations}
+                    onSelectConversation={handleSelectConversation}
+                    selectedConversationId={selectedConversation}
+                  />
+                </div>
+
+                <div className="w-2/3 h-full flex flex-col">
+                  {selectedConversation ? (
+                    <>
+                      <div className="p-4 border-b border-gray-200">
+                        <div className="flex items-center gap-2">
+                          <div className="h-10 w-10 rounded-full overflow-hidden">
+                            <img
+                              src={
+                                conversations.find(
+                                  (c) => c.id === selectedConversation,
+                                )?.user.avatar
+                              }
+                              alt="User avatar"
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <h2 className="font-bold">
+                            {
                               conversations.find(
                                 (c) => c.id === selectedConversation,
-                              )?.user.avatar
+                              )?.user.name
                             }
-                            alt="User avatar"
-                            className="h-full w-full object-cover"
-                          />
+                          </h2>
                         </div>
-                        <h2 className="font-bold">
-                          {
-                            conversations.find(
-                              (c) => c.id === selectedConversation,
-                            )?.user.name
-                          }
-                        </h2>
                       </div>
-                    </div>
 
-                    <div className="flex-1 overflow-y-auto bg-white p-2">
-                      {messages.map((message) => (
-                        <MessageItem
-                          key={message.id}
-                          message={message}
-                          isCurrentUser={isCurrentUser(message.author.username)}
-                        />
-                      ))}
-                    </div>
-
-                    <div className="border-t border-gray-200 p-4 bg-white">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-gray-500"
-                        >
-                          <Image className="h-5 w-5" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-gray-500"
-                        >
-                          <Smile className="h-5 w-5" />
-                        </Button>
-                        <Input
-                          placeholder={
-                            t("messages.typeMessage") || "Nhập tin nhắn..."
-                          }
-                          className="flex-1"
-                          value={newMessage}
-                          onChange={(e) => setNewMessage(e.target.value)}
-                          onKeyDown={handleKeyDown}
-                        />
-                        <Button
-                          className="bg-pink-500 hover:bg-pink-600"
-                          onClick={handleSendMessage}
-                          disabled={!newMessage.trim()}
-                        >
-                          <Send className="h-4 w-4" />
-                        </Button>
+                      <div className="flex-1 overflow-y-auto bg-white p-2">
+                        {messages.map((message) => (
+                          <MessageItem
+                            key={message.id}
+                            message={message}
+                            isCurrentUser={isCurrentUser(
+                              message.author.username,
+                            )}
+                          />
+                        ))}
                       </div>
+
+                      <div className="border-t border-gray-200 p-4 bg-white">
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-gray-500"
+                          >
+                            <Image className="h-5 w-5" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-gray-500"
+                          >
+                            <Smile className="h-5 w-5" />
+                          </Button>
+                          <Input
+                            placeholder={
+                              t("messages.typeMessage") || "Nhập tin nhắn..."
+                            }
+                            className="flex-1"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                          />
+                          <Button
+                            className="bg-pink-500 hover:bg-pink-600"
+                            onClick={handleSendMessage}
+                            disabled={!newMessage.trim()}
+                          >
+                            <Send className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-500">
+                      {t("messages.selectConversation") ||
+                        "Chọn một cuộc trò chuyện để bắt đầu nhắn tin"}
                     </div>
-                  </>
-                ) : (
-                  <div className="flex items-center justify-center h-full text-gray-500">
-                    {t("messages.selectConversation") ||
-                      "Chọn một cuộc trò chuyện để bắt đầu nhắn tin"}
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
