@@ -214,7 +214,7 @@ const Friends = ({ initialTab = "all" }: FriendsProps) => {
   return (
     <div className="min-h-screen bg-gray-100">
       <ThreeColumnLayout>
-        <div className="w-full max-w-[680px] mx-auto p-4">
+        <div className="w-full max-w-[950px] mx-auto p-4">
           <Card className="mb-4">
             <CardContent className="p-6">
               <h1 className="text-2xl font-bold mb-4">

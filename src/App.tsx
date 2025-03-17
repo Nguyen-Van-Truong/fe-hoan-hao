@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import Profile from "./pages/Profile";
 import Friends from "./pages/Friends";
 import PostDetail from "./pages/PostDetail";
+import SearchPage from "./pages/SearchPage";
 import routes from "tempo-routes";
 import { LanguageProvider } from "./contexts/LanguageContext";
 
@@ -25,6 +26,8 @@ function App() {
     } else if (location.pathname.startsWith("/post/")) {
       // Post detail pages will set their own title in the component
       return;
+    } else if (location.pathname === "/search") {
+      pageTitle = "Tìm kiếm";
     }
 
     document.title = `${pageTitle} | Hoàn Hảo`;
@@ -52,6 +55,12 @@ function App() {
             />
             <Route path="/post/:username/:postId" element={<PostDetail />} />
             <Route path="/post/:username" element={<PostDetail />} />
+            <Route path="/search" element={<SearchPage />} />
+
+            {/* Add this before any catchall route */}
+            {import.meta.env.VITE_TEMPO === "true" && (
+              <Route path="/tempobook/*" />
+            )}
           </Routes>
         </>
       </LanguageProvider>
