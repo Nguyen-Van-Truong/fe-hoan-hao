@@ -10,7 +10,7 @@ const ContentColumn = ({ className = "" }: ContentColumnProps) => {
   return (
     <div
       className={`w-full max-w-[950px] mx-auto min-h-screen ${className}`}
-      style={{ backgroundColor: "#a2d2f2" }} // Blue background as requested
+      style={{ backgroundColor: "var(--secondary)" }} // Blue background as requested
     >
       <div className="px-4 py-6 space-y-4">
         <PostCreator

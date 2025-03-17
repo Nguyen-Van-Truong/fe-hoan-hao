@@ -6,6 +6,7 @@ import { Search, Send, Image, Smile } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import MessageItem from "../components/messages/MessageItem";
 import ConversationList from "../components/messages/ConversationList";
+import MessageComposer from "../components/messages/MessageComposer";
 
 const Messages = () => {
   const { t } = useLanguage();
@@ -21,12 +22,13 @@ const Messages = () => {
     {
       id: "c1",
       user: {
-        name: "Jane Doe",
+        name: t("messages.user.janeDoe") || "Jane Doe",
         username: "janedoe",
         avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
       },
       lastMessage: {
-        text: "Hey, how are you doing today?",
+        text:
+          t("messages.sampleText.greeting") || "Hey, how are you doing today?",
         timestamp: new Date(Date.now() - 30 * 60 * 1000),
         isRead: false,
       },
@@ -35,12 +37,14 @@ const Messages = () => {
     {
       id: "c2",
       user: {
-        name: "John Smith",
+        name: t("messages.user.johnSmith") || "John Smith",
         username: "johnsmith",
         avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
       },
       lastMessage: {
-        text: "Did you see the new movie that just came out?",
+        text:
+          t("messages.sampleText.movie") ||
+          "Did you see the new movie that just came out?",
         timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
         isRead: true,
       },
@@ -49,12 +53,14 @@ const Messages = () => {
     {
       id: "c3",
       user: {
-        name: "Sarah Johnson",
+        name: t("messages.user.sarahJohnson") || "Sarah Johnson",
         username: "sarahj",
         avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
       },
       lastMessage: {
-        text: "Thanks for the help with the project!",
+        text:
+          t("messages.sampleText.thanks") ||
+          "Thanks for the help with the project!",
         timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
         isRead: true,
       },
@@ -63,12 +69,14 @@ const Messages = () => {
     {
       id: "c4",
       user: {
-        name: "Michael Chen",
+        name: t("messages.user.michaelChen") || "Michael Chen",
         username: "mikechen",
         avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
       },
       lastMessage: {
-        text: "Let's meet up for coffee next week!",
+        text:
+          t("messages.sampleText.coffee") ||
+          "Let's meet up for coffee next week!",
         timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
         isRead: true,
       },
@@ -82,53 +90,60 @@ const Messages = () => {
       {
         id: "m1",
         author: {
-          name: "Jane Doe",
+          name: t("messages.user.janeDoe") || "Jane Doe",
           username: "janedoe",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
         },
-        content: "Hey there! How's your day going?",
+        content:
+          t("messages.sampleText.dayGoing") ||
+          "Hey there! How's your day going?",
         timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
       },
       {
         id: "m2",
         author: {
-          name: "Current User",
+          name: t("messages.user.currentUser") || "Current User",
           username: "currentuser",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=CurrentUser",
         },
         content:
+          t("messages.sampleText.appFeatures") ||
           "Hi Jane! It's going pretty well, thanks for asking. Just working on some new features for the app.",
         timestamp: new Date(Date.now() - 1.5 * 60 * 60 * 1000),
       },
       {
         id: "m3",
         author: {
-          name: "Jane Doe",
+          name: t("messages.user.janeDoe") || "Jane Doe",
           username: "janedoe",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
         },
         content:
+          t("messages.sampleText.whatFeatures") ||
           "That sounds exciting! What kind of features are you working on?",
         timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
       },
       {
         id: "m4",
         author: {
-          name: "Current User",
+          name: t("messages.user.currentUser") || "Current User",
           username: "currentuser",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=CurrentUser",
         },
-        content: "I'm adding a new messaging system with better media sharing.",
+        content:
+          t("messages.sampleText.messagingSystem") ||
+          "I'm adding a new messaging system with better media sharing.",
         timestamp: new Date(Date.now() - 45 * 60 * 1000),
       },
       {
         id: "m5",
         author: {
-          name: "Jane Doe",
+          name: t("messages.user.janeDoe") || "Jane Doe",
           username: "janedoe",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
         },
         content:
+          t("messages.sampleText.testIt") ||
           "That sounds really cool! I'd love to test it out when it's ready.",
         timestamp: new Date(Date.now() - 30 * 60 * 1000),
       },
@@ -137,21 +152,23 @@ const Messages = () => {
       {
         id: "m6",
         author: {
-          name: "John Smith",
+          name: t("messages.user.johnSmith") || "John Smith",
           username: "johnsmith",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
         },
-        content: "Did you see the new movie that just came out?",
+        content:
+          t("messages.sampleText.movie") ||
+          "Did you see the new movie that just came out?",
         timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
       },
       {
         id: "m7",
         author: {
-          name: "Current User",
+          name: t("messages.user.currentUser") || "Current User",
           username: "currentuser",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=CurrentUser",
         },
-        content: "Not yet! Is it good?",
+        content: t("messages.sampleText.notYet") || "Not yet! Is it good?",
         timestamp: new Date(Date.now() - 1.8 * 60 * 60 * 1000),
       },
     ],
@@ -159,11 +176,13 @@ const Messages = () => {
       {
         id: "m8",
         author: {
-          name: "Sarah Johnson",
+          name: t("messages.user.sarahJohnson") || "Sarah Johnson",
           username: "sarahj",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
         },
-        content: "Thanks for the help with the project!",
+        content:
+          t("messages.sampleText.thanks") ||
+          "Thanks for the help with the project!",
         timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
       },
     ],
@@ -171,31 +190,37 @@ const Messages = () => {
       {
         id: "m9",
         author: {
-          name: "Michael Chen",
+          name: t("messages.user.michaelChen") || "Michael Chen",
           username: "mikechen",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
         },
-        content: "Let's meet up for coffee next week!",
+        content:
+          t("messages.sampleText.coffee") ||
+          "Let's meet up for coffee next week!",
         timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
       },
       {
         id: "m10",
         author: {
-          name: "Current User",
+          name: t("messages.user.currentUser") || "Current User",
           username: "currentuser",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=CurrentUser",
         },
-        content: "Sounds good! How about Tuesday at 2pm?",
+        content:
+          t("messages.sampleText.tuesday") ||
+          "Sounds good! How about Tuesday at 2pm?",
         timestamp: new Date(Date.now() - 1.5 * 24 * 60 * 60 * 1000),
       },
       {
         id: "m11",
         author: {
-          name: "Michael Chen",
+          name: t("messages.user.michaelChen") || "Michael Chen",
           username: "mikechen",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
         },
-        content: "Perfect! See you then at the usual place.",
+        content:
+          t("messages.sampleText.usualPlace") ||
+          "Perfect! See you then at the usual place.",
         timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
       },
     ],
@@ -206,7 +231,7 @@ const Messages = () => {
       const newMsg = {
         id: `m${Date.now()}`,
         author: {
-          name: "Current User",
+          name: t("messages.user.currentUser") || "Current User",
           username: "currentuser",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=CurrentUser",
         },
@@ -279,7 +304,7 @@ const Messages = () => {
                                   (c) => c.id === selectedConversation,
                                 )?.user.avatar
                               }
-                              alt="User avatar"
+                              alt={t("messages.userAvatar") || "User avatar"}
                               className="h-full w-full object-cover"
                             />
                           </div>
@@ -305,40 +330,29 @@ const Messages = () => {
                         ))}
                       </div>
 
-                      <div className="border-t border-gray-200 p-4 bg-white">
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-gray-500"
-                          >
-                            <Image className="h-5 w-5" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-gray-500"
-                          >
-                            <Smile className="h-5 w-5" />
-                          </Button>
-                          <Input
-                            placeholder={
-                              t("messages.typeMessage") || "Nhập tin nhắn..."
-                            }
-                            className="flex-1"
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                          />
-                          <Button
-                            className="bg-pink-500 hover:bg-pink-600"
-                            onClick={handleSendMessage}
-                            disabled={!newMessage.trim()}
-                          >
-                            <Send className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
+                      <MessageComposer
+                        userAvatar={
+                          "https://api.dicebear.com/7.x/avataaars/svg?seed=CurrentUser"
+                        }
+                        onSendMessage={(content) => {
+                          if (content.trim() && selectedConversation) {
+                            const newMsg = {
+                              id: `m${Date.now()}`,
+                              author: {
+                                name:
+                                  t("messages.user.currentUser") ||
+                                  "Current User",
+                                username: "currentuser",
+                                avatar:
+                                  "https://api.dicebear.com/7.x/avataaars/svg?seed=CurrentUser",
+                              },
+                              content: content,
+                              timestamp: new Date(),
+                            };
+                            setMessages([...messages, newMsg]);
+                          }
+                        }}
+                      />
                     </>
                   ) : (
                     <div className="flex items-center justify-center h-full text-gray-500">

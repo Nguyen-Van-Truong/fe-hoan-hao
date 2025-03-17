@@ -97,7 +97,7 @@ const LeftColumn = ({ className }: LeftColumnProps) => {
         "w-[280px] h-full p-4 flex flex-col border-r shadow-md rounded-lg",
         className,
       )}
-      style={{ backgroundColor: "#f2a2d2" }}
+      style={{ backgroundColor: "var(--primary-light)" }}
     >
       {/* Logo */}
       <div className="mb-6 px-4">
