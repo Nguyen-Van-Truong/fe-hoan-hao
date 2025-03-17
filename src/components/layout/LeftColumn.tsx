@@ -1,8 +1,9 @@
-import React from "react";
-import { Search, Home, Users, UsersRound, GamepadIcon } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Search, Home, Users, UsersRound, GamepadIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import SearchResults from "../search/SearchResults";
 
 interface NavLinkProps {
   icon: React.ReactNode;
@@ -36,6 +37,51 @@ interface LeftColumnProps {
 
 const LeftColumn = ({ className }: LeftColumnProps) => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSearchFocus = () => {
+    if (searchQuery.trim()) {
+      setShowResults(true);
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setShowResults(value.trim().length > 0);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setShowResults(false);
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    setShowResults(false);
+  };
 
   return (
     <div
@@ -53,14 +99,31 @@ const LeftColumn = ({ className }: LeftColumnProps) => {
       </div>
 
       {/* Search Bar */}
-      <div className="relative mb-6">
+      <div className="relative mb-6" ref={searchRef}>
         <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
           <Search className="h-4 w-4 text-gray-400" />
         </div>
         <input
           type="text"
           placeholder={t("nav.search")}
-          className="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+          className="w-full pl-10 pr-10 py-2 rounded-full bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          onFocus={handleSearchFocus}
+          onKeyDown={handleKeyDown}
+        />
+        {searchQuery && (
+          <button
+            className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
+            onClick={clearSearch}
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+        <SearchResults
+          query={searchQuery}
+          onClose={() => setShowResults(false)}
+          visible={showResults}
         />
       </div>
 

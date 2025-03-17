@@ -17,6 +17,19 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.games": "Games",
     "nav.search": "Search...",
 
+    // Search
+    "search.keywords": "Keywords",
+    "search.keyword": "Keyword",
+    "search.people": "People",
+    "search.person": "Person",
+    "search.posts": "Posts",
+    "search.post": "Post",
+    "search.groups": "Groups",
+    "search.group": "Group",
+    "search.games": "Games",
+    "search.game": "Game",
+    "search.viewAll": "View all results",
+
     // Time translations
     "time.just now": "just now",
     "time.1 minute ago": "1 minute ago",
@@ -105,6 +118,7 @@ const translations: Record<Language, Record<string, string>> = {
     "post.shareViaEmail": "Share via email",
     "post.shareOptions": "Share options",
     "post.closeShareOptions": "Close share options",
+    "post.viewPostDetails": "View Post Details",
 
     // Friends Page
     "friends.title": "Friends",
@@ -161,6 +175,19 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.groups": "Nhóm",
     "nav.games": "Trò chơi",
     "nav.search": "Tìm kiếm...",
+
+    // Search
+    "search.keywords": "Từ khóa",
+    "search.keyword": "Từ khóa",
+    "search.people": "Người dùng",
+    "search.person": "Người dùng",
+    "search.posts": "Bài viết",
+    "search.post": "Bài viết",
+    "search.groups": "Nhóm",
+    "search.group": "Nhóm",
+    "search.games": "Trò chơi",
+    "search.game": "Trò chơi",
+    "search.viewAll": "Xem tất cả kết quả",
 
     // Time translations
     "time.just now": "vừa xong",
@@ -250,6 +277,7 @@ const translations: Record<Language, Record<string, string>> = {
     "post.shareViaEmail": "Chia sẻ qua email",
     "post.shareOptions": "Tùy chọn chia sẻ",
     "post.closeShareOptions": "Đóng tùy chọn chia sẻ",
+    "post.viewPostDetails": "View Post Details",
 
     // Friends Page
     "friends.title": "Bạn bè",
