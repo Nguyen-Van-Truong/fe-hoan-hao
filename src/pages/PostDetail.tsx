@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ThreeColumnLayout from "@/components/layout/ThreeColumnLayout";
-import PostCard from "@/components/post/PostCard";
+import PhotoGalleryPost from "@/components/post/PhotoGalleryPost";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -119,11 +119,13 @@ const PostDetail: React.FC<PostDetailProps> = () => {
           </Button>
         </div>
 
-        <PostCard
+        <PhotoGalleryPost
           author={post.author}
           content={post.content}
-          engagement={post.engagement}
-          comments={post.comments}
+          likes={post.engagement.likes}
+          comments={post.engagement.comments}
+          shares={post.engagement.shares}
+          commentsList={post.comments}
         />
 
         <div className="mt-6 border-t border-gray-200 pt-6">
