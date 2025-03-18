@@ -107,7 +107,7 @@ const PostDetail: React.FC<PostDetailProps> = () => {
 
   return (
     <ThreeColumnLayout>
-      <div className="w-full max-w-2xl py-4 px-4">
+      <div className="w-full max-w-[950px] mx-auto py-4 px-4">
         <div className="mb-4">
           <Button
             variant="ghost"

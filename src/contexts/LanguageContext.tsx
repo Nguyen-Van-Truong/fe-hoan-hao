@@ -12,6 +12,7 @@ const translations: Record<Language, Record<string, string>> = {
   english: {
     // Navigation
     "nav.home": "Home",
+    "nav.messages": "Messages",
     "nav.friends": "Friends",
     "nav.groups": "Groups",
     "nav.games": "Games",
@@ -29,6 +30,58 @@ const translations: Record<Language, Record<string, string>> = {
     "search.games": "Games",
     "search.game": "Game",
     "search.viewAll": "View all results",
+    "search.results": "Search Results",
+    "search.placeholder": "Search on PinkSocial...",
+    "search.search": "Search",
+    "search.all": "All",
+    "search.filters": "Filters",
+    "search.date": "Date",
+    "search.anyTime": "Any time",
+    "search.past24h": "Past 24 hours",
+    "search.pastWeek": "Past week",
+    "search.pastMonth": "Past month",
+    "search.source": "Source",
+    "search.fromFriends": "From friends",
+    "search.fromGroups": "From groups",
+    "search.public": "Public",
+    "search.seeAll": "See all",
+
+    // Messages
+    "messages.timeline": "Timeline",
+    "messages.messages": "Messages",
+    "messages.conversations": "Conversations",
+    "messages.searchMessages": "Search messages",
+    "messages.whatsHappening": "What's happening?",
+    "messages.send": "Send",
+    "messages.typeMessage": "Type a message...",
+    "messages.noMessages": "No messages yet.",
+    "messages.noSearchResults": "No messages match your search.",
+    "messages.noConversations": "No conversations yet.",
+    "messages.selectConversation": "Select a conversation to start messaging",
+    "messages.userAvatar": "User avatar",
+    "messages.user.janeDoe": "Jane Doe",
+    "messages.user.johnSmith": "John Smith",
+    "messages.user.sarahJohnson": "Sarah Johnson",
+    "messages.user.michaelChen": "Michael Chen",
+    "messages.user.currentUser": "Current User",
+    "messages.sampleText.greeting": "Hey, how are you doing today?",
+    "messages.sampleText.movie":
+      "Did you see the new movie that just came out?",
+    "messages.sampleText.thanks": "Thanks for the help with the project!",
+    "messages.sampleText.coffee": "Let's meet up for coffee next week!",
+    "messages.sampleText.dayGoing": "Hey there! How's your day going?",
+    "messages.sampleText.appFeatures":
+      "Hi Jane! It's going pretty well, thanks for asking. Just working on some new features for the app.",
+    "messages.sampleText.whatFeatures":
+      "That sounds exciting! What kind of features are you working on?",
+    "messages.sampleText.messagingSystem":
+      "I'm adding a new messaging system with better media sharing.",
+    "messages.sampleText.testIt":
+      "That sounds really cool! I'd love to test it out when it's ready.",
+    "messages.sampleText.notYet": "Not yet! Is it good?",
+    "messages.sampleText.tuesday": "Sounds good! How about Tuesday at 2pm?",
+    "messages.sampleText.usualPlace":
+      "Perfect! See you then at the usual place.",
 
     // Time translations
     "time.just now": "just now",
@@ -140,6 +193,8 @@ const translations: Record<Language, Record<string, string>> = {
     "friends.accept": "Accept",
     "friends.decline": "Decline",
     "friends.addFriend": "Add Friend",
+    "friends.online": "Online",
+    "friends.offline": "Offline",
 
     // Groups Page
     "groups.title": "Groups",
@@ -171,6 +226,7 @@ const translations: Record<Language, Record<string, string>> = {
   vietnamese: {
     // Navigation
     "nav.home": "Trang chủ",
+    "nav.messages": "Tin nhắn",
     "nav.friends": "Bạn bè",
     "nav.groups": "Nhóm",
     "nav.games": "Trò chơi",
@@ -188,6 +244,60 @@ const translations: Record<Language, Record<string, string>> = {
     "search.games": "Trò chơi",
     "search.game": "Trò chơi",
     "search.viewAll": "Xem tất cả kết quả",
+    "search.results": "Kết quả tìm kiếm",
+    "search.placeholder": "Tìm kiếm trên PinkSocial...",
+    "search.search": "Tìm kiếm",
+    "search.all": "Tất cả",
+    "search.filters": "Bộ lọc",
+    "search.date": "Thời gian",
+    "search.anyTime": "Bất kỳ lúc nào",
+    "search.past24h": "24 giờ qua",
+    "search.pastWeek": "Tuần qua",
+    "search.pastMonth": "Tháng qua",
+    "search.source": "Nguồn",
+    "search.fromFriends": "Từ bạn bè",
+    "search.fromGroups": "Từ nhóm",
+    "search.public": "Công khai",
+    "search.seeAll": "Xem tất cả",
+
+    // Messages
+    "messages.timeline": "Dòng thời gian",
+    "messages.messages": "Tin nhắn",
+    "messages.conversations": "Cuộc trò chuyện",
+    "messages.searchMessages": "Tìm kiếm tin nhắn",
+    "messages.whatsHappening": "Điều gì đang xảy ra?",
+    "messages.send": "Gửi",
+    "messages.typeMessage": "Nhập tin nhắn...",
+    "messages.noMessages": "Chưa có tin nhắn nào.",
+    "messages.noSearchResults":
+      "Không có tin nhắn nào phù hợp với tìm kiếm của bạn.",
+    "messages.noConversations": "Chưa có cuộc trò chuyện nào.",
+    "messages.selectConversation":
+      "Chọn một cuộc trò chuyện để bắt đầu nhắn tin",
+    "messages.userAvatar": "Ảnh đại diện người dùng",
+    "messages.user.janeDoe": "Jane Doe",
+    "messages.user.johnSmith": "John Smith",
+    "messages.user.sarahJohnson": "Sarah Johnson",
+    "messages.user.michaelChen": "Michael Chen",
+    "messages.user.currentUser": "Người dùng hiện tại",
+    "messages.sampleText.greeting": "Chào bạn, hôm nay bạn thế nào?",
+    "messages.sampleText.movie": "Bạn đã xem bộ phim mới ra mắt chưa?",
+    "messages.sampleText.thanks": "Cảm ơn vì đã giúp đỡ với dự án!",
+    "messages.sampleText.coffee": "Hẹn gặp nhau uống cà phê vào tuần sau nhé!",
+    "messages.sampleText.dayGoing": "Chào! Ngày hôm nay của bạn thế nào?",
+    "messages.sampleText.appFeatures":
+      "Chào Jane! Mình khỏe, cảm ơn đã hỏi thăm. Mình đang làm một số tính năng mới cho ứng dụng.",
+    "messages.sampleText.whatFeatures":
+      "Nghe thú vị đấy! Bạn đang làm những tính năng gì vậy?",
+    "messages.sampleText.messagingSystem":
+      "Mình đang thêm hệ thống nhắn tin mới với khả năng chia sẻ phương tiện tốt hơn.",
+    "messages.sampleText.testIt":
+      "Nghe thật tuyệt! Mình rất muốn thử nó khi nó sẵn sàng.",
+    "messages.sampleText.notYet": "Chưa! Nó có hay không?",
+    "messages.sampleText.tuesday":
+      "Nghe tốt đấy! Thứ Ba lúc 2 giờ chiều được không?",
+    "messages.sampleText.usualPlace":
+      "Tuyệt! Hẹn gặp tại địa điểm thường lệ nhé.",
 
     // Time translations
     "time.just now": "vừa xong",
@@ -299,6 +409,8 @@ const translations: Record<Language, Record<string, string>> = {
     "friends.accept": "Chấp nhận",
     "friends.decline": "Từ chối",
     "friends.addFriend": "Kết bạn",
+    "friends.online": "Trực tuyến",
+    "friends.offline": "Ngoại tuyến",
 
     // Groups Page
     "groups.title": "Nhóm",
@@ -333,27 +445,27 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
   undefined,
 );
 
-// Export as a named function component for consistent exports
+// Create the hook first, then use it in the provider
+export const useLanguage = (): LanguageContextType => {
+  const context = useContext(LanguageContext);
+  if (context === undefined) {
+    throw new Error("useLanguage must be used within a LanguageProvider");
+  }
+  return context;
+};
+
+// Use function declaration for consistent component export
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>("english");
 
   // Define t function directly in the component body
-  function t(key: string): string {
+  const t = (key: string): string => {
     return translations[language][key] || key;
-  }
+  };
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
-}
-
-// Export as a named function for consistent exports
-export function useLanguage(): LanguageContextType {
-  const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error("useLanguage must be used within a LanguageProvider");
-  }
-  return context;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
 import { Avatar } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
@@ -18,7 +18,7 @@ import {
   UserX,
   MessageCircle,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 interface Friend {
   id: string;
@@ -34,8 +34,17 @@ interface FriendsProps {
 
 const Friends = ({ initialTab = "all" }: FriendsProps) => {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState(initialTab);
+  const [searchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get("tab");
+  const [activeTab, setActiveTab] = useState(tabFromUrl || initialTab);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Update active tab when URL parameter changes
+  useEffect(() => {
+    if (tabFromUrl && ["all", "requests", "suggestions"].includes(tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [tabFromUrl]);
 
   // Mock friends data
   const allFriends: Friend[] = [
@@ -214,7 +223,7 @@ const Friends = ({ initialTab = "all" }: FriendsProps) => {
   return (
     <div className="min-h-screen bg-gray-100">
       <ThreeColumnLayout>
-        <div className="w-full max-w-[680px] mx-auto p-4">
+        <div className="w-full max-w-[950px] mx-auto p-4">
           <Card className="mb-4">
             <CardContent className="p-6">
               <h1 className="text-2xl font-bold mb-4">

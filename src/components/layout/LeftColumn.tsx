@@ -1,5 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Search, Home, Users, UsersRound, GamepadIcon, X } from "lucide-react";
+import {
+  Search,
+  Home,
+  Users,
+  UsersRound,
+  GamepadIcon,
+  X,
+  MessageSquare,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -89,7 +97,7 @@ const LeftColumn = ({ className }: LeftColumnProps) => {
         "w-[280px] h-full p-4 flex flex-col border-r shadow-md rounded-lg",
         className,
       )}
-      style={{ backgroundColor: "#f2a2d2" }}
+      style={{ backgroundColor: "var(--primary-light)" }}
     >
       {/* Logo */}
       <div className="mb-6 px-4">
@@ -130,6 +138,11 @@ const LeftColumn = ({ className }: LeftColumnProps) => {
       {/* Navigation Links */}
       <nav className="flex-1 space-y-1">
         <NavLink icon={<Home />} label={t("nav.home")} to="/" />
+        <NavLink
+          icon={<MessageSquare />}
+          label={t("nav.messages")}
+          to="/messages"
+        />
         <NavLink icon={<Users />} label={t("nav.friends")} to="/friends" />
         <NavLink icon={<UsersRound />} label={t("nav.groups")} to="/groups" />
         <NavLink icon={<GamepadIcon />} label={t("nav.games")} to="/games" />

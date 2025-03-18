@@ -182,7 +182,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
   return (
     <div className="min-h-screen bg-gray-100">
       <ThreeColumnLayout>
-        <div className="w-full max-w-[680px] mx-auto">
+        <div className="w-full max-w-[950px] mx-auto">
           {/* Cover Photo */}
           <div className="relative w-full h-[300px] rounded-b-lg overflow-hidden">
             <img

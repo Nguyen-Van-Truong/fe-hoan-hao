@@ -169,147 +169,245 @@ const SearchPage = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <ThreeColumnLayout>
-        <div className="p-4 bg-white rounded-lg shadow-sm">
-          {/* Search header */}
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">
-              {t("search.results") || "Kết quả tìm kiếm"}
-            </h1>
-            <form onSubmit={handleSearch} className="flex gap-2">
-              <Input
-                type="text"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                placeholder={
-                  t("search.placeholder") || "Tìm kiếm trên PinkSocial..."
-                }
-                className="flex-1"
-              />
-              <Button type="submit" className="bg-pink-600 hover:bg-pink-700">
-                <Search className="h-4 w-4 mr-2" />
-                {t("search.search") || "Tìm kiếm"}
-              </Button>
-            </form>
-          </div>
+        <div className="w-full max-w-[950px] mx-auto p-4">
+          <div className="bg-white rounded-lg shadow-sm p-4">
+            {/* Search header */}
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                {t("search.results") || "Kết quả tìm kiếm"}
+              </h1>
+              <form onSubmit={handleSearch} className="flex gap-2">
+                <Input
+                  type="text"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  placeholder={
+                    t("search.placeholder") || "Tìm kiếm trên PinkSocial..."
+                  }
+                  className="flex-1"
+                />
+                <Button type="submit" className="bg-pink-600 hover:bg-pink-700">
+                  <Search className="h-4 w-4 mr-2" />
+                  {t("search.search") || "Tìm kiếm"}
+                </Button>
+              </form>
+            </div>
 
-          {/* Filters */}
-          <div className="mb-6">
-            <Tabs
-              defaultValue="all"
-              value={activeTab}
-              onValueChange={setActiveTab}
-            >
-              <TabsList className="w-full bg-gray-100">
-                <TabsTrigger value="all" className="flex-1">
-                  {t("search.all") || "Tất cả"}
-                </TabsTrigger>
-                <TabsTrigger value="people" className="flex-1">
-                  <User className="h-4 w-4 mr-2" />
-                  {t("search.people") || "Người dùng"}
-                </TabsTrigger>
-                <TabsTrigger value="posts" className="flex-1">
-                  <FileText className="h-4 w-4 mr-2" />
-                  {t("search.posts") || "Bài viết"}
-                </TabsTrigger>
-                <TabsTrigger value="groups" className="flex-1">
-                  <Users className="h-4 w-4 mr-2" />
-                  {t("search.groups") || "Nhóm"}
-                </TabsTrigger>
-                <TabsTrigger value="games" className="flex-1">
-                  <GamepadIcon className="h-4 w-4 mr-2" />
-                  {t("search.games") || "Trò chơi"}
-                </TabsTrigger>
-              </TabsList>
+            {/* Filters */}
+            <div className="mb-6">
+              <Tabs
+                defaultValue="all"
+                value={activeTab}
+                onValueChange={setActiveTab}
+              >
+                <TabsList className="w-full bg-gray-100">
+                  <TabsTrigger value="all" className="flex-1">
+                    {t("search.all") || "Tất cả"}
+                  </TabsTrigger>
+                  <TabsTrigger value="people" className="flex-1">
+                    <User className="h-4 w-4 mr-2" />
+                    {t("search.people") || "Người dùng"}
+                  </TabsTrigger>
+                  <TabsTrigger value="posts" className="flex-1">
+                    <FileText className="h-4 w-4 mr-2" />
+                    {t("search.posts") || "Bài viết"}
+                  </TabsTrigger>
+                  <TabsTrigger value="groups" className="flex-1">
+                    <Users className="h-4 w-4 mr-2" />
+                    {t("search.groups") || "Nhóm"}
+                  </TabsTrigger>
+                  <TabsTrigger value="games" className="flex-1">
+                    <GamepadIcon className="h-4 w-4 mr-2" />
+                    {t("search.games") || "Trò chơi"}
+                  </TabsTrigger>
+                </TabsList>
 
-              {/* Filter sidebar - only shown on larger screens */}
-              <div className="hidden md:block float-left w-64 pr-6 mt-6">
-                <div className="bg-white p-4 rounded-lg border border-gray-200 sticky top-4">
-                  <h3 className="font-medium text-gray-900 mb-3 flex items-center">
-                    <Filter className="h-4 w-4 mr-2" />
-                    {t("search.filters") || "Bộ lọc"}
-                  </h3>
+                {/* Filter sidebar - only shown on larger screens */}
+                <div className="hidden md:block float-left w-64 pr-6 mt-6">
+                  <div className="bg-white p-4 rounded-lg border border-gray-200 sticky top-4">
+                    <h3 className="font-medium text-gray-900 mb-3 flex items-center">
+                      <Filter className="h-4 w-4 mr-2" />
+                      {t("search.filters") || "Bộ lọc"}
+                    </h3>
 
-                  <div className="space-y-4">
-                    {/* Date filter */}
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">
-                        {t("search.date") || "Thời gian"}
-                      </h4>
-                      <div className="space-y-2">
-                        <label className="flex items-center">
-                          <input type="radio" name="date" className="mr-2" />
-                          <span className="text-sm">
-                            {t("search.anyTime") || "Bất kỳ lúc nào"}
-                          </span>
-                        </label>
-                        <label className="flex items-center">
-                          <input type="radio" name="date" className="mr-2" />
-                          <span className="text-sm">
-                            {t("search.past24h") || "24 giờ qua"}
-                          </span>
-                        </label>
-                        <label className="flex items-center">
-                          <input type="radio" name="date" className="mr-2" />
-                          <span className="text-sm">
-                            {t("search.pastWeek") || "Tuần qua"}
-                          </span>
-                        </label>
-                        <label className="flex items-center">
-                          <input type="radio" name="date" className="mr-2" />
-                          <span className="text-sm">
-                            {t("search.pastMonth") || "Tháng qua"}
-                          </span>
-                        </label>
+                    <div className="space-y-4">
+                      {/* Date filter */}
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-700 mb-2">
+                          {t("search.date") || "Thời gian"}
+                        </h4>
+                        <div className="space-y-2">
+                          <label className="flex items-center">
+                            <input type="radio" name="date" className="mr-2" />
+                            <span className="text-sm">
+                              {t("search.anyTime") || "Bất kỳ lúc nào"}
+                            </span>
+                          </label>
+                          <label className="flex items-center">
+                            <input type="radio" name="date" className="mr-2" />
+                            <span className="text-sm">
+                              {t("search.past24h") || "24 giờ qua"}
+                            </span>
+                          </label>
+                          <label className="flex items-center">
+                            <input type="radio" name="date" className="mr-2" />
+                            <span className="text-sm">
+                              {t("search.pastWeek") || "Tuần qua"}
+                            </span>
+                          </label>
+                          <label className="flex items-center">
+                            <input type="radio" name="date" className="mr-2" />
+                            <span className="text-sm">
+                              {t("search.pastMonth") || "Tháng qua"}
+                            </span>
+                          </label>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Source filter */}
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">
-                        {t("search.source") || "Nguồn"}
-                      </h4>
-                      <div className="space-y-2">
-                        <label className="flex items-center">
-                          <input type="checkbox" className="mr-2" />
-                          <span className="text-sm">
-                            {t("search.fromFriends") || "Từ bạn bè"}
-                          </span>
-                        </label>
-                        <label className="flex items-center">
-                          <input type="checkbox" className="mr-2" />
-                          <span className="text-sm">
-                            {t("search.fromGroups") || "Từ nhóm"}
-                          </span>
-                        </label>
-                        <label className="flex items-center">
-                          <input type="checkbox" className="mr-2" />
-                          <span className="text-sm">
-                            {t("search.public") || "Công khai"}
-                          </span>
-                        </label>
+                      {/* Source filter */}
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-700 mb-2">
+                          {t("search.source") || "Nguồn"}
+                        </h4>
+                        <div className="space-y-2">
+                          <label className="flex items-center">
+                            <input type="checkbox" className="mr-2" />
+                            <span className="text-sm">
+                              {t("search.fromFriends") || "Từ bạn bè"}
+                            </span>
+                          </label>
+                          <label className="flex items-center">
+                            <input type="checkbox" className="mr-2" />
+                            <span className="text-sm">
+                              {t("search.fromGroups") || "Từ nhóm"}
+                            </span>
+                          </label>
+                          <label className="flex items-center">
+                            <input type="checkbox" className="mr-2" />
+                            <span className="text-sm">
+                              {t("search.public") || "Công khai"}
+                            </span>
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Results */}
-              <div className="mt-6 md:ml-64">
-                <TabsContent value="all" className="space-y-6">
-                  {/* People section */}
-                  <div>
-                    <div className="flex justify-between items-center mb-3">
-                      <h2 className="text-lg font-semibold text-gray-900">
-                        {t("search.people") || "Người dùng"}
-                      </h2>
-                      {userResults.length > 2 && (
-                        <Button variant="link" className="text-pink-600">
-                          {t("search.seeAll") || "Xem tất cả"}
-                        </Button>
-                      )}
+                {/* Results */}
+                <div className="mt-6 md:ml-64">
+                  <TabsContent value="all" className="space-y-6">
+                    {/* People section */}
+                    <div>
+                      <div className="flex justify-between items-center mb-3">
+                        <h2 className="text-lg font-semibold text-gray-900">
+                          {t("search.people") || "Người dùng"}
+                        </h2>
+                        {userResults.length > 2 && (
+                          <Button variant="link" className="text-pink-600">
+                            {t("search.seeAll") || "Xem tất cả"}
+                          </Button>
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        {userResults.slice(0, 2).map((user) => (
+                          <SearchResultItem
+                            key={user.id}
+                            icon={<User className="h-6 w-6" />}
+                            primary={user.name}
+                            secondary={user.info}
+                            to={user.to}
+                            type={t("search.person") || "Người dùng"}
+                          />
+                        ))}
+                      </div>
                     </div>
+
+                    {/* Posts section */}
+                    <div>
+                      <div className="flex justify-between items-center mb-3">
+                        <h2 className="text-lg font-semibold text-gray-900">
+                          {t("search.posts") || "Bài viết"}
+                        </h2>
+                        {postResults.length > 3 && (
+                          <Button variant="link" className="text-pink-600">
+                            {t("search.seeAll") || "Xem tất cả"}
+                          </Button>
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        {postResults.slice(0, 3).map((post) => (
+                          <SearchResultItem
+                            key={post.id}
+                            icon={<FileText className="h-6 w-6" />}
+                            primary={post.title}
+                            secondary={post.author}
+                            to={post.to}
+                            type={t("search.post") || "Bài viết"}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Groups section */}
+                    <div>
+                      <div className="flex justify-between items-center mb-3">
+                        <h2 className="text-lg font-semibold text-gray-900">
+                          {t("search.groups") || "Nhóm"}
+                        </h2>
+                        {groupResults.length > 2 && (
+                          <Button variant="link" className="text-pink-600">
+                            {t("search.seeAll") || "Xem tất cả"}
+                          </Button>
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        {groupResults.slice(0, 2).map((group) => (
+                          <SearchResultItem
+                            key={group.id}
+                            icon={<Users className="h-6 w-6" />}
+                            primary={group.name}
+                            secondary={group.members}
+                            to={group.to}
+                            type={t("search.group") || "Nhóm"}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Games section */}
+                    <div>
+                      <div className="flex justify-between items-center mb-3">
+                        <h2 className="text-lg font-semibold text-gray-900">
+                          {t("search.games") || "Trò chơi"}
+                        </h2>
+                        {gameResults.length > 2 && (
+                          <Button variant="link" className="text-pink-600">
+                            {t("search.seeAll") || "Xem tất cả"}
+                          </Button>
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        {gameResults.slice(0, 2).map((game) => (
+                          <SearchResultItem
+                            key={game.id}
+                            icon={<GamepadIcon className="h-6 w-6" />}
+                            primary={game.name}
+                            secondary={game.players}
+                            to={game.to}
+                            type={t("search.game") || "Trò chơi"}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="people">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                      {t("search.people") || "Người dùng"}
+                    </h2>
                     <div className="space-y-2">
-                      {userResults.slice(0, 2).map((user) => (
+                      {userResults.map((user) => (
                         <SearchResultItem
                           key={user.id}
                           icon={<User className="h-6 w-6" />}
@@ -320,22 +418,14 @@ const SearchPage = () => {
                         />
                       ))}
                     </div>
-                  </div>
+                  </TabsContent>
 
-                  {/* Posts section */}
-                  <div>
-                    <div className="flex justify-between items-center mb-3">
-                      <h2 className="text-lg font-semibold text-gray-900">
-                        {t("search.posts") || "Bài viết"}
-                      </h2>
-                      {postResults.length > 3 && (
-                        <Button variant="link" className="text-pink-600">
-                          {t("search.seeAll") || "Xem tất cả"}
-                        </Button>
-                      )}
-                    </div>
+                  <TabsContent value="posts">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                      {t("search.posts") || "Bài viết"}
+                    </h2>
                     <div className="space-y-2">
-                      {postResults.slice(0, 3).map((post) => (
+                      {postResults.map((post) => (
                         <SearchResultItem
                           key={post.id}
                           icon={<FileText className="h-6 w-6" />}
@@ -346,22 +436,14 @@ const SearchPage = () => {
                         />
                       ))}
                     </div>
-                  </div>
+                  </TabsContent>
 
-                  {/* Groups section */}
-                  <div>
-                    <div className="flex justify-between items-center mb-3">
-                      <h2 className="text-lg font-semibold text-gray-900">
-                        {t("search.groups") || "Nhóm"}
-                      </h2>
-                      {groupResults.length > 2 && (
-                        <Button variant="link" className="text-pink-600">
-                          {t("search.seeAll") || "Xem tất cả"}
-                        </Button>
-                      )}
-                    </div>
+                  <TabsContent value="groups">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                      {t("search.groups") || "Nhóm"}
+                    </h2>
                     <div className="space-y-2">
-                      {groupResults.slice(0, 2).map((group) => (
+                      {groupResults.map((group) => (
                         <SearchResultItem
                           key={group.id}
                           icon={<Users className="h-6 w-6" />}
@@ -372,22 +454,14 @@ const SearchPage = () => {
                         />
                       ))}
                     </div>
-                  </div>
+                  </TabsContent>
 
-                  {/* Games section */}
-                  <div>
-                    <div className="flex justify-between items-center mb-3">
-                      <h2 className="text-lg font-semibold text-gray-900">
-                        {t("search.games") || "Trò chơi"}
-                      </h2>
-                      {gameResults.length > 2 && (
-                        <Button variant="link" className="text-pink-600">
-                          {t("search.seeAll") || "Xem tất cả"}
-                        </Button>
-                      )}
-                    </div>
+                  <TabsContent value="games">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                      {t("search.games") || "Trò chơi"}
+                    </h2>
                     <div className="space-y-2">
-                      {gameResults.slice(0, 2).map((game) => (
+                      {gameResults.map((game) => (
                         <SearchResultItem
                           key={game.id}
                           icon={<GamepadIcon className="h-6 w-6" />}
@@ -398,82 +472,10 @@ const SearchPage = () => {
                         />
                       ))}
                     </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="people">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                    {t("search.people") || "Người dùng"}
-                  </h2>
-                  <div className="space-y-2">
-                    {userResults.map((user) => (
-                      <SearchResultItem
-                        key={user.id}
-                        icon={<User className="h-6 w-6" />}
-                        primary={user.name}
-                        secondary={user.info}
-                        to={user.to}
-                        type={t("search.person") || "Người dùng"}
-                      />
-                    ))}
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="posts">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                    {t("search.posts") || "Bài viết"}
-                  </h2>
-                  <div className="space-y-2">
-                    {postResults.map((post) => (
-                      <SearchResultItem
-                        key={post.id}
-                        icon={<FileText className="h-6 w-6" />}
-                        primary={post.title}
-                        secondary={post.author}
-                        to={post.to}
-                        type={t("search.post") || "Bài viết"}
-                      />
-                    ))}
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="groups">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                    {t("search.groups") || "Nhóm"}
-                  </h2>
-                  <div className="space-y-2">
-                    {groupResults.map((group) => (
-                      <SearchResultItem
-                        key={group.id}
-                        icon={<Users className="h-6 w-6" />}
-                        primary={group.name}
-                        secondary={group.members}
-                        to={group.to}
-                        type={t("search.group") || "Nhóm"}
-                      />
-                    ))}
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="games">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                    {t("search.games") || "Trò chơi"}
-                  </h2>
-                  <div className="space-y-2">
-                    {gameResults.map((game) => (
-                      <SearchResultItem
-                        key={game.id}
-                        icon={<GamepadIcon className="h-6 w-6" />}
-                        primary={game.name}
-                        secondary={game.players}
-                        to={game.to}
-                        type={t("search.game") || "Trò chơi"}
-                      />
-                    ))}
-                  </div>
-                </TabsContent>
-              </div>
-            </Tabs>
+                  </TabsContent>
+                </div>
+              </Tabs>
+            </div>
           </div>
         </div>
       </ThreeColumnLayout>
