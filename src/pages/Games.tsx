@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -19,91 +21,87 @@ import {
   Clock,
   ArrowRight,
   Search,
+  Globe,
+  Laptop,
+  Server,
+  Download,
+  Play,
+  Filter,
 } from "lucide-react";
 import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
 import GameDialog from "@/components/games/GameDialog";
+import { Game, GameType, GAMES_DATA } from "@/data/games";
 
-interface Game {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  players: number;
-  category: string;
-  rating: number;
-  playTime: string;
-}
+const getGameTypeIcon = (gameType: GameType) => {
+  switch (gameType) {
+    case "browser":
+      return <Globe className="h-4 w-4 text-blue-500" />;
+    case "embedded":
+      return <Server className="h-4 w-4 text-green-500" />;
+    case "desktop":
+      return <Laptop className="h-4 w-4 text-purple-500" />;
+    default:
+      return <GamepadIcon className="h-4 w-4 text-primary" />;
+  }
+};
 
-const GAMES_DATA: Game[] = [
-  {
-    id: "1",
-    title: "Cờ Caro",
-    description:
-      "Trò chơi cờ caro cổ điển, người chơi đầu tiên tạo được 5 quân liên tiếp sẽ thắng.",
-    image:
-      "https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=500&q=80",
-    players: 2,
-    category: "Cờ",
-    rating: 4.8,
-    playTime: "5-15 phút",
-  },
-  {
-    id: "2",
-    title: "Đoán Từ",
-    description: "Trò chơi đoán từ vui nhộn, thử thách vốn từ vựng của bạn.",
-    image:
-      "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=500&q=80",
-    players: 2,
-    category: "Từ vựng",
-    rating: 4.5,
-    playTime: "10-20 phút",
-  },
-  {
-    id: "3",
-    title: "Xếp Hình",
-    description:
-      "Trò chơi xếp hình giúp rèn luyện tư duy logic và khả năng phản xạ.",
-    image:
-      "https://images.unsplash.com/photo-1642456074142-92f75cb84ad2?w=500&q=80",
-    players: 1,
-    category: "Giải đố",
-    rating: 4.7,
-    playTime: "Không giới hạn",
-  },
-  {
-    id: "4",
-    title: "Đua Xe",
-    description: "Trò chơi đua xe hấp dẫn với nhiều cấp độ và thử thách.",
-    image:
-      "https://images.unsplash.com/photo-1511994298241-608e28f14fde?w=500&q=80",
-    players: 1,
-    category: "Đua xe",
-    rating: 4.6,
-    playTime: "5-10 phút",
-  },
-  {
-    id: "5",
-    title: "Bắn Bóng",
-    description: "Trò chơi bắn bóng màu sắc, phá hủy các nhóm bóng cùng màu.",
-    image:
-      "https://images.unsplash.com/photo-1560089000-7433a4ebbd64?w=500&q=80",
-    players: 1,
-    category: "Giải trí",
-    rating: 4.4,
-    playTime: "Không giới hạn",
-  },
-  {
-    id: "6",
-    title: "Sudoku",
-    description: "Trò chơi giải đố Sudoku kinh điển với nhiều cấp độ khó.",
-    image:
-      "https://images.unsplash.com/photo-1580541832626-2a7131ee809f?w=500&q=80",
-    players: 1,
-    category: "Giải đố",
-    rating: 4.9,
-    playTime: "15-30 phút",
-  },
-];
+const getGameTypeLabel = (gameType: GameType) => {
+  switch (gameType) {
+    case "browser":
+      return "Chơi trên trình duyệt";
+    case "embedded":
+      return "Game tích hợp";
+    case "desktop":
+      return "Tải về máy tính";
+    default:
+      return "";
+  }
+};
+
+const getActionButton = (gameType: GameType, onPlay: () => void) => {
+  switch (gameType) {
+    case "browser":
+      return (
+        <Button
+          onClick={onPlay}
+          className="w-full bg-blue-600 hover:bg-blue-700"
+        >
+          <Play className="mr-2 h-4 w-4" />
+          Chơi ngay
+        </Button>
+      );
+    case "embedded":
+      return (
+        <Button
+          onClick={onPlay}
+          className="w-full bg-green-600 hover:bg-green-700"
+        >
+          <Play className="mr-2 h-4 w-4" />
+          Chơi ngay
+        </Button>
+      );
+    case "desktop":
+      return (
+        <Button
+          onClick={onPlay}
+          className="w-full bg-purple-600 hover:bg-purple-700"
+        >
+          <Download className="mr-2 h-4 w-4" />
+          Tải xuống
+        </Button>
+      );
+    default:
+      return (
+        <Button
+          onClick={onPlay}
+          className="w-full bg-primary hover:bg-primary-dark"
+        >
+          Chơi ngay
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      );
+  }
+};
 
 const GameCard = ({
   game,
@@ -120,6 +118,22 @@ const GameCard = ({
           alt={game.title}
           className="w-full h-full object-cover transition-transform hover:scale-105"
         />
+        <div className="absolute top-2 right-2">
+          <Badge
+            className={`
+              ${game.gameType === "browser" ? "bg-blue-600 hover:bg-blue-600" : ""}
+              ${game.gameType === "embedded" ? "bg-green-600 hover:bg-green-600" : ""}
+              ${game.gameType === "desktop" ? "bg-purple-600 hover:bg-purple-600" : ""}
+            `}
+          >
+            <div className="flex items-center gap-1">
+              {getGameTypeIcon(game.gameType)}
+              <span className="text-xs">
+                {getGameTypeLabel(game.gameType).split(" ")[0]}
+              </span>
+            </div>
+          </Badge>
+        </div>
       </div>
       <CardHeader className="p-4 pb-2">
         <CardTitle className="text-lg font-bold">{game.title}</CardTitle>
@@ -145,13 +159,7 @@ const GameCard = ({
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button
-          className="w-full bg-primary hover:bg-primary-dark"
-          onClick={() => onPlay(game)}
-        >
-          Chơi ngay
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
+        {getActionButton(game.gameType, () => onPlay(game))}
       </CardFooter>
     </Card>
   );
@@ -159,37 +167,54 @@ const GameCard = ({
 
 const Games = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
+  const [activeTypeFilter, setActiveTypeFilter] = useState<GameType | "all">(
+    "all",
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Game[]>([]);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
-    const filtered =
-      activeTab === "all"
-        ? GAMES_DATA
-        : GAMES_DATA.filter(
-            (game) => game.category.toLowerCase() === activeTab,
-          );
+    let filtered = GAMES_DATA;
 
-    if (searchQuery.trim() === "") {
-      setSearchResults(filtered);
-    } else {
+    // Filter by category
+    if (activeTab !== "all") {
+      filtered = filtered.filter(
+        (game) => game.category.toLowerCase() === activeTab,
+      );
+    }
+
+    // Filter by game type
+    if (activeTypeFilter !== "all") {
+      filtered = filtered.filter((game) => game.gameType === activeTypeFilter);
+    }
+
+    // Filter by search query
+    if (searchQuery.trim() !== "") {
       const query = searchQuery.toLowerCase().trim();
-      const results = filtered.filter(
+      filtered = filtered.filter(
         (game) =>
           game.title.toLowerCase().includes(query) ||
           game.description.toLowerCase().includes(query) ||
           game.category.toLowerCase().includes(query),
       );
-      setSearchResults(results);
     }
-  }, [searchQuery, activeTab]);
+
+    setSearchResults(filtered);
+  }, [searchQuery, activeTab, activeTypeFilter]);
 
   const handlePlayGame = (game: Game) => {
-    setSelectedGame(game);
-    setDialogOpen(true);
+    if (game.gameType === "browser") {
+      // For browser games, navigate to the game detail page
+      navigate(`/games/${game.id}`);
+    } else {
+      // For other game types, show the dialog
+      setSelectedGame(game);
+      setDialogOpen(true);
+    }
   };
 
   const filteredGames = searchResults;
@@ -197,6 +222,13 @@ const Games = () => {
   const categories = [
     "all",
     ...new Set(GAMES_DATA.map((game) => game.category.toLowerCase())),
+  ];
+
+  const gameTypes: (GameType | "all")[] = [
+    "all",
+    "browser",
+    "embedded",
+    "desktop",
   ];
 
   return (
@@ -221,14 +253,51 @@ const Games = () => {
                   </div>
                 </div>
 
-                <div className="relative w-full max-w-md">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    placeholder="Tìm kiếm trò chơi..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 w-full bg-white"
-                  />
+                <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                  <div className="relative w-full md:max-w-md">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      placeholder="Tìm kiếm trò chơi..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 w-full bg-white"
+                    />
+                  </div>
+
+                  <div className="flex gap-2 flex-wrap">
+                    {gameTypes.map((type) => (
+                      <Badge
+                        key={type}
+                        variant={
+                          activeTypeFilter === type ? "default" : "outline"
+                        }
+                        className={`cursor-pointer px-3 py-1 ${type === "browser" && activeTypeFilter === type ? "bg-blue-600" : ""} ${type === "embedded" && activeTypeFilter === type ? "bg-green-600" : ""} ${type === "desktop" && activeTypeFilter === type ? "bg-purple-600" : ""}`}
+                        onClick={() => setActiveTypeFilter(type)}
+                      >
+                        {type === "all" ? (
+                          <>
+                            <Filter className="h-3 w-3 mr-1" />
+                            Tất cả
+                          </>
+                        ) : type === "browser" ? (
+                          <>
+                            <Globe className="h-3 w-3 mr-1" />
+                            Trình duyệt
+                          </>
+                        ) : type === "embedded" ? (
+                          <>
+                            <Server className="h-3 w-3 mr-1" />
+                            Tích hợp
+                          </>
+                        ) : (
+                          <>
+                            <Laptop className="h-3 w-3 mr-1" />
+                            Máy tính
+                          </>
+                        )}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -267,19 +336,29 @@ const Games = () => {
                         Không có trò chơi nào phù hợp với tìm kiếm của bạn. Hãy
                         thử tìm kiếm khác hoặc xem tất cả trò chơi.
                       </p>
-                      <Button
-                        variant="outline"
-                        className="mt-4"
-                        onClick={() => setSearchQuery("")}
-                      >
-                        Xem tất cả trò chơi
-                      </Button>
+                      <div className="flex gap-3 mt-4">
+                        <Button
+                          variant="outline"
+                          onClick={() => setSearchQuery("")}
+                        >
+                          Xóa tìm kiếm
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setActiveTab("all");
+                            setActiveTypeFilter("all");
+                          }}
+                        >
+                          Xóa bộ lọc
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </TabsContent>
               </Tabs>
 
-              <div className="mt-12 bg-pink-50 rounded-lg p-6">
+              <div className="mt-12 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="bg-primary rounded-full p-3">
                     <GamepadIcon className="h-6 w-6 text-white" />
@@ -288,14 +367,114 @@ const Games = () => {
                     Trò chơi đề xuất cho bạn
                   </h2>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {GAMES_DATA.slice(0, 3).map((game) => (
-                    <GameCard
-                      key={game.id}
-                      game={game}
-                      onPlay={handlePlayGame}
-                    />
-                  ))}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <Card className="overflow-hidden border-blue-200 bg-gradient-to-b from-blue-50 to-white">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg font-bold text-blue-700">
+                          Trò chơi trình duyệt
+                        </CardTitle>
+                        <Globe className="h-5 w-5 text-blue-500" />
+                      </div>
+                      <CardDescription>
+                        Chơi ngay không cần cài đặt
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                          Chơi trực tiếp trên trình duyệt
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                          Không cần cài đặt
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                          Trải nghiệm mượt mà
+                        </li>
+                      </ul>
+                    </CardContent>
+                    <CardFooter>
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                        <Globe className="mr-2 h-4 w-4" />
+                        Xem tất cả
+                      </Button>
+                    </CardFooter>
+                  </Card>
+
+                  <Card className="overflow-hidden border-green-200 bg-gradient-to-b from-green-50 to-white">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg font-bold text-green-700">
+                          Game tích hợp
+                        </CardTitle>
+                        <Server className="h-5 w-5 text-green-500" />
+                      </div>
+                      <CardDescription>
+                        Từ GameService, chơi trực tiếp
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                          Tích hợp từ GameService
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                          Chơi ngay trên giao diện
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                          Cập nhật liên tục
+                        </li>
+                      </ul>
+                    </CardContent>
+                    <CardFooter>
+                      <Button className="w-full bg-green-600 hover:bg-green-700">
+                        <Server className="mr-2 h-4 w-4" />
+                        Xem tất cả
+                      </Button>
+                    </CardFooter>
+                  </Card>
+
+                  <Card className="overflow-hidden border-purple-200 bg-gradient-to-b from-purple-50 to-white">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg font-bold text-purple-700">
+                          Game máy tính
+                        </CardTitle>
+                        <Laptop className="h-5 w-5 text-purple-500" />
+                      </div>
+                      <CardDescription>
+                        Tải về và chơi trên máy tính
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-purple-500"></div>
+                          Đồ họa chất lượng cao
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-purple-500"></div>
+                          Tải về từ GameService
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-purple-500"></div>
+                          Trải nghiệm game đầy đủ
+                        </li>
+                      </ul>
+                    </CardContent>
+                    <CardFooter>
+                      <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                        <Download className="mr-2 h-4 w-4" />
+                        Xem tất cả
+                      </Button>
+                    </CardFooter>
+                  </Card>
                 </div>
               </div>
             </CardContent>

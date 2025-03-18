@@ -23,6 +23,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import AuthLayout from "./components/auth/AuthLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
+import GameDetail from "./components/games/GameDetail";
 
 function App() {
   const location = useLocation();
@@ -96,6 +97,7 @@ function App() {
                   element={<Friends initialTab="requests" />}
                 />
                 <Route path="/games" element={<Games />} />
+                <Route path="/games/:gameId" element={<GameDetail />} />
                 <Route
                   path="/post/:username/:postId"
                   element={<PostDetail />}
