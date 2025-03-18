@@ -16,6 +16,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Games from "./pages/Games";
 import routes from "tempo-routes";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -68,7 +69,7 @@ function App() {
             {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
 
             <Routes>
-              {/* Auth routes */}
+              {/* Auth Routes */}
               <Route element={<AuthLayout />}>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
@@ -94,6 +95,7 @@ function App() {
                   path="/friends/requests"
                   element={<Friends initialTab="requests" />}
                 />
+                <Route path="/games" element={<Games />} />
                 <Route
                   path="/post/:username/:postId"
                   element={<PostDetail />}

@@ -11,13 +11,7 @@ import { Loader2, ArrowLeft, CheckCircle, Eye, EyeOff } from "lucide-react";
 // Schema xác thực
 const resetPasswordSchema = z
   .object({
-    password: z
-      .string()
-      .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-        "Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường và 1 số",
-      ),
+    password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
