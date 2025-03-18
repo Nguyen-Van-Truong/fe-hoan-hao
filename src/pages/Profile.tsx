@@ -25,7 +25,9 @@ import {
   MoreHorizontal,
   UserPlus,
   MessageCircle,
+  Pencil,
 } from "lucide-react";
+import EditProfileDialog from "../components/profile/EditProfileDialog";
 
 interface ProfileProps {
   isCurrentUser?: boolean;
@@ -35,12 +37,13 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
   const { t } = useLanguage();
   const { userId } = useParams<{ userId: string }>();
   const [activeTab, setActiveTab] = useState("posts");
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   // Determine if this is the current user's profile or someone else's
   const isSelfProfile = !userId || isCurrentUser;
 
   // Mock user data - in a real app, you would fetch this based on userId
-  const user = {
+  const [user, setUser] = useState({
     name: isSelfProfile
       ? "Jane Doe"
       : userId
@@ -59,6 +62,14 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
     friends: 342,
     photos: 156,
     videos: 28,
+  });
+
+  // Handle profile update
+  const handleProfileUpdate = (updatedProfile: any) => {
+    setUser((prev) => ({
+      ...prev,
+      ...updatedProfile,
+    }));
   };
 
   // Mock posts specific to this user
@@ -195,6 +206,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
                 variant="secondary"
                 size="sm"
                 className="absolute bottom-4 right-4 bg-white/80 hover:bg-white"
+                onClick={() => setIsEditDialogOpen(true)}
               >
                 <Camera className="h-4 w-4 mr-1" />
                 {t("profile.changeCover") || "Change Cover"}
@@ -221,10 +233,20 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
 
                 <div className="flex mt-4 md:mt-0 space-x-2">
                   {isSelfProfile ? (
-                    <Button className="bg-pink-500 hover:bg-pink-600 text-white">
-                      <Image className="h-4 w-4 mr-1" />
-                      {t("profile.addStory") || "Add Story"}
-                    </Button>
+                    <>
+                      <Button className="bg-pink-500 hover:bg-pink-600 text-white">
+                        <Image className="h-4 w-4 mr-1" />
+                        {t("profile.addStory") || "Add Story"}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="border-pink-300 text-pink-600 hover:bg-pink-50"
+                        onClick={() => setIsEditDialogOpen(true)}
+                      >
+                        <Pencil className="h-4 w-4 mr-1" />
+                        {t("profile.editProfile") || "Edit Profile"}
+                      </Button>
+                    </>
                   ) : (
                     <>
                       <Button className="bg-pink-500 hover:bg-pink-600 text-white">
@@ -441,6 +463,25 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
               </TabsContent>
             </Tabs>
           </div>
+
+          {/* Edit Profile Dialog */}
+          {isSelfProfile && (
+            <EditProfileDialog
+              open={isEditDialogOpen}
+              onOpenChange={setIsEditDialogOpen}
+              onProfileUpdate={handleProfileUpdate}
+              initialData={{
+                name: user.name,
+                bio: user.bio,
+                location: user.location,
+                work: user.work,
+                education: user.education,
+                relationship: user.relationship,
+                avatar: user.avatar,
+                coverPhoto: user.coverPhoto,
+              }}
+            />
+          )}
         </div>
       </ThreeColumnLayout>
     </div>
