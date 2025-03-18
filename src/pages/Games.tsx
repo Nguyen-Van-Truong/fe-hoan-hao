@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import GameStatusBadge from "@/components/games/GameStatusBadge";
 import {
   GamepadIcon,
   Trophy,
@@ -27,10 +28,12 @@ import {
   Download,
   Play,
   Filter,
+  CheckCircle,
+  AlertTriangle,
 } from "lucide-react";
 import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
 import GameDialog from "@/components/games/GameDialog";
-import { Game, GameType, GAMES_DATA } from "@/data/games";
+import { Game, GameType, GameStatus, GAMES_DATA } from "@/data/games";
 
 const getGameTypeIcon = (gameType: GameType) => {
   switch (gameType) {
@@ -58,7 +61,32 @@ const getGameTypeLabel = (gameType: GameType) => {
   }
 };
 
-const getActionButton = (gameType: GameType, onPlay: () => void) => {
+const getActionButton = (game: Game, onPlay: () => void) => {
+  // If game is under maintenance, disable the button
+  if (game.status === "maintenance") {
+    return (
+      <Button disabled className="w-full opacity-70">
+        <AlertTriangle className="mr-2 h-4 w-4" />
+        Đang bảo trì
+      </Button>
+    );
+  }
+
+  // If game is coming soon, show a different button
+  if (game.status === "coming_soon") {
+    return (
+      <Button
+        disabled
+        className="w-full bg-blue-500 opacity-80 hover:bg-blue-500"
+      >
+        <Clock className="mr-2 h-4 w-4" />
+        Sắp ra mắt
+      </Button>
+    );
+  }
+
+  // For playable games, show the normal button based on game type
+  const gameType = game.gameType;
   switch (gameType) {
     case "browser":
       return (
@@ -116,9 +144,9 @@ const GameCard = ({
         <img
           src={game.image}
           alt={game.title}
-          className="w-full h-full object-cover transition-transform hover:scale-105"
+          className={`w-full h-full object-cover transition-transform hover:scale-105 ${game.status === "maintenance" ? "opacity-70 grayscale" : ""}`}
         />
-        <div className="absolute top-2 right-2">
+        <div className="absolute top-2 right-2 flex flex-col gap-2">
           <Badge
             className={`
               ${game.gameType === "browser" ? "bg-blue-600 hover:bg-blue-600" : ""}
@@ -133,6 +161,7 @@ const GameCard = ({
               </span>
             </div>
           </Badge>
+          <GameStatusBadge status={game.status} />
         </div>
       </div>
       <CardHeader className="p-4 pb-2">
@@ -159,7 +188,7 @@ const GameCard = ({
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        {getActionButton(game.gameType, () => onPlay(game))}
+        {getActionButton(game, () => onPlay(game))}
       </CardFooter>
     </Card>
   );
@@ -172,6 +201,9 @@ const Games = () => {
   const [activeTypeFilter, setActiveTypeFilter] = useState<GameType | "all">(
     "all",
   );
+  const [activeStatusFilter, setActiveStatusFilter] = useState<
+    GameStatus | "all"
+  >("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Game[]>([]);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
@@ -192,6 +224,11 @@ const Games = () => {
       filtered = filtered.filter((game) => game.gameType === activeTypeFilter);
     }
 
+    // Filter by game status
+    if (activeStatusFilter !== "all") {
+      filtered = filtered.filter((game) => game.status === activeStatusFilter);
+    }
+
     // Filter by search query
     if (searchQuery.trim() !== "") {
       const query = searchQuery.toLowerCase().trim();
@@ -203,10 +240,22 @@ const Games = () => {
       );
     }
 
+    // Sort games by status (maintenance games at the bottom)
+    filtered = [...filtered].sort((a, b) => {
+      if (a.status === "maintenance" && b.status !== "maintenance") return 1;
+      if (a.status !== "maintenance" && b.status === "maintenance") return -1;
+      return 0;
+    });
+
     setSearchResults(filtered);
-  }, [searchQuery, activeTab, activeTypeFilter]);
+  }, [searchQuery, activeTab, activeTypeFilter, activeStatusFilter]);
 
   const handlePlayGame = (game: Game) => {
+    // Don't do anything for maintenance or coming soon games
+    if (game.status === "maintenance" || game.status === "coming_soon") {
+      return;
+    }
+
     if (game.gameType === "browser") {
       // For browser games, navigate to the game detail page
       navigate(`/games/${game.id}`);
@@ -230,6 +279,28 @@ const Games = () => {
     "embedded",
     "desktop",
   ];
+
+  const gameStatuses: (GameStatus | "all")[] = [
+    "all",
+    "playable",
+    "coming_soon",
+    "maintenance",
+  ];
+
+  const getStatusLabel = (status: GameStatus | "all") => {
+    switch (status) {
+      case "playable":
+        return "Có thể chơi";
+      case "coming_soon":
+        return "Sắp ra mắt";
+      case "maintenance":
+        return "Bảo trì";
+      case "all":
+        return "Tất cả trạng thái";
+      default:
+        return "";
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -265,38 +336,87 @@ const Games = () => {
                   </div>
 
                   <div className="flex gap-2 flex-wrap">
-                    {gameTypes.map((type) => (
-                      <Badge
-                        key={type}
-                        variant={
-                          activeTypeFilter === type ? "default" : "outline"
-                        }
-                        className={`cursor-pointer px-3 py-1 ${type === "browser" && activeTypeFilter === type ? "bg-blue-600" : ""} ${type === "embedded" && activeTypeFilter === type ? "bg-green-600" : ""} ${type === "desktop" && activeTypeFilter === type ? "bg-purple-600" : ""}`}
-                        onClick={() => setActiveTypeFilter(type)}
-                      >
-                        {type === "all" ? (
-                          <>
-                            <Filter className="h-3 w-3 mr-1" />
-                            Tất cả
-                          </>
-                        ) : type === "browser" ? (
-                          <>
-                            <Globe className="h-3 w-3 mr-1" />
-                            Trình duyệt
-                          </>
-                        ) : type === "embedded" ? (
-                          <>
-                            <Server className="h-3 w-3 mr-1" />
-                            Tích hợp
-                          </>
-                        ) : (
-                          <>
-                            <Laptop className="h-3 w-3 mr-1" />
-                            Máy tính
-                          </>
-                        )}
-                      </Badge>
-                    ))}
+                    <div className="flex gap-2 mr-4">
+                      <span className="text-sm font-medium text-muted-foreground self-center">
+                        Loại:
+                      </span>
+                      {gameTypes.map((type) => (
+                        <Badge
+                          key={type}
+                          variant={
+                            activeTypeFilter === type ? "default" : "outline"
+                          }
+                          className={`cursor-pointer px-3 py-1 ${type === "browser" && activeTypeFilter === type ? "bg-blue-600" : ""} ${type === "embedded" && activeTypeFilter === type ? "bg-green-600" : ""} ${type === "desktop" && activeTypeFilter === type ? "bg-purple-600" : ""}`}
+                          onClick={() => setActiveTypeFilter(type)}
+                        >
+                          {type === "all" ? (
+                            <>
+                              <Filter className="h-3 w-3 mr-1" />
+                              Tất cả
+                            </>
+                          ) : type === "browser" ? (
+                            <>
+                              <Globe className="h-3 w-3 mr-1" />
+                              Trình duyệt
+                            </>
+                          ) : type === "embedded" ? (
+                            <>
+                              <Server className="h-3 w-3 mr-1" />
+                              Tích hợp
+                            </>
+                          ) : (
+                            <>
+                              <Laptop className="h-3 w-3 mr-1" />
+                              Máy tính
+                            </>
+                          )}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <div className="flex gap-2">
+                      <span className="text-sm font-medium text-muted-foreground self-center">
+                        Trạng thái:
+                      </span>
+                      {gameStatuses.map((status) => (
+                        <Badge
+                          key={status}
+                          variant={
+                            activeStatusFilter === status
+                              ? "default"
+                              : "outline"
+                          }
+                          className={`cursor-pointer px-3 py-1 
+                            ${status === "playable" && activeStatusFilter === status ? "bg-green-600 hover:bg-green-700" : ""}
+                            ${status === "coming_soon" && activeStatusFilter === status ? "bg-blue-500 hover:bg-blue-600" : ""}
+                            ${status === "maintenance" && activeStatusFilter === status ? "bg-red-500 hover:bg-red-600" : ""}
+                          `}
+                          onClick={() => setActiveStatusFilter(status)}
+                        >
+                          {status === "all" ? (
+                            <>
+                              <Filter className="h-3 w-3 mr-1" />
+                              Tất cả
+                            </>
+                          ) : status === "playable" ? (
+                            <>
+                              <CheckCircle className="h-3 w-3 mr-1" />
+                              Có thể chơi
+                            </>
+                          ) : status === "coming_soon" ? (
+                            <>
+                              <Clock className="h-3 w-3 mr-1" />
+                              Sắp ra mắt
+                            </>
+                          ) : (
+                            <>
+                              <AlertTriangle className="h-3 w-3 mr-1" />
+                              Bảo trì
+                            </>
+                          )}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -348,6 +468,7 @@ const Games = () => {
                           onClick={() => {
                             setActiveTab("all");
                             setActiveTypeFilter("all");
+                            setActiveStatusFilter("all");
                           }}
                         >
                           Xóa bộ lọc
