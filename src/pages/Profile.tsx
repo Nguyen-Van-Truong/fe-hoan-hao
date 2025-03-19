@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
+import { useParams, useNavigate } from "react-router-dom";
+import LazyThreeColumnLayout from "../components/layout/LazyThreeColumnLayout";
 import { Avatar } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
 import {
@@ -25,7 +25,9 @@ import {
   MoreHorizontal,
   UserPlus,
   MessageCircle,
+  Pencil,
 } from "lucide-react";
+import LazyEditProfileDialog from "../components/profile/LazyEditProfileDialog";
 
 interface ProfileProps {
   isCurrentUser?: boolean;
@@ -34,13 +36,15 @@ interface ProfileProps {
 const Profile = ({ isCurrentUser = false }: ProfileProps) => {
   const { t } = useLanguage();
   const { userId } = useParams<{ userId: string }>();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("posts");
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   // Determine if this is the current user's profile or someone else's
   const isSelfProfile = !userId || isCurrentUser;
 
   // Mock user data - in a real app, you would fetch this based on userId
-  const user = {
+  const [user, setUser] = useState({
     name: isSelfProfile
       ? "Jane Doe"
       : userId
@@ -59,6 +63,32 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
     friends: 342,
     photos: 156,
     videos: 28,
+  });
+
+  // Handle profile update
+  const handleProfileUpdate = (updatedProfile: any) => {
+    setUser((prev) => ({
+      ...prev,
+      ...updatedProfile,
+    }));
+  };
+
+  // Handle message button click
+  const handleMessageClick = () => {
+    if (isSelfProfile) return; // Don't message yourself
+
+    navigate("/messages", {
+      state: {
+        newConversation: {
+          user: {
+            id: userId || "unknown",
+            name: user.name,
+            avatar: user.avatar,
+            status: "online", // Assume online for simplicity
+          },
+        },
+      },
+    });
   };
 
   // Mock posts specific to this user
@@ -181,7 +211,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <ThreeColumnLayout>
+      <LazyThreeColumnLayout>
         <div className="w-full max-w-[950px] mx-auto">
           {/* Cover Photo */}
           <div className="relative w-full h-[300px] rounded-b-lg overflow-hidden">
@@ -189,12 +219,14 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
               src={user.coverPhoto}
               alt="Cover"
               className="w-full h-full object-cover"
+              loading="lazy"
             />
             {isSelfProfile && (
               <Button
                 variant="secondary"
                 size="sm"
                 className="absolute bottom-4 right-4 bg-white/80 hover:bg-white"
+                onClick={() => setIsEditDialogOpen(true)}
               >
                 <Camera className="h-4 w-4 mr-1" />
                 {t("profile.changeCover") || "Change Cover"}
@@ -210,6 +242,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
                   src={user.avatar}
                   alt={user.name}
                   className="rounded-full"
+                  loading="lazy"
                 />
               </Avatar>
 
@@ -221,10 +254,20 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
 
                 <div className="flex mt-4 md:mt-0 space-x-2">
                   {isSelfProfile ? (
-                    <Button className="bg-pink-500 hover:bg-pink-600 text-white">
-                      <Image className="h-4 w-4 mr-1" />
-                      {t("profile.addStory") || "Add Story"}
-                    </Button>
+                    <>
+                      <Button className="bg-pink-500 hover:bg-pink-600 text-white">
+                        <Image className="h-4 w-4 mr-1" />
+                        {t("profile.addStory") || "Add Story"}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="border-pink-300 text-pink-600 hover:bg-pink-50"
+                        onClick={() => setIsEditDialogOpen(true)}
+                      >
+                        <Pencil className="h-4 w-4 mr-1" />
+                        {t("profile.editProfile") || "Edit Profile"}
+                      </Button>
+                    </>
                   ) : (
                     <>
                       <Button className="bg-pink-500 hover:bg-pink-600 text-white">
@@ -234,6 +277,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
                       <Button
                         variant="outline"
                         className="border-pink-300 text-pink-600 hover:bg-pink-50"
+                        onClick={handleMessageClick}
                       >
                         <MessageCircle className="h-4 w-4 mr-1" />
                         {t("profile.message") || "Message"}
@@ -393,6 +437,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
                                 src={friend.avatar}
                                 alt={friend.name}
                                 className="w-full h-full object-cover"
+                                loading="lazy"
                               />
                             </div>
                             <div className="p-2 text-center">
@@ -432,6 +477,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
                             src={photo}
                             alt={`Photo ${index + 1}`}
                             className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
+                            loading="lazy"
                           />
                         </div>
                       ))}
@@ -441,8 +487,27 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
               </TabsContent>
             </Tabs>
           </div>
+
+          {/* Edit Profile Dialog */}
+          {isSelfProfile && (
+            <LazyEditProfileDialog
+              open={isEditDialogOpen}
+              onOpenChange={setIsEditDialogOpen}
+              onProfileUpdate={handleProfileUpdate}
+              initialData={{
+                name: user.name,
+                bio: user.bio,
+                location: user.location,
+                work: user.work,
+                education: user.education,
+                relationship: user.relationship,
+                avatar: user.avatar,
+                coverPhoto: user.coverPhoto,
+              }}
+            />
+          )}
         </div>
-      </ThreeColumnLayout>
+      </LazyThreeColumnLayout>
     </div>
   );
 };

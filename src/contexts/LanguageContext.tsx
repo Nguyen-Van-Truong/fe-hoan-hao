@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 type Language = "english" | "vietnamese";
 
@@ -7,6 +13,8 @@ type LanguageContextType = {
   setLanguage: (language: Language) => void;
   t: (key: string) => string;
 };
+
+const LANGUAGE_STORAGE_KEY = "language";
 
 const translations: Record<Language, Record<string, string>> = {
   english: {
@@ -134,6 +142,52 @@ const translations: Record<Language, Record<string, string>> = {
     "profile.from": "From",
     "profile.relationship": "Relationship",
     "profile.joined": "Joined",
+    "profile.editProfile": "Edit Profile",
+    "profile.editProfileDesc":
+      "Update your personal information and profile pictures.",
+    "profile.basicInfo": "Basic Info",
+    "profile.details": "Details",
+    "profile.photos": "Photos",
+    "profile.name": "Name",
+    "profile.namePlaceholder": "Your full name",
+    "profile.bio": "Bio",
+    "profile.bioPlaceholder": "Tell us about yourself",
+    "profile.location": "Location",
+    "profile.locationPlaceholder": "City, Country",
+    "profile.work": "Work",
+    "profile.workPlaceholder": "Company or occupation",
+    "profile.education": "Education",
+    "profile.educationPlaceholder": "School or university",
+    "profile.selectStatus": "Select status",
+    "profile.single": "Single",
+    "profile.inRelationship": "In a relationship",
+    "profile.engaged": "Engaged",
+    "profile.married": "Married",
+    "profile.complicated": "It's complicated",
+    "profile.profilePicture": "Profile Picture",
+    "profile.uploadPhoto": "Upload Photo",
+    "profile.cancel": "Cancel",
+    "profile.coverPhoto": "Cover Photo",
+    "profile.uploadCover": "Upload Cover",
+    "profile.saveChanges": "Save Changes",
+    "profile.updateSuccess": "Profile updated successfully",
+    "post.noPosts": "No posts to show yet.",
+    "profile.about": "About",
+    "profile.detailedInfo": "Detailed Information",
+    "profile.personalInfo": "Personal Information",
+    "profile.changeCover": "Change Cover",
+    "profile.addStory": "Add Story",
+    "profile.addFriend": "Add Friend",
+    "profile.message": "Message",
+    "profile.videos": "Videos",
+    "profile.seeAllFriends": "See All Friends",
+    "profile.seeAllPhotos": "See All Photos",
+    "profile.livesIn": "Lives in",
+    "profile.works": "Works at",
+    "profile.studied": "Studied at",
+    "profile.from": "From",
+    "profile.relationship": "Relationship",
+    "profile.joined": "Joined",
 
     // Post Creator
     "post.whatsOnYourMind": "What's on your mind?",
@@ -219,6 +273,41 @@ const translations: Record<Language, Record<string, string>> = {
     "games.recommended": "Recommended For You",
     "games.achievements": "Your Achievements",
     "games.friends": "Friends Playing",
+    "games.explore": "Explore and relax with exciting games",
+    "games.searchGames": "Search games...",
+    "games.type": "Type",
+    "games.status": "Status",
+    "games.all": "All",
+    "games.browser": "Browser",
+    "games.embedded": "Embedded",
+    "games.desktop": "Desktop",
+    "games.playable": "Playable",
+    "games.comingSoon": "Coming Soon",
+    "games.maintenance": "Maintenance",
+    "games.undefined": "Undefined",
+    "games.noGamesFound": "No games found",
+    "games.noGamesFoundDesc":
+      "No games match your search. Try a different search or view all games.",
+    "games.clearSearch": "Clear search",
+    "games.clearFilters": "Clear filters",
+    "games.viewAll": "View all",
+    "games.browserGames": "Browser Games",
+    "games.playInstantly": "Play instantly without installation",
+    "games.playInBrowser": "Play directly in browser",
+    "games.noInstallation": "No installation required",
+    "games.smoothExperience": "Smooth experience",
+    "games.embeddedGames": "Embedded Games",
+    "games.fromGameService": "From GameService, play directly",
+    "games.integratedFromGameService": "Integrated from GameService",
+    "games.playDirectly": "Play directly in interface",
+    "games.continuousUpdates": "Continuous updates",
+    "games.desktopGames": "Desktop Games",
+    "games.downloadAndPlay": "Download and play on your computer",
+    "games.highQualityGraphics": "High quality graphics",
+    "games.downloadFromGameService": "Download from GameService",
+    "games.fullGameExperience": "Full game experience",
+    "games.downloadComplete": "Download complete",
+    "games.openToPlay": "Open file to play",
 
     // Footer
     "footer.copyright": "© 2023 PinkSocial",
@@ -350,6 +439,36 @@ const translations: Record<Language, Record<string, string>> = {
     "profile.from": "Đến từ",
     "profile.relationship": "Tình trạng mối quan hệ",
     "profile.joined": "Đã tham gia",
+    "profile.editProfile": "Chỉnh sửa trang cá nhân",
+    "profile.editProfileDesc":
+      "Cập nhật thông tin cá nhân và hình ảnh của bạn.",
+    "profile.basicInfo": "Thông tin cơ bản",
+    "profile.details": "Chi tiết",
+    "profile.photos": "Hình ảnh",
+    "profile.name": "Tên",
+    "profile.namePlaceholder": "Tên đầy đủ của bạn",
+    "profile.bio": "Tiểu sử",
+    "profile.bioPlaceholder": "Hãy kể về bản thân bạn",
+    "profile.location": "Vị trí",
+    "profile.locationPlaceholder": "Thành phố, Quốc gia",
+    "profile.work": "Công việc",
+    "profile.workPlaceholder": "Công ty hoặc nghề nghiệp",
+    "profile.education": "Học vấn",
+    "profile.educationPlaceholder": "Trường học hoặc đại học",
+    "profile.selectStatus": "Chọn trạng thái",
+    "profile.single": "Độc thân",
+    "profile.inRelationship": "Đang hẹn hò",
+    "profile.engaged": "Đã đính hôn",
+    "profile.married": "Đã kết hôn",
+    "profile.complicated": "Phức tạp",
+    "profile.profilePicture": "Ảnh đại diện",
+    "profile.uploadPhoto": "Tải ảnh lên",
+    "profile.cancel": "Hủy",
+    "profile.coverPhoto": "Ảnh bìa",
+    "profile.uploadCover": "Tải ảnh bìa",
+    "profile.saveChanges": "Lưu thay đổi",
+    "profile.updateSuccess": "Cập nhật trang cá nhân thành công",
+    "post.noPosts": "Chưa có bài viết nào để hiển thị.",
 
     // Post Creator
     "post.whatsOnYourMind": "Bạn đang nghĩ gì?",
@@ -435,6 +554,41 @@ const translations: Record<Language, Record<string, string>> = {
     "games.recommended": "Đề xuất cho bạn",
     "games.achievements": "Thành tích của bạn",
     "games.friends": "Bạn bè đang chơi",
+    "games.explore": "Khám phá và thư giãn với các trò chơi hấp dẫn",
+    "games.searchGames": "Tìm kiếm trò chơi...",
+    "games.type": "Loại",
+    "games.status": "Trạng thái",
+    "games.all": "Tất cả",
+    "games.browser": "Trình duyệt",
+    "games.embedded": "Tích hợp",
+    "games.desktop": "Máy tính",
+    "games.playable": "Có thể chơi",
+    "games.comingSoon": "Sắp ra mắt",
+    "games.maintenance": "Bảo trì",
+    "games.undefined": "Không xác định",
+    "games.noGamesFound": "Không tìm thấy trò chơi",
+    "games.noGamesFoundDesc":
+      "Không có trò chơi nào phù hợp với tìm kiếm của bạn. Hãy thử tìm kiếm khác hoặc xem tất cả trò chơi.",
+    "games.clearSearch": "Xóa tìm kiếm",
+    "games.clearFilters": "Xóa bộ lọc",
+    "games.viewAll": "Xem tất cả",
+    "games.browserGames": "Trò chơi trình duyệt",
+    "games.playInstantly": "Chơi ngay không cần cài đặt",
+    "games.playInBrowser": "Chơi trực tiếp trên trình duyệt",
+    "games.noInstallation": "Không cần cài đặt",
+    "games.smoothExperience": "Trải nghiệm mượt mà",
+    "games.embeddedGames": "Game tích hợp",
+    "games.fromGameService": "Từ GameService, chơi trực tiếp",
+    "games.integratedFromGameService": "Tích hợp từ GameService",
+    "games.playDirectly": "Chơi ngay trên giao diện",
+    "games.continuousUpdates": "Cập nhật liên tục",
+    "games.desktopGames": "Game máy tính",
+    "games.downloadAndPlay": "Tải về và chơi trên máy tính",
+    "games.highQualityGraphics": "Đồ họa chất lượng cao",
+    "games.downloadFromGameService": "Tải về từ GameService",
+    "games.fullGameExperience": "Trải nghiệm game đầy đủ",
+    "games.downloadComplete": "Tải xuống hoàn tất",
+    "games.openToPlay": "Mở tệp để chơi",
 
     // Footer
     "footer.copyright": "© 2023 PinkSocial",
@@ -454,9 +608,60 @@ export const useLanguage = (): LanguageContextType => {
   return context;
 };
 
-// Use function declaration for consistent component export
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>("english");
+// Helper function to detect user's country based on timezone
+const detectUserCountry = async (): Promise<string> => {
+  try {
+    // Use the Geolocation API to get user's location
+    const response = await fetch("https://ipapi.co/json/");
+    const data = await response.json();
+    return data.country_code;
+  } catch (error) {
+    console.error("Error detecting user country:", error);
+    // Fallback to timezone detection if API fails
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // Vietnam timezone is Asia/Ho_Chi_Minh
+    return timeZone.includes("Ho_Chi_Minh") ? "VN" : "OTHER";
+  }
+};
+
+// Use const declaration for consistent component export
+const LanguageProvider = ({ children }: { children: ReactNode }) => {
+  const [language, setInternalLanguage] = useState<Language>(() => {
+    // Try to get language from localStorage first
+    const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (
+      savedLanguage &&
+      (savedLanguage === "english" || savedLanguage === "vietnamese")
+    ) {
+      return savedLanguage as Language;
+    }
+    // Default to english until we detect location
+    return "english";
+  });
+
+  // Set language and save to localStorage
+  const setLanguage = (newLanguage: Language) => {
+    setInternalLanguage(newLanguage);
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, newLanguage);
+  };
+
+  // Effect to detect user's country and set language if not already set
+  useEffect(() => {
+    const detectAndSetLanguage = async () => {
+      // Only run country detection if no language preference is saved
+      if (!localStorage.getItem(LANGUAGE_STORAGE_KEY)) {
+        const countryCode = await detectUserCountry();
+        // If user is in Vietnam, set language to Vietnamese
+        if (countryCode === "VN") {
+          setLanguage("vietnamese");
+        } else {
+          setLanguage("english");
+        }
+      }
+    };
+
+    detectAndSetLanguage();
+  }, []);
 
   // Define t function directly in the component body
   const t = (key: string): string => {
@@ -468,4 +673,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       {children}
     </LanguageContext.Provider>
   );
-}
+};
+
+export { LanguageProvider };

@@ -44,6 +44,8 @@ const UserProfileSection = ({
 
   const handleLanguageChange = (value: string) => {
     setLanguage(value as "english" | "vietnamese");
+    // Save language preference to localStorage
+    localStorage.setItem("user-language-preference", value);
     onLanguageChange(value);
   };
 
@@ -60,7 +62,7 @@ const UserProfileSection = ({
       <div className="flex items-center gap-3">
         <a href="/profile">
           <Avatar className="h-12 w-12 border-2 border-primary">
-            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarImage src={user.avatar} alt={user.name} loading="lazy" />
             <AvatarFallback className="bg-primary-light/20 text-primary">
               {user.name.substring(0, 2).toUpperCase()}
             </AvatarFallback>
@@ -79,12 +81,13 @@ const UserProfileSection = ({
             <Button
               variant="outline"
               size="sm"
-              className="text-primary border-primary hover:bg-primary/10 flex items-center gap-1"
+              className="text-primary border-primary hover:bg-primary/10 flex items-center gap-1 whitespace-nowrap min-w-0 overflow-hidden text-ellipsis"
             >
-              {t("profile.profile")} <ChevronDown size={14} />
+              <span className="truncate">{t("profile.profile")}</span>{" "}
+              <ChevronDown size={14} className="flex-shrink-0" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 p-2" align="end">
+          <DropdownMenuContent className="w-auto min-w-[14rem] p-2" align="end">
             <DropdownMenuItem
               className="cursor-pointer flex items-center gap-2 hover:bg-primary/10"
               onClick={() => (window.location.href = "/profile")}
