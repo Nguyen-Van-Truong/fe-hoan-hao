@@ -18,6 +18,12 @@ const Register = lazy(() => import("./pages/Register"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Games = lazy(() => import("./pages/Games"));
+const Groups = lazy(() => import("./pages/Groups"));
+const GroupDetail = lazy(() => import("./pages/GroupDetail"));
+const GroupSettings = lazy(() => import("./pages/GroupSettings"));
+const GroupEdit = lazy(() => import("./pages/GroupEdit"));
+const MyGroups = lazy(() => import("./pages/MyGroups"));
+const CreateGroup = lazy(() => import("./pages/CreateGroup"));
 import routes from "tempo-routes";
 import { useImageLazyLoading } from "./hooks/useImageLazyLoading";
 import { LoadingSpinner } from "./components/ui/loading-spinner";
@@ -117,6 +123,15 @@ function App() {
                 />
                 <Route path="/games" element={<Games />} />
                 <Route path="/games/:gameId" element={<GameDetail />} />
+                <Route path="/groups" element={<Groups />} />
+                <Route path="/groups/create" element={<CreateGroup />} />
+                <Route path="/groups/my" element={<MyGroups />} />
+                <Route path="/groups/:groupId" element={<GroupDetail />} />
+                <Route
+                  path="/groups/:groupId/settings"
+                  element={<GroupSettings />}
+                />
+                <Route path="/groups/:groupId/edit" element={<GroupEdit />} />
                 <Route
                   path="/post/:username/:postId"
                   element={<PostDetail />}
