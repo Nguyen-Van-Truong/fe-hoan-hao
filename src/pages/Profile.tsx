@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
+import LazyThreeColumnLayout from "../components/layout/LazyThreeColumnLayout";
 import { Avatar } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
 import {
@@ -27,7 +27,7 @@ import {
   MessageCircle,
   Pencil,
 } from "lucide-react";
-import EditProfileDialog from "../components/profile/EditProfileDialog";
+import LazyEditProfileDialog from "../components/profile/LazyEditProfileDialog";
 
 interface ProfileProps {
   isCurrentUser?: boolean;
@@ -211,7 +211,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <ThreeColumnLayout>
+      <LazyThreeColumnLayout>
         <div className="w-full max-w-[950px] mx-auto">
           {/* Cover Photo */}
           <div className="relative w-full h-[300px] rounded-b-lg overflow-hidden">
@@ -219,6 +219,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
               src={user.coverPhoto}
               alt="Cover"
               className="w-full h-full object-cover"
+              loading="lazy"
             />
             {isSelfProfile && (
               <Button
@@ -241,6 +242,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
                   src={user.avatar}
                   alt={user.name}
                   className="rounded-full"
+                  loading="lazy"
                 />
               </Avatar>
 
@@ -435,6 +437,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
                                 src={friend.avatar}
                                 alt={friend.name}
                                 className="w-full h-full object-cover"
+                                loading="lazy"
                               />
                             </div>
                             <div className="p-2 text-center">
@@ -474,6 +477,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
                             src={photo}
                             alt={`Photo ${index + 1}`}
                             className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
+                            loading="lazy"
                           />
                         </div>
                       ))}
@@ -486,7 +490,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
 
           {/* Edit Profile Dialog */}
           {isSelfProfile && (
-            <EditProfileDialog
+            <LazyEditProfileDialog
               open={isEditDialogOpen}
               onOpenChange={setIsEditDialogOpen}
               onProfileUpdate={handleProfileUpdate}
@@ -503,7 +507,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
             />
           )}
         </div>
-      </ThreeColumnLayout>
+      </LazyThreeColumnLayout>
     </div>
   );
 };

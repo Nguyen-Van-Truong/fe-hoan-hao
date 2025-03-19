@@ -183,6 +183,7 @@ const GameDialog = ({ game, open, onOpenChange }: GameDialogProps) => {
             src={game.image}
             alt={game.title}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
             <div className="p-6">

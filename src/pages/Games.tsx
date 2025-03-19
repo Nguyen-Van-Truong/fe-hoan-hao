@@ -31,8 +31,8 @@ import {
   CheckCircle,
   AlertTriangle,
 } from "lucide-react";
-import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
-import GameDialog from "@/components/games/GameDialog";
+import LazyThreeColumnLayout from "../components/layout/LazyThreeColumnLayout";
+import LazyGameDialog from "@/components/games/LazyGameDialog";
 import { Game, GameType, GameStatus, GAMES_DATA } from "@/data/games";
 
 const getGameTypeIcon = (gameType: GameType) => {
@@ -145,6 +145,7 @@ const GameCard = ({
           src={game.image}
           alt={game.title}
           className={`w-full h-full object-cover transition-transform hover:scale-105 ${game.status === "maintenance" ? "opacity-70 grayscale" : ""}`}
+          loading="lazy"
         />
         <div className="absolute top-2 right-2 flex flex-col gap-2">
           <Badge
@@ -304,7 +305,7 @@ const Games = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <ThreeColumnLayout>
+      <LazyThreeColumnLayout>
         <div className="w-full max-w-[950px] mx-auto p-4">
           <Card className="mb-4">
             <CardContent className="p-6">
@@ -602,10 +603,10 @@ const Games = () => {
             </CardContent>
           </Card>
         </div>
-      </ThreeColumnLayout>
+      </LazyThreeColumnLayout>
 
       {selectedGame && (
-        <GameDialog
+        <LazyGameDialog
           game={selectedGame}
           open={dialogOpen}
           onOpenChange={setDialogOpen}

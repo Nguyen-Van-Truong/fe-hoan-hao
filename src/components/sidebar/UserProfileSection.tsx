@@ -62,7 +62,7 @@ const UserProfileSection = ({
       <div className="flex items-center gap-3">
         <a href="/profile">
           <Avatar className="h-12 w-12 border-2 border-primary">
-            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarImage src={user.avatar} alt={user.name} loading="lazy" />
             <AvatarFallback className="bg-primary-light/20 text-primary">
               {user.name.substring(0, 2).toUpperCase()}
             </AvatarFallback>

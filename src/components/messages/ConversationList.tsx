@@ -57,6 +57,7 @@ const ConversationList = ({
                     <img
                       src={conversation.user.avatar}
                       alt={conversation.user.name}
+                      loading="lazy"
                     />
                   </Avatar>
                   {!conversation.lastMessage.isRead && (

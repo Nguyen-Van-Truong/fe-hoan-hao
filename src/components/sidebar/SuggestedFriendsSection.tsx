@@ -144,6 +144,7 @@ const SuggestedFriendsSection = ({
                         src={friend.avatar}
                         alt={friend.name}
                         className="h-full w-full object-cover"
+                        loading="lazy"
                       />
                     </a>
                     {friend.status && (

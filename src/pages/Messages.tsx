@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
+import LazyThreeColumnLayout from "../components/layout/LazyThreeColumnLayout";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Search, Send, Image, Smile } from "lucide-react";
@@ -313,7 +313,7 @@ const Messages = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <ThreeColumnLayout>
+      <LazyThreeColumnLayout>
         <div className="w-full max-w-[950px] mx-auto p-4">
           <div className="bg-white rounded-lg shadow-sm p-4 min-h-screen flex flex-col">
             {/* Search Bar */}
@@ -415,7 +415,7 @@ const Messages = () => {
             </div>
           </div>
         </div>
-      </ThreeColumnLayout>
+      </LazyThreeColumnLayout>
     </div>
   );
 };

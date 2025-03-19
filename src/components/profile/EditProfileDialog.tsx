@@ -269,6 +269,7 @@ const EditProfileDialog = ({
                       }
                       alt="Profile"
                       className="h-full w-full object-cover"
+                      loading="lazy"
                     />
                     <label
                       htmlFor="avatar-upload"
@@ -321,6 +322,7 @@ const EditProfileDialog = ({
                       }
                       alt="Cover"
                       className="h-full w-full object-cover"
+                      loading="lazy"
                     />
                     <label
                       htmlFor="cover-upload"
