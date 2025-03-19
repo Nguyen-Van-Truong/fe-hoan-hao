@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
+import React, { useState, useEffect } from "react";
+import LazyThreeColumnLayout from "../components/layout/LazyThreeColumnLayout";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Search, Send, Image, Smile } from "lucide-react";
@@ -7,6 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import MessageItem from "../components/messages/MessageItem";
 import ConversationList from "../components/messages/ConversationList";
 import MessageComposer from "../components/messages/MessageComposer";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Messages = () => {
   const { t } = useLanguage();
@@ -16,9 +17,14 @@ const Messages = () => {
   >(null);
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState<any[]>([]);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Extract any new conversation data from location state
+  const newConversationData = location.state?.newConversation;
 
   // Mock data for conversations
-  const conversations = [
+  const [conversations, setConversations] = useState([
     {
       id: "c1",
       user: {
@@ -82,7 +88,7 @@ const Messages = () => {
       },
       isActive: false,
     },
-  ];
+  ]);
 
   // Initial conversation messages
   const initialConversationMessages = {
@@ -226,6 +232,50 @@ const Messages = () => {
     ],
   };
 
+  // Check for new conversation from navigation state
+  useEffect(() => {
+    if (newConversationData) {
+      // Check if we already have a conversation with this user
+      const existingConversation = conversations.find(
+        (conv) => conv.user.username === newConversationData.user.id,
+      );
+
+      if (existingConversation) {
+        // If conversation exists, select it
+        setSelectedConversation(existingConversation.id);
+        setMessages(
+          initialConversationMessages[
+            existingConversation.id as keyof typeof initialConversationMessages
+          ] || [],
+        );
+      } else {
+        // Create a new conversation
+        const newConv = {
+          id: `c${conversations.length + 1}`,
+          user: {
+            name: newConversationData.user.name,
+            username: newConversationData.user.id,
+            avatar: newConversationData.user.avatar,
+            status: newConversationData.user.status || "offline",
+          },
+          lastMessage: {
+            text: "",
+            timestamp: new Date(),
+            isRead: true,
+          },
+          isActive: true,
+        };
+
+        setConversations([newConv, ...conversations]);
+        setSelectedConversation(newConv.id);
+        setMessages([]);
+      }
+
+      // Clear the navigation state
+      navigate("/messages", { replace: true, state: {} });
+    }
+  }, [newConversationData, navigate]);
+
   const handleSendMessage = () => {
     if (newMessage.trim() && selectedConversation) {
       const newMsg = {
@@ -263,7 +313,7 @@ const Messages = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <ThreeColumnLayout>
+      <LazyThreeColumnLayout>
         <div className="w-full max-w-[950px] mx-auto p-4">
           <div className="bg-white rounded-lg shadow-sm p-4 min-h-screen flex flex-col">
             {/* Search Bar */}
@@ -365,7 +415,7 @@ const Messages = () => {
             </div>
           </div>
         </div>
-      </ThreeColumnLayout>
+      </LazyThreeColumnLayout>
     </div>
   );
 };

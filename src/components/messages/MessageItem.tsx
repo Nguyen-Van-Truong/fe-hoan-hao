@@ -28,7 +28,11 @@ const MessageItem = ({ message, isCurrentUser = false }: MessageItemProps) => {
       >
         {!isCurrentUser && (
           <Avatar className="h-8 w-8 flex-shrink-0 mt-1">
-            <img src={message.author.avatar} alt={message.author.name} />
+            <img
+              src={message.author.avatar}
+              alt={message.author.name}
+              loading="lazy"
+            />
           </Avatar>
         )}
 
@@ -50,6 +54,7 @@ const MessageItem = ({ message, isCurrentUser = false }: MessageItemProps) => {
                   src={message.attachments[0]}
                   alt="Attachment"
                   className="w-full h-auto max-h-60 object-cover"
+                  loading="lazy"
                 />
               </div>
             )}

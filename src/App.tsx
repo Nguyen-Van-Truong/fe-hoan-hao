@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, lazy } from "react";
 import {
   Routes,
   Route,
@@ -6,18 +6,21 @@ import {
   useRoutes,
   Navigate,
 } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import Profile from "./pages/Profile";
-import Friends from "./pages/Friends";
-import PostDetail from "./pages/PostDetail";
-import SearchPage from "./pages/SearchPage";
-import Messages from "./pages/Messages";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import Games from "./pages/Games";
+// Lazy load pages for better performance
+const HomePage = lazy(() => import("./pages/HomePage"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Friends = lazy(() => import("./pages/Friends"));
+const PostDetail = lazy(() => import("./pages/PostDetail"));
+const SearchPage = lazy(() => import("./pages/SearchPage"));
+const Messages = lazy(() => import("./pages/Messages"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const Games = lazy(() => import("./pages/Games"));
 import routes from "tempo-routes";
+import { useImageLazyLoading } from "./hooks/useImageLazyLoading";
+import { LoadingSpinner } from "./components/ui/loading-spinner";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import AuthLayout from "./components/auth/AuthLayout";
@@ -27,6 +30,9 @@ import GameDetail from "./components/games/GameDetail";
 
 function App() {
   const location = useLocation();
+
+  // Apply image lazy loading across the app
+  useImageLazyLoading();
 
   useEffect(() => {
     // Update page title based on current route
@@ -61,7 +67,16 @@ function App() {
   }, [location]);
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+          <div className="text-center">
+            <LoadingSpinner size="lg" className="mx-auto mb-4" />
+            <p className="text-gray-600">Đang tải...</p>
+          </div>
+        </div>
+      }
+    >
       <LanguageProvider>
         <AuthProvider>
           <Toaster position="top-right" />
@@ -82,6 +97,10 @@ function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/messages" element={<Messages />} />
+                <Route
+                  path="/messages/:conversationId"
+                  element={<Messages />}
+                />
                 <Route
                   path="/profile"
                   element={<Profile isCurrentUser={true} />}

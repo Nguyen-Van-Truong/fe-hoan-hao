@@ -35,7 +35,7 @@ const MessageComposer = ({
     <div className="border-b border-gray-200 p-4">
       <div className="flex gap-3">
         <Avatar className="h-10 w-10 flex-shrink-0">
-          <img src={userAvatar} alt="Your avatar" />
+          <img src={userAvatar} alt="Your avatar" loading="lazy" />
         </Avatar>
 
         <div className="flex-1">

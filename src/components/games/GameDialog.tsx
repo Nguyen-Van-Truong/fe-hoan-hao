@@ -24,10 +24,12 @@ import {
   Server,
   Info,
   AlertCircle,
+  AlertTriangle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Game, GameType } from "@/data/games";
 import GameStatusBadge from "./GameStatusBadge";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface GameDialogProps {
   game: Game;
@@ -36,6 +38,7 @@ interface GameDialogProps {
 }
 
 const GameDialog = ({ game, open, onOpenChange }: GameDialogProps) => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -65,7 +68,9 @@ const GameDialog = ({ game, open, onOpenChange }: GameDialogProps) => {
             setTimeout(() => {
               setIsDownloading(false);
               setDownloadProgress(0);
-              alert(`Tải xuống hoàn tất: ${game.title}. Mở tệp để chơi.`);
+              alert(
+                `${t("games.downloadComplete")}: ${game.title}. ${t("games.openToPlay")}`,
+              );
             }, 500);
             return 100;
           }
@@ -178,6 +183,7 @@ const GameDialog = ({ game, open, onOpenChange }: GameDialogProps) => {
             src={game.image}
             alt={game.title}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
             <div className="p-6">

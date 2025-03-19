@@ -31,8 +31,8 @@ import {
   CheckCircle,
   AlertTriangle,
 } from "lucide-react";
-import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
-import GameDialog from "@/components/games/GameDialog";
+import LazyThreeColumnLayout from "../components/layout/LazyThreeColumnLayout";
+import LazyGameDialog from "@/components/games/LazyGameDialog";
 import { Game, GameType, GameStatus, GAMES_DATA } from "@/data/games";
 
 const getGameTypeIcon = (gameType: GameType) => {
@@ -145,6 +145,7 @@ const GameCard = ({
           src={game.image}
           alt={game.title}
           className={`w-full h-full object-cover transition-transform hover:scale-105 ${game.status === "maintenance" ? "opacity-70 grayscale" : ""}`}
+          loading="lazy"
         />
         <div className="absolute top-2 right-2 flex flex-col gap-2">
           <Badge
@@ -304,7 +305,7 @@ const Games = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <ThreeColumnLayout>
+      <LazyThreeColumnLayout>
         <div className="w-full max-w-[950px] mx-auto p-4">
           <Card className="mb-4">
             <CardContent className="p-6">
@@ -312,15 +313,17 @@ const Games = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <h1 className="text-3xl font-bold text-primary">
-                      Trò chơi
+                      {t("games.title")}
                     </h1>
                     <p className="text-muted-foreground mt-2">
-                      Khám phá và thư giãn với các trò chơi hấp dẫn
+                      {t("games.explore")}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <Trophy className="h-6 w-6 text-yellow-500" />
-                    <span className="font-medium">Bảng xếp hạng</span>
+                    <span className="font-medium">
+                      {t("games.leaderboard")}
+                    </span>
                   </div>
                 </div>
 
@@ -328,7 +331,7 @@ const Games = () => {
                   <div className="relative w-full md:max-w-md">
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
-                      placeholder="Tìm kiếm trò chơi..."
+                      placeholder={t("games.searchGames")}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-10 w-full bg-white"
@@ -338,7 +341,7 @@ const Games = () => {
                   <div className="flex gap-2 flex-wrap">
                     <div className="flex gap-2 mr-4">
                       <span className="text-sm font-medium text-muted-foreground self-center">
-                        Loại:
+                        {t("games.type")}:
                       </span>
                       {gameTypes.map((type) => (
                         <Badge
@@ -352,22 +355,22 @@ const Games = () => {
                           {type === "all" ? (
                             <>
                               <Filter className="h-3 w-3 mr-1" />
-                              Tất cả
+                              {t("games.all")}
                             </>
                           ) : type === "browser" ? (
                             <>
                               <Globe className="h-3 w-3 mr-1" />
-                              Trình duyệt
+                              {t("games.browser")}
                             </>
                           ) : type === "embedded" ? (
                             <>
                               <Server className="h-3 w-3 mr-1" />
-                              Tích hợp
+                              {t("games.embedded")}
                             </>
                           ) : (
                             <>
                               <Laptop className="h-3 w-3 mr-1" />
-                              Máy tính
+                              {t("games.desktop")}
                             </>
                           )}
                         </Badge>
@@ -376,7 +379,7 @@ const Games = () => {
 
                     <div className="flex gap-2">
                       <span className="text-sm font-medium text-muted-foreground self-center">
-                        Trạng thái:
+                        {t("games.status")}:
                       </span>
                       {gameStatuses.map((status) => (
                         <Badge
@@ -396,22 +399,22 @@ const Games = () => {
                           {status === "all" ? (
                             <>
                               <Filter className="h-3 w-3 mr-1" />
-                              Tất cả
+                              {t("games.all")}
                             </>
                           ) : status === "playable" ? (
                             <>
                               <CheckCircle className="h-3 w-3 mr-1" />
-                              Có thể chơi
+                              {t("games.playable")}
                             </>
                           ) : status === "coming_soon" ? (
                             <>
                               <Clock className="h-3 w-3 mr-1" />
-                              Sắp ra mắt
+                              {t("games.comingSoon")}
                             </>
                           ) : (
                             <>
                               <AlertTriangle className="h-3 w-3 mr-1" />
-                              Bảo trì
+                              {t("games.maintenance")}
                             </>
                           )}
                         </Badge>
@@ -430,7 +433,7 @@ const Games = () => {
                       onClick={() => setActiveTab(category)}
                       className="capitalize"
                     >
-                      {category === "all" ? "Tất cả" : category}
+                      {category === "all" ? t("games.all") : category}
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -450,18 +453,17 @@ const Games = () => {
                     <div className="flex flex-col items-center justify-center py-12 text-center">
                       <GamepadIcon className="h-12 w-12 text-muted-foreground mb-4" />
                       <h3 className="text-lg font-medium">
-                        Không tìm thấy trò chơi
+                        {t("games.noGamesFound")}
                       </h3>
                       <p className="text-muted-foreground mt-2 max-w-md">
-                        Không có trò chơi nào phù hợp với tìm kiếm của bạn. Hãy
-                        thử tìm kiếm khác hoặc xem tất cả trò chơi.
+                        {t("games.noGamesFoundDesc")}
                       </p>
                       <div className="flex gap-3 mt-4">
                         <Button
                           variant="outline"
                           onClick={() => setSearchQuery("")}
                         >
-                          Xóa tìm kiếm
+                          {t("games.clearSearch")}
                         </Button>
                         <Button
                           variant="outline"
@@ -471,7 +473,7 @@ const Games = () => {
                             setActiveStatusFilter("all");
                           }}
                         >
-                          Xóa bộ lọc
+                          {t("games.clearFilters")}
                         </Button>
                       </div>
                     </div>
@@ -485,7 +487,7 @@ const Games = () => {
                     <GamepadIcon className="h-6 w-6 text-white" />
                   </div>
                   <h2 className="text-xl font-bold">
-                    Trò chơi đề xuất cho bạn
+                    {t("games.recommended")}
                   </h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -493,34 +495,34 @@ const Games = () => {
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-lg font-bold text-blue-700">
-                          Trò chơi trình duyệt
+                          {t("games.browserGames")}
                         </CardTitle>
                         <Globe className="h-5 w-5 text-blue-500" />
                       </div>
                       <CardDescription>
-                        Chơi ngay không cần cài đặt
+                        {t("games.playInstantly")}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2 text-sm">
                         <li className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-                          Chơi trực tiếp trên trình duyệt
+                          {t("games.playInBrowser")}
                         </li>
                         <li className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-                          Không cần cài đặt
+                          {t("games.noInstallation")}
                         </li>
                         <li className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-                          Trải nghiệm mượt mà
+                          {t("games.smoothExperience")}
                         </li>
                       </ul>
                     </CardContent>
                     <CardFooter>
                       <Button className="w-full bg-blue-600 hover:bg-blue-700">
                         <Globe className="mr-2 h-4 w-4" />
-                        Xem tất cả
+                        {t("games.viewAll")}
                       </Button>
                     </CardFooter>
                   </Card>
@@ -529,34 +531,34 @@ const Games = () => {
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-lg font-bold text-green-700">
-                          Game tích hợp
+                          {t("games.embeddedGames")}
                         </CardTitle>
                         <Server className="h-5 w-5 text-green-500" />
                       </div>
                       <CardDescription>
-                        Từ GameService, chơi trực tiếp
+                        {t("games.fromGameService")}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2 text-sm">
                         <li className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                          Tích hợp từ GameService
+                          {t("games.integratedFromGameService")}
                         </li>
                         <li className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                          Chơi ngay trên giao diện
+                          {t("games.playDirectly")}
                         </li>
                         <li className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                          Cập nhật liên tục
+                          {t("games.continuousUpdates")}
                         </li>
                       </ul>
                     </CardContent>
                     <CardFooter>
                       <Button className="w-full bg-green-600 hover:bg-green-700">
                         <Server className="mr-2 h-4 w-4" />
-                        Xem tất cả
+                        {t("games.viewAll")}
                       </Button>
                     </CardFooter>
                   </Card>
@@ -565,34 +567,34 @@ const Games = () => {
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-lg font-bold text-purple-700">
-                          Game máy tính
+                          {t("games.desktopGames")}
                         </CardTitle>
                         <Laptop className="h-5 w-5 text-purple-500" />
                       </div>
                       <CardDescription>
-                        Tải về và chơi trên máy tính
+                        {t("games.downloadAndPlay")}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2 text-sm">
                         <li className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-purple-500"></div>
-                          Đồ họa chất lượng cao
+                          {t("games.highQualityGraphics")}
                         </li>
                         <li className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-purple-500"></div>
-                          Tải về từ GameService
+                          {t("games.downloadFromGameService")}
                         </li>
                         <li className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-purple-500"></div>
-                          Trải nghiệm game đầy đủ
+                          {t("games.fullGameExperience")}
                         </li>
                       </ul>
                     </CardContent>
                     <CardFooter>
                       <Button className="w-full bg-purple-600 hover:bg-purple-700">
                         <Download className="mr-2 h-4 w-4" />
-                        Xem tất cả
+                        {t("games.viewAll")}
                       </Button>
                     </CardFooter>
                   </Card>
@@ -601,10 +603,10 @@ const Games = () => {
             </CardContent>
           </Card>
         </div>
-      </ThreeColumnLayout>
+      </LazyThreeColumnLayout>
 
       {selectedGame && (
-        <GameDialog
+        <LazyGameDialog
           game={selectedGame}
           open={dialogOpen}
           onOpenChange={setDialogOpen}
