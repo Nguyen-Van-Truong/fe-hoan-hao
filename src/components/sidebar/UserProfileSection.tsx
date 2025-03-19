@@ -44,6 +44,8 @@ const UserProfileSection = ({
 
   const handleLanguageChange = (value: string) => {
     setLanguage(value as "english" | "vietnamese");
+    // Save language preference to localStorage
+    localStorage.setItem("user-language-preference", value);
     onLanguageChange(value);
   };
 
