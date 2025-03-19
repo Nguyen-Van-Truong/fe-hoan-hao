@@ -81,12 +81,13 @@ const UserProfileSection = ({
             <Button
               variant="outline"
               size="sm"
-              className="text-primary border-primary hover:bg-primary/10 flex items-center gap-1"
+              className="text-primary border-primary hover:bg-primary/10 flex items-center gap-1 whitespace-nowrap min-w-0 overflow-hidden text-ellipsis"
             >
-              {t("profile.profile")} <ChevronDown size={14} />
+              <span className="truncate">{t("profile.profile")}</span>{" "}
+              <ChevronDown size={14} className="flex-shrink-0" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 p-2" align="end">
+          <DropdownMenuContent className="w-auto min-w-[14rem] p-2" align="end">
             <DropdownMenuItem
               className="cursor-pointer flex items-center gap-2 hover:bg-primary/10"
               onClick={() => (window.location.href = "/profile")}
