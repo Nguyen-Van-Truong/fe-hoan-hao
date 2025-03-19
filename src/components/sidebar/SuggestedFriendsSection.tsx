@@ -94,6 +94,22 @@ const SuggestedFriendsSection = ({
     }
   };
 
+  const handleMessageClick = (friend: Friend) => {
+    navigate("/messages", {
+      state: {
+        newConversation: {
+          user: {
+            id: friend.id,
+            name: friend.name,
+            avatar: friend.avatar,
+            status: friend.status,
+            lastActive: friend.lastActive,
+          },
+        },
+      },
+    });
+  };
+
   return (
     <Card className="p-4 bg-white rounded-lg shadow-sm">
       {/* Your Friends Section */}
@@ -156,6 +172,7 @@ const SuggestedFriendsSection = ({
                   size="sm"
                   variant="outline"
                   className="text-pink-500 border-pink-200 hover:bg-pink-50"
+                  onClick={() => handleMessageClick(friend)}
                 >
                   {t("friends.message") || "Message"}
                 </Button>

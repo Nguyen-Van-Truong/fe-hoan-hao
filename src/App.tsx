@@ -83,6 +83,10 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/messages" element={<Messages />} />
                 <Route
+                  path="/messages/:conversationId"
+                  element={<Messages />}
+                />
+                <Route
                   path="/profile"
                   element={<Profile isCurrentUser={true} />}
                 />

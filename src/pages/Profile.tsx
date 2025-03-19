@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ThreeColumnLayout from "../components/layout/ThreeColumnLayout";
 import { Avatar } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
@@ -36,6 +36,7 @@ interface ProfileProps {
 const Profile = ({ isCurrentUser = false }: ProfileProps) => {
   const { t } = useLanguage();
   const { userId } = useParams<{ userId: string }>();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("posts");
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
@@ -70,6 +71,24 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
       ...prev,
       ...updatedProfile,
     }));
+  };
+
+  // Handle message button click
+  const handleMessageClick = () => {
+    if (isSelfProfile) return; // Don't message yourself
+
+    navigate("/messages", {
+      state: {
+        newConversation: {
+          user: {
+            id: userId || "unknown",
+            name: user.name,
+            avatar: user.avatar,
+            status: "online", // Assume online for simplicity
+          },
+        },
+      },
+    });
   };
 
   // Mock posts specific to this user
@@ -256,6 +275,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
                       <Button
                         variant="outline"
                         className="border-pink-300 text-pink-600 hover:bg-pink-50"
+                        onClick={handleMessageClick}
                       >
                         <MessageCircle className="h-4 w-4 mr-1" />
                         {t("profile.message") || "Message"}
