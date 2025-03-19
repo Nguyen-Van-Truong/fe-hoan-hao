@@ -14,7 +14,7 @@ type LanguageContextType = {
   t: (key: string) => string;
 };
 
-const LANGUAGE_STORAGE_KEY = "user-language-preference";
+const LANGUAGE_STORAGE_KEY = "language";
 
 const translations: Record<Language, Record<string, string>> = {
   english: {
