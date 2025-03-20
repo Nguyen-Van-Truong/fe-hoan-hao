@@ -3,7 +3,6 @@ import React, {
   useContext,
   useState,
   ReactNode,
-  useEffect,
 } from "react";
 
 type Language = "english" | "vietnamese";
@@ -25,6 +24,180 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.groups": "Groups",
     "nav.games": "Games",
     "nav.search": "Search...",
+
+    // Groups Page
+    "groups.create": "Create Group",
+    "groups.createNew": "Create New Group",
+    "groups.createDescription": "Create a new group to connect with people who share your interests.",
+    "groups.name": "Group Name",
+    "groups.namePlaceholder": "Enter a name for your group",
+    "groups.description": "Description",
+    "groups.descriptionPlaceholder": "What is your group about?",
+    "groups.privacy": "Privacy",
+    "groups.privacyDescription": "Public groups can be found in search and anyone can join. Private groups require approval to join.",
+    "groups.public": "Public",
+    "groups.private": "Private",
+    "groups.cancel": "Cancel",
+    "groups.yourGroups": "Your Groups",
+    "groups.discover": "Discover",
+    "groups.events": "Events",
+    "groups.upcomingEvents": "Upcoming Events",
+    "groups.recentDiscussions": "Recent Discussions",
+    "groups.suggested": "Suggested Groups",
+    "groups.members": "members",
+    "groups.join": "Join Group",
+    "groups.viewGroup": "View Group",
+    "groups.search": "Search groups",
+    "groups.loadMore": "Load More",
+    "groups.createEvent": "Create Event",
+    "groups.attending": "attending",
+    "groups.interested": "Interested",
+    "groups.comments": "comments",
+    "groups.noGroups": "You haven't joined any groups yet",
+    "groups.noGroupsDescription": "Create a group or discover groups to connect with people who share your interests.",
+    "groups.noEvents": "No upcoming events",
+    "groups.noEventsDescription": "There are no upcoming events in your groups. Create one or check back later.",
+    "groups.discussion": "Discussion",
+    "groups.about": "About",
+    "groups.media": "Media",
+    "groups.files": "Files",
+    "groups.photos": "Photos",
+    "groups.addPhotos": "Add Photos",
+    "groups.groupInfo": "Group Info",
+    "groups.publicGroup": "Public Group",
+    "groups.privateGroup": "Private Group",
+    "groups.created": "Created",
+    "groups.rules": "Rules",
+    "groups.notifications": "Notifications",
+    "groups.share": "Share",
+    "groups.options": "Options",
+    "groups.inviteFriends": "Invite Friends",
+    "groups.inviteFriendsDescription": "Invite your friends to join this group",
+    "groups.muteNotifications": "Mute Notifications",
+    "groups.manageGroup": "Manage Group",
+    "groups.reportGroup": "Report Group",
+    "groups.leaveGroup": "Leave Group",
+    "groups.leaveConfirmation": "Are you sure you want to leave this group?",
+    "groups.transferOwnership": "Transfer Ownership",
+    "groups.writePost": "Write something to the group...",
+    "groups.searchMembers": "Search members",
+    "groups.invite": "Invite",
+    "groups.admin": "Admin",
+    "groups.moderator": "Moderator",
+    "groups.joined": "Joined",
+    "groups.eventTitle": "Event Title",
+    "groups.eventTitlePlaceholder": "Enter event title",
+    "groups.eventDate": "Date & Time",
+    "groups.eventLocation": "Location",
+    "groups.eventLocationPlaceholder": "Enter event location",
+    "groups.eventDescription": "Description",
+    "groups.eventDescriptionPlaceholder": "Describe your event",
+    "groups.eventCover": "Event Cover",
+    "groups.uploadEventCover": "Upload event cover image",
+    "groups.createEventDescription": "Create a new event for your group members",
+    "groups.done": "Done",
+    "groups.searchFriends": "Search friends",
+    "groups.settings": "Group Settings",
+    "groups.settingsDescription": "Manage your group settings and permissions",
+    "groups.backToGroup": "Back to Group",
+    "groups.general": "General",
+    "groups.moderation": "Moderation",
+    "groups.dangerZone": "Danger Zone",
+    "groups.dangerZoneDescription": "These actions are irreversible. Please be careful.",
+    "groups.basicInfo": "Basic Information",
+    "groups.basicInfoDescription": "Set up the basic information about your group",
+    "groups.groupImages": "Group Images",
+    "groups.groupImagesDescription": "Upload images for your group",
+    "groups.groupAvatar": "Group Avatar",
+    "groups.uploadPhoto": "Upload Photo",
+    "groups.uploadCover": "Upload Cover",
+    "groups.addRule": "Add a rule",
+    "groups.add": "Add",
+    "groups.saveChanges": "Save Changes",
+    "groups.changesSaved": "Changes saved successfully",
+    "groups.deleteGroup": "Delete Group",
+    "groups.deleteGroupDescription": "Once you delete a group, there is no going back. Please be certain.",
+    "groups.deleteGroupTitle": "Delete Group",
+    "groups.deleteGroupConfirmation": "Are you sure you want to delete this group? All content will be permanently removed.",
+    "groups.deleteGroupWarning": "This action cannot be undone.",
+    "groups.groupDeleted": "Group deleted successfully",
+    "groups.transferOwnershipTitle": "Transfer Group Ownership",
+    "groups.transferOwnershipDescription": "Select a member to transfer group ownership to",
+    "groups.transfer": "Transfer",
+    "groups.ownershipTransferred": "Group ownership transferred successfully",
+    "groups.manageMembers": "Manage Members",
+    "groups.manageMembersDescription": "Add or remove members and assign roles",
+    "groups.removeMod": "Remove as Moderator",
+    "groups.makeMod": "Make Moderator",
+    "groups.removeModTitle": "Remove Moderator",
+    "groups.makeModTitle": "Make Moderator",
+    "groups.removeModDescription": "Are you sure you want to remove {name} as a moderator?",
+    "groups.makeModDescription": "Are you sure you want to make {name} a moderator?",
+    "groups.remove": "Remove",
+    "groups.removeMemberTitle": "Remove Member",
+    "groups.removeMemberDescription": "Are you sure you want to remove {name} from the group?",
+    "groups.inviteMembers": "Invite Members",
+    "groups.contentModeration": "Content Moderation",
+    "groups.contentModerationDescription": "Manage content approval and reported content",
+    "groups.approvalSettings": "Approval Settings",
+    "groups.approvalSettingsDescription": "Control what content needs approval before being published",
+    "groups.approveNewMembers": "Approve New Members",
+    "groups.approveNewMembersDescription": "Require admin approval for new members",
+    "groups.approveNewPosts": "Approve New Posts",
+    "groups.approveNewPostsDescription": "Require admin approval for new posts",
+    "groups.reportedContent": "Reported Content",
+    "groups.reportedContentDescription": "Review and take action on reported content",
+    "groups.reportedBy": "Reported by {name}",
+    "groups.pending": "Pending",
+    "groups.reviewed": "Reviewed",
+    "groups.contentType": "Content Type",
+    "groups.post": "Post",
+    "groups.comment": "Comment",
+    "groups.reason": "Reason",
+    "groups.ignore": "Ignore",
+    "groups.removeContent": "Remove Content",
+    "groups.notificationSettings": "Notification Settings",
+    "groups.notificationSettingsDescription": "Control what notifications you receive from this group",
+    "groups.newMemberNotifications": "New Member Notifications",
+    "groups.newMemberNotificationsDescription": "Get notified when someone joins the group",
+    "groups.newPostNotifications": "New Post Notifications",
+    "groups.newPostNotificationsDescription": "Get notified when someone posts in the group",
+    "groups.commentNotifications": "Comment Notifications",
+    "groups.commentNotificationsDescription": "Get notified when someone comments on your posts",
+    "groups.eventNotifications": "Event Notifications",
+    "groups.eventNotificationsDescription": "Get notified about upcoming events",
+    "groups.createGroup": "Create Group",
+    "groups.creating": "Creating...",
+    "groups.rulesDescription": "Set rules for your group members to follow",
+    "groups.noRulesYet": "No rules added yet. Add some rules to help members understand what's expected.",
+    "groups.myGroups": "My Groups",
+    "groups.createdByYou": "Created by You",
+    "groups.adminRights": "Admin Rights",
+    "groups.allGroups": "All Groups",
+    "groups.owner": "Owner",
+    "groups.pendingPosts": "pending posts",
+    "groups.pendingMembers": "pending members",
+    "groups.unreadMessages": "unread messages",
+    "groups.reviewPosts": "Review Posts",
+    "groups.reviewMembers": "Review Members",
+    "groups.enableNotifications": "Enable Notifications",
+    "groups.edit": "Edit Group",
+    "groups.editGroup": "Edit Group",
+    "groups.noCreatedGroups": "You haven't created any groups yet",
+    "groups.noAdminGroups": "You don't have admin rights in any groups",
+    "groups.adminGroupsDescription": "When you are made an admin of a group, it will appear here",
+    "groups.noSearchResults": "No groups match your search",
+    "groups.tryDifferentSearch": "Try a different search term",
+    "groups.groupManagement": "Group Management",
+    "groups.groupManagementDescription": "Create and manage your groups",
+    "groups.invitations": "Invitations",
+    "groups.noPermission": "You don't have permission to edit this group",
+    "groups.backToGroups": "Back to Groups",
+    "groups.savingError": "There was an error saving your changes. Please try again.",
+    "groups.saving": "Saving...",
+    "groups.title": "Groups",
+    "groups.groupSettings": "Group Setting",
+    "groups.changeCover": "Change Cover",
 
     // Search
     "search.keywords": "Keywords",
@@ -73,23 +246,17 @@ const translations: Record<Language, Record<string, string>> = {
     "messages.user.michaelChen": "Michael Chen",
     "messages.user.currentUser": "Current User",
     "messages.sampleText.greeting": "Hey, how are you doing today?",
-    "messages.sampleText.movie":
-      "Did you see the new movie that just came out?",
+    "messages.sampleText.movie": "Did you see the new movie that just came out?",
     "messages.sampleText.thanks": "Thanks for the help with the project!",
     "messages.sampleText.coffee": "Let's meet up for coffee next week!",
     "messages.sampleText.dayGoing": "Hey there! How's your day going?",
-    "messages.sampleText.appFeatures":
-      "Hi Jane! It's going pretty well, thanks for asking. Just working on some new features for the app.",
-    "messages.sampleText.whatFeatures":
-      "That sounds exciting! What kind of features are you working on?",
-    "messages.sampleText.messagingSystem":
-      "I'm adding a new messaging system with better media sharing.",
-    "messages.sampleText.testIt":
-      "That sounds really cool! I'd love to test it out when it's ready.",
+    "messages.sampleText.appFeatures": "Hi Jane! It's going pretty well, thanks for asking. Just working on some new features for the app.",
+    "messages.sampleText.whatFeatures": "That sounds exciting! What kind of features are you working on?",
+    "messages.sampleText.messagingSystem": "I'm adding a new messaging system with better media sharing.",
+    "messages.sampleText.testIt": "That sounds really cool! I'd love to test it out when it's ready.",
     "messages.sampleText.notYet": "Not yet! Is it good?",
     "messages.sampleText.tuesday": "Sounds good! How about Tuesday at 2pm?",
-    "messages.sampleText.usualPlace":
-      "Perfect! See you then at the usual place.",
+    "messages.sampleText.usualPlace": "Perfect! See you then at the usual place.",
 
     // Time translations
     "time.just now": "just now",
@@ -143,11 +310,9 @@ const translations: Record<Language, Record<string, string>> = {
     "profile.relationship": "Relationship",
     "profile.joined": "Joined",
     "profile.editProfile": "Edit Profile",
-    "profile.editProfileDesc":
-      "Update your personal information and profile pictures.",
+    "profile.editProfileDesc": "Update your personal information and profile pictures.",
     "profile.basicInfo": "Basic Info",
     "profile.details": "Details",
-    "profile.photos": "Photos",
     "profile.name": "Name",
     "profile.namePlaceholder": "Your full name",
     "profile.bio": "Bio",
@@ -172,22 +337,6 @@ const translations: Record<Language, Record<string, string>> = {
     "profile.saveChanges": "Save Changes",
     "profile.updateSuccess": "Profile updated successfully",
     "post.noPosts": "No posts to show yet.",
-    "profile.about": "About",
-    "profile.detailedInfo": "Detailed Information",
-    "profile.personalInfo": "Personal Information",
-    "profile.changeCover": "Change Cover",
-    "profile.addStory": "Add Story",
-    "profile.addFriend": "Add Friend",
-    "profile.message": "Message",
-    "profile.videos": "Videos",
-    "profile.seeAllFriends": "See All Friends",
-    "profile.seeAllPhotos": "See All Photos",
-    "profile.livesIn": "Lives in",
-    "profile.works": "Works at",
-    "profile.studied": "Studied at",
-    "profile.from": "From",
-    "profile.relationship": "Relationship",
-    "profile.joined": "Joined",
 
     // Post Creator
     "post.whatsOnYourMind": "What's on your mind?",
@@ -241,24 +390,13 @@ const translations: Record<Language, Record<string, string>> = {
     "friends.noSearchResults": "No friends match your search.",
     "friends.noFriends": "You don't have any friends yet.",
     "friends.noRequests": "You don't have any friend requests.",
-    "friends.noSuggestions":
-      "We don't have any friend suggestions for you right now.",
+    "friends.noSuggestions": "We don't have any friend suggestions for you right now.",
     "friends.message": "Message",
     "friends.accept": "Accept",
     "friends.decline": "Decline",
     "friends.addFriend": "Add Friend",
     "friends.online": "Online",
     "friends.offline": "Offline",
-
-    // Groups Page
-    "groups.title": "Groups",
-    "groups.create": "Create Group",
-    "groups.myGroups": "My Groups",
-    "groups.discover": "Discover",
-    "groups.yourGroups": "Your Groups",
-    "groups.upcomingEvents": "Upcoming Events",
-    "groups.recentDiscussions": "Recent Discussions",
-    "groups.suggested": "Suggested Groups",
 
     // Games Page
     "games.title": "Games",
@@ -286,8 +424,7 @@ const translations: Record<Language, Record<string, string>> = {
     "games.maintenance": "Maintenance",
     "games.undefined": "Undefined",
     "games.noGamesFound": "No games found",
-    "games.noGamesFoundDesc":
-      "No games match your search. Try a different search or view all games.",
+    "games.noGamesFoundDesc": "No games match your search. Try a different search or view all games.",
     "games.clearSearch": "Clear search",
     "games.clearFilters": "Clear filters",
     "games.viewAll": "View all",
@@ -310,7 +447,7 @@ const translations: Record<Language, Record<string, string>> = {
     "games.openToPlay": "Open file to play",
 
     // Footer
-    "footer.copyright": "© 2023 PinkSocial",
+    "footer.copyright": "© 2023 PinkSocial"
   },
   vietnamese: {
     // Navigation
@@ -320,6 +457,180 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.groups": "Nhóm",
     "nav.games": "Trò chơi",
     "nav.search": "Tìm kiếm...",
+
+    // Groups Page
+    "groups.create": "Tạo nhóm",
+    "groups.createNew": "Tạo nhóm mới",
+    "groups.createDescription": "Tạo một nhóm mới để kết nối với những người có cùng sở thích.",
+    "groups.name": "Tên nhóm",
+    "groups.namePlaceholder": "Nhập tên cho nhóm của bạn",
+    "groups.description": "Mô tả",
+    "groups.descriptionPlaceholder": "Nhóm của bạn nói về điều gì?",
+    "groups.privacy": "Quyền riêng tư",
+    "groups.privacyDescription": "Nhóm công khai có thể được tìm thấy trong tìm kiếm và bất kỳ ai cũng có thể tham gia. Nhóm riêng tư yêu cầu phê duyệt để tham gia.",
+    "groups.public": "Công khai",
+    "groups.private": "Riêng tư",
+    "groups.cancel": "Hủy",
+    "groups.yourGroups": "Nhóm của bạn",
+    "groups.discover": "Khám phá",
+    "groups.events": "Sự kiện",
+    "groups.upcomingEvents": "Sự kiện sắp tới",
+    "groups.recentDiscussions": "Thảo luận gần đây",
+    "groups.suggested": "Nhóm đề xuất",
+    "groups.members": "thành viên",
+    "groups.join": "Tham gia nhóm",
+    "groups.viewGroup": "Xem nhóm",
+    "groups.search": "Tìm kiếm nhóm",
+    "groups.loadMore": "Tải thêm",
+    "groups.createEvent": "Tạo sự kiện",
+    "groups.attending": "tham dự",
+    "groups.interested": "Quan tâm",
+    "groups.comments": "bình luận",
+    "groups.noGroups": "Bạn chưa tham gia nhóm nào",
+    "groups.noGroupsDescription": "Tạo một nhóm hoặc khám phá các nhóm để kết nối với những người có cùng sở thích.",
+    "groups.noEvents": "Không có sự kiện sắp tới",
+    "groups.noEventsDescription": "Không có sự kiện sắp tới trong các nhóm của bạn. Hãy tạo một sự kiện hoặc kiểm tra lại sau.",
+    "groups.discussion": "Thảo luận",
+    "groups.about": "Giới thiệu",
+    "groups.media": "Phương tiện",
+    "groups.files": "Tệp",
+    "groups.photos": "Ảnh",
+    "groups.addPhotos": "Thêm ảnh",
+    "groups.groupInfo": "Thông tin nhóm",
+    "groups.publicGroup": "Nhóm công khai",
+    "groups.privateGroup": "Nhóm riêng tư",
+    "groups.created": "Đã tạo",
+    "groups.rules": "Quy tắc",
+    "groups.notifications": "Thông báo",
+    "groups.share": "Chia sẻ",
+    "groups.options": "Tùy chọn",
+    "groups.inviteFriends": "Mời bạn bè",
+    "groups.inviteFriendsDescription": "Mời bạn bè của bạn tham gia nhóm này",
+    "groups.muteNotifications": "Tắt thông báo",
+    "groups.manageGroup": "Quản lý nhóm",
+    "groups.reportGroup": "Báo cáo nhóm",
+    "groups.leaveGroup": "Rời khỏi nhóm",
+    "groups.leaveConfirmation": "Bạn có chắc chắn muốn rời khỏi nhóm này?",
+    "groups.transferOwnership": "Chuyển quyền sở hữu",
+    "groups.writePost": "Viết gì đó cho nhóm...",
+    "groups.searchMembers": "Tìm kiếm thành viên",
+    "groups.invite": "Mời",
+    "groups.admin": "Quản trị viên",
+    "groups.moderator": "Người điều hành",
+    "groups.joined": "Đã tham gia",
+    "groups.eventTitle": "Tiêu đề sự kiện",
+    "groups.eventTitlePlaceholder": "Nhập tiêu đề sự kiện",
+    "groups.eventDate": "Ngày & Giờ",
+    "groups.eventLocation": "Địa điểm",
+    "groups.eventLocationPlaceholder": "Nhập địa điểm sự kiện",
+    "groups.eventDescription": "Mô tả",
+    "groups.eventDescriptionPlaceholder": "Mô tả sự kiện của bạn",
+    "groups.eventCover": "Ảnh bìa sự kiện",
+    "groups.uploadEventCover": "Tải lên ảnh bìa sự kiện",
+    "groups.createEventDescription": "Tạo một sự kiện mới cho các thành viên nhóm của bạn",
+    "groups.done": "Hoàn thành",
+    "groups.searchFriends": "Tìm kiếm bạn bè",
+    "groups.settings": "Cài đặt nhóm",
+    "groups.settingsDescription": "Quản lý cài đặt và quyền của nhóm",
+    "groups.backToGroup": "Quay lại nhóm",
+    "groups.general": "Chung",
+    "groups.moderation": "Kiểm duyệt",
+    "groups.dangerZone": "Khu vực nguy hiểm",
+    "groups.dangerZoneDescription": "Những hành động này không thể hoàn tác. Hãy cẩn thận.",
+    "groups.basicInfo": "Thông tin cơ bản",
+    "groups.basicInfoDescription": "Thiết lập thông tin cơ bản về nhóm của bạn",
+    "groups.groupImages": "Hình ảnh nhóm",
+    "groups.groupImagesDescription": "Tải lên hình ảnh cho nhóm của bạn",
+    "groups.groupAvatar": "Ảnh đại diện nhóm",
+    "groups.uploadPhoto": "Tải lên ảnh",
+    "groups.uploadCover": "Tải lên ảnh bìa",
+    "groups.addRule": "Thêm quy tắc",
+    "groups.add": "Thêm",
+    "groups.saveChanges": "Lưu thay đổi",
+    "groups.changesSaved": "Đã lưu thay đổi thành công",
+    "groups.deleteGroup": "Xóa nhóm",
+    "groups.deleteGroupDescription": "Khi bạn xóa một nhóm, không thể hoàn tác. Hãy chắc chắn.",
+    "groups.deleteGroupTitle": "Xóa nhóm",
+    "groups.deleteGroupConfirmation": "Bạn có chắc chắn muốn xóa nhóm này? Tất cả nội dung sẽ bị xóa vĩnh viễn.",
+    "groups.deleteGroupWarning": "Hành động này không thể hoàn tác.",
+    "groups.groupDeleted": "Đã xóa nhóm thành công",
+    "groups.transferOwnershipTitle": "Chuyển quyền sở hữu nhóm",
+    "groups.transferOwnershipDescription": "Chọn một thành viên để chuyển quyền sở hữu nhóm",
+    "groups.transfer": "Chuyển",
+    "groups.ownershipTransferred": "Đã chuyển quyền sở hữu nhóm thành công",
+    "groups.manageMembers": "Quản lý thành viên",
+    "groups.manageMembersDescription": "Thêm hoặc xóa thành viên và gán vai trò",
+    "groups.removeMod": "Xóa quyền điều hành",
+    "groups.makeMod": "Đặt làm người điều hành",
+    "groups.removeModTitle": "Xóa người điều hành",
+    "groups.makeModTitle": "Đặt làm người điều hành",
+    "groups.removeModDescription": "Bạn có chắc chắn muốn xóa quyền điều hành của {name}?",
+    "groups.makeModDescription": "Bạn có chắc chắn muốn đặt {name} làm người điều hành?",
+    "groups.remove": "Xóa",
+    "groups.removeMemberTitle": "Xóa thành viên",
+    "groups.removeMemberDescription": "Bạn có chắc chắn muốn xóa {name} khỏi nhóm?",
+    "groups.inviteMembers": "Mời thành viên",
+    "groups.contentModeration": "Kiểm duyệt nội dung",
+    "groups.contentModerationDescription": "Quản lý phê duyệt nội dung và nội dung bị báo cáo",
+    "groups.approvalSettings": "Cài đặt phê duyệt",
+    "groups.approvalSettingsDescription": "Kiểm soát nội dung nào cần phê duyệt trước khi được đăng",
+    "groups.approveNewMembers": "Phê duyệt thành viên mới",
+    "groups.approveNewMembersDescription": "Yêu cầu quản trị viên phê duyệt thành viên mới",
+    "groups.approveNewPosts": "Phê duyệt bài đăng mới",
+    "groups.approveNewPostsDescription": "Yêu cầu quản trị viên phê duyệt bài đăng mới",
+    "groups.reportedContent": "Nội dung bị báo cáo",
+    "groups.reportedContentDescription": "Xem xét và thực hiện hành động đối với nội dung bị báo cáo",
+    "groups.reportedBy": "Được báo cáo bởi {name}",
+    "groups.pending": "Đang chờ",
+    "groups.reviewed": "Đã xem xét",
+    "groups.contentType": "Loại nội dung",
+    "groups.post": "Bài đăng",
+    "groups.comment": "Bình luận",
+    "groups.reason": "Lý do",
+    "groups.ignore": "Bỏ qua",
+    "groups.removeContent": "Xóa nội dung",
+    "groups.notificationSettings": "Cài đặt thông báo",
+    "groups.notificationSettingsDescription": "Kiểm soát thông báo bạn nhận được từ nhóm này",
+    "groups.newMemberNotifications": "Thông báo thành viên mới",
+    "groups.newMemberNotificationsDescription": "Nhận thông báo khi có người tham gia nhóm",
+    "groups.newPostNotifications": "Thông báo bài đăng mới",
+    "groups.newPostNotificationsDescription": "Nhận thông báo khi có người đăng bài trong nhóm",
+    "groups.commentNotifications": "Thông báo bình luận",
+    "groups.commentNotificationsDescription": "Nhận thông báo khi có người bình luận về bài đăng của bạn",
+    "groups.eventNotifications": "Thông báo sự kiện",
+    "groups.eventNotificationsDescription": "Nhận thông báo về sự kiện sắp tới",
+    "groups.createGroup": "Tạo nhóm",
+    "groups.creating": "Đang tạo...",
+    "groups.rulesDescription": "Đặt quy tắc cho các thành viên nhóm của bạn tuân theo",
+    "groups.noRulesYet": "Chưa có quy tắc nào được thêm. Thêm một số quy tắc để giúp thành viên hiểu những gì được mong đợi.",
+    "groups.myGroups": "Nhóm của tôi",
+    "groups.createdByYou": "Được tạo bởi bạn",
+    "groups.adminRights": "Quyền quản trị",
+    "groups.allGroups": "Tất cả nhóm",
+    "groups.owner": "Chủ sở hữu",
+    "groups.pendingPosts": "bài đăng đang chờ",
+    "groups.pendingMembers": "thành viên đang chờ",
+    "groups.unreadMessages": "tin nhắn chưa đọc",
+    "groups.reviewPosts": "Xem xét bài đăng",
+    "groups.reviewMembers": "Xem xét thành viên",
+    "groups.enableNotifications": "Bật thông báo",
+    "groups.edit": "Chỉnh sửa nhóm",
+    "groups.editGroup": "Chỉnh sửa nhóm",
+    "groups.noCreatedGroups": "Bạn chưa tạo nhóm nào",
+    "groups.noAdminGroups": "Bạn không có quyền quản trị trong bất kỳ nhóm nào",
+    "groups.adminGroupsDescription": "Khi bạn được đặt làm quản trị viên của một nhóm, nó sẽ xuất hiện ở đây",
+    "groups.noSearchResults": "Không có nhóm nào phù hợp với tìm kiếm của bạn",
+    "groups.tryDifferentSearch": "Thử một từ khóa tìm kiếm khác",
+    "groups.groupManagement": "Quản lý nhóm",
+    "groups.groupManagementDescription": "Tạo và quản lý nhóm của bạn",
+    "groups.invitations": "Lời mời",
+    "groups.noPermission": "Bạn không có quyền chỉnh sửa nhóm này",
+    "groups.backToGroups": "Quay lại nhóm",
+    "groups.savingError": "Đã xảy ra lỗi khi lưu thay đổi của bạn. Vui lòng thử lại.",
+    "groups.saving": "Đang lưu...",
+    "groups.title": "Nhóm",
+    "groups.groupSettings": "Cài đặt nhóm",
+    "groups.changeCover": "Đổi ảnh bìa",
 
     // Search
     "search.keywords": "Từ khóa",
@@ -358,11 +669,9 @@ const translations: Record<Language, Record<string, string>> = {
     "messages.send": "Gửi",
     "messages.typeMessage": "Nhập tin nhắn...",
     "messages.noMessages": "Chưa có tin nhắn nào.",
-    "messages.noSearchResults":
-      "Không có tin nhắn nào phù hợp với tìm kiếm của bạn.",
+    "messages.noSearchResults": "Không có tin nhắn nào phù hợp với tìm kiếm của bạn.",
     "messages.noConversations": "Chưa có cuộc trò chuyện nào.",
-    "messages.selectConversation":
-      "Chọn một cuộc trò chuyện để bắt đầu nhắn tin",
+    "messages.selectConversation": "Chọn một cuộc trò chuyện để bắt đầu nhắn tin",
     "messages.userAvatar": "Ảnh đại diện người dùng",
     "messages.user.janeDoe": "Jane Doe",
     "messages.user.johnSmith": "John Smith",
@@ -374,19 +683,13 @@ const translations: Record<Language, Record<string, string>> = {
     "messages.sampleText.thanks": "Cảm ơn vì đã giúp đỡ với dự án!",
     "messages.sampleText.coffee": "Hẹn gặp nhau uống cà phê vào tuần sau nhé!",
     "messages.sampleText.dayGoing": "Chào! Ngày hôm nay của bạn thế nào?",
-    "messages.sampleText.appFeatures":
-      "Chào Jane! Mình khỏe, cảm ơn đã hỏi thăm. Mình đang làm một số tính năng mới cho ứng dụng.",
-    "messages.sampleText.whatFeatures":
-      "Nghe thú vị đấy! Bạn đang làm những tính năng gì vậy?",
-    "messages.sampleText.messagingSystem":
-      "Mình đang thêm hệ thống nhắn tin mới với khả năng chia sẻ phương tiện tốt hơn.",
-    "messages.sampleText.testIt":
-      "Nghe thật tuyệt! Mình rất muốn thử nó khi nó sẵn sàng.",
+    "messages.sampleText.appFeatures": "Chào Jane! Mình khỏe, cảm ơn đã hỏi thăm. Mình đang làm một số tính năng mới cho ứng dụng.",
+    "messages.sampleText.whatFeatures": "Nghe thú vị đấy! Bạn đang làm những tính năng gì vậy?",
+    "messages.sampleText.messagingSystem": "Mình đang thêm hệ thống nhắn tin mới với khả năng chia sẻ phương tiện tốt hơn.",
+    "messages.sampleText.testIt": "Nghe thật tuyệt! Mình rất muốn thử nó khi nó sẵn sàng.",
     "messages.sampleText.notYet": "Chưa! Nó có hay không?",
-    "messages.sampleText.tuesday":
-      "Nghe tốt đấy! Thứ Ba lúc 2 giờ chiều được không?",
-    "messages.sampleText.usualPlace":
-      "Tuyệt! Hẹn gặp tại địa điểm thường lệ nhé.",
+    "messages.sampleText.tuesday": "Nghe tốt đấy! Thứ Ba lúc 2 giờ chiều được không?",
+    "messages.sampleText.usualPlace": "Tuyệt! Hẹn gặp tại địa điểm thường lệ nhé.",
 
     // Time translations
     "time.just now": "vừa xong",
@@ -440,11 +743,9 @@ const translations: Record<Language, Record<string, string>> = {
     "profile.relationship": "Tình trạng mối quan hệ",
     "profile.joined": "Đã tham gia",
     "profile.editProfile": "Chỉnh sửa trang cá nhân",
-    "profile.editProfileDesc":
-      "Cập nhật thông tin cá nhân và hình ảnh của bạn.",
+    "profile.editProfileDesc": "Cập nhật thông tin cá nhân và hình ảnh của bạn.",
     "profile.basicInfo": "Thông tin cơ bản",
     "profile.details": "Chi tiết",
-    "profile.photos": "Hình ảnh",
     "profile.name": "Tên",
     "profile.namePlaceholder": "Tên đầy đủ của bạn",
     "profile.bio": "Tiểu sử",
@@ -506,7 +807,7 @@ const translations: Record<Language, Record<string, string>> = {
     "post.shareViaEmail": "Chia sẻ qua email",
     "post.shareOptions": "Tùy chọn chia sẻ",
     "post.closeShareOptions": "Đóng tùy chọn chia sẻ",
-    "post.viewPostDetails": "View Post Details",
+    "post.viewPostDetails": "Xem chi tiết bài viết",
 
     // Friends Page
     "friends.title": "Bạn bè",
@@ -522,24 +823,13 @@ const translations: Record<Language, Record<string, string>> = {
     "friends.noSearchResults": "Không tìm thấy bạn bè phù hợp.",
     "friends.noFriends": "Bạn chưa có bạn bè nào.",
     "friends.noRequests": "Bạn không có lời mời kết bạn nào.",
-    "friends.noSuggestions":
-      "Hiện tại chúng tôi không có gợi ý kết bạn nào cho bạn.",
+    "friends.noSuggestions": "Hiện tại chúng tôi không có gợi ý kết bạn nào cho bạn.",
     "friends.message": "Nhắn tin",
     "friends.accept": "Chấp nhận",
     "friends.decline": "Từ chối",
     "friends.addFriend": "Kết bạn",
     "friends.online": "Trực tuyến",
     "friends.offline": "Ngoại tuyến",
-
-    // Groups Page
-    "groups.title": "Nhóm",
-    "groups.create": "Tạo nhóm",
-    "groups.myGroups": "Nhóm của tôi",
-    "groups.discover": "Khám phá",
-    "groups.yourGroups": "Nhóm của bạn",
-    "groups.upcomingEvents": "Sự kiện sắp tới",
-    "groups.recentDiscussions": "Thảo luận gần đây",
-    "groups.suggested": "Nhóm được đề xuất",
 
     // Games Page
     "games.title": "Trò chơi",
@@ -567,8 +857,7 @@ const translations: Record<Language, Record<string, string>> = {
     "games.maintenance": "Bảo trì",
     "games.undefined": "Không xác định",
     "games.noGamesFound": "Không tìm thấy trò chơi",
-    "games.noGamesFoundDesc":
-      "Không có trò chơi nào phù hợp với tìm kiếm của bạn. Hãy thử tìm kiếm khác hoặc xem tất cả trò chơi.",
+    "games.noGamesFoundDesc": "Không có trò chơi nào phù hợp với tìm kiếm của bạn. Hãy thử tìm kiếm khác hoặc xem tất cả trò chơi.",
     "games.clearSearch": "Xóa tìm kiếm",
     "games.clearFilters": "Xóa bộ lọc",
     "games.viewAll": "Xem tất cả",
@@ -591,88 +880,46 @@ const translations: Record<Language, Record<string, string>> = {
     "games.openToPlay": "Mở tệp để chơi",
 
     // Footer
-    "footer.copyright": "© 2023 PinkSocial",
-  },
+    "footer.copyright": "© 2023 PinkSocial"
+  }
 };
 
-const LanguageContext = createContext<LanguageContextType | undefined>(
-  undefined,
+const LanguageContext = createContext<LanguageContextType>(
+    {} as LanguageContextType
 );
 
-// Create the hook first, then use it in the provider
-export const useLanguage = (): LanguageContextType => {
-  const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error("useLanguage must be used within a LanguageProvider");
-  }
-  return context;
-};
-
-// Helper function to detect user's country based on timezone
-const detectUserCountry = async (): Promise<string> => {
-  try {
-    // Use the Geolocation API to get user's location
-    const response = await fetch("https://ipapi.co/json/");
-    const data = await response.json();
-    return data.country_code;
-  } catch (error) {
-    console.error("Error detecting user country:", error);
-    // Fallback to timezone detection if API fails
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    // Vietnam timezone is Asia/Ho_Chi_Minh
-    return timeZone.includes("Ho_Chi_Minh") ? "VN" : "OTHER";
-  }
-};
-
-// Use const declaration for consistent component export
-const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setInternalLanguage] = useState<Language>(() => {
-    // Try to get language from localStorage first
-    const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-    if (
-      savedLanguage &&
-      (savedLanguage === "english" || savedLanguage === "vietnamese")
-    ) {
-      return savedLanguage as Language;
+export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window !== "undefined") {
+      const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+      return (savedLanguage as Language) || "english";
     }
-    // Default to english until we detect location
     return "english";
   });
 
-  // Set language and save to localStorage
   const setLanguage = (newLanguage: Language) => {
-    setInternalLanguage(newLanguage);
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, newLanguage);
+    setLanguageState(newLanguage);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(LANGUAGE_STORAGE_KEY, newLanguage);
+    }
   };
 
-  // Effect to detect user's country and set language if not already set
-  useEffect(() => {
-    const detectAndSetLanguage = async () => {
-      // Only run country detection if no language preference is saved
-      if (!localStorage.getItem(LANGUAGE_STORAGE_KEY)) {
-        const countryCode = await detectUserCountry();
-        // If user is in Vietnam, set language to Vietnamese
-        if (countryCode === "VN") {
-          setLanguage("vietnamese");
-        } else {
-          setLanguage("english");
-        }
-      }
-    };
-
-    detectAndSetLanguage();
-  }, []);
-
-  // Define t function directly in the component body
   const t = (key: string): string => {
-    return translations[language][key] || key;
+    const translation = translations[language][key];
+    if (!translation) {
+      console.warn(`Translation missing for key: ${key} in ${language}`);
+      const englishTranslation = translations.english[key];
+      if (englishTranslation) return englishTranslation;
+      return key;
+    }
+    return translation;
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
-      {children}
-    </LanguageContext.Provider>
+      <LanguageContext.Provider value={{ language, setLanguage, t }}>
+        {children}
+      </LanguageContext.Provider>
   );
 };
 
-export { LanguageProvider };
+export const useLanguage = () => useContext(LanguageContext);
