@@ -12,13 +12,9 @@ if (process.env.TEMPO === "true") {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base:
-    process.env.NODE_ENV === "development"
-      ? "/"
-      : process.env.VITE_BASE_PATH || "/",
+  base: process.env.NODE_ENV === "development" ? "/" : process.env.VITE_BASE_PATH || "/",
   optimizeDeps: {
     entries: ["src/main.tsx", "src/tempobook/**/*"],
-    include: ["react", "react-dom", "react-router-dom", "lucide-react"],
   },
   plugins: [
     react({
@@ -35,36 +31,5 @@ export default defineConfig({
   server: {
     // @ts-ignore
     allowedHosts: true,
-  },
-  build: {
-    // Optimize build size
-    minify: "esbuild",
-    // esbuild options
-    esbuildOptions: {
-      drop: ["console", "debugger"],
-    },
-    // Split chunks for better caching
-    rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          if (id.includes("node_modules")) {
-            if (
-              id.includes("react") ||
-              id.includes("react-dom") ||
-              id.includes("react-router-dom")
-            ) {
-              return "vendor";
-            }
-            return "vendor-other";
-          }
-          if (id.includes("/components/ui/")) {
-            return "ui";
-          }
-          if (id.includes("/lib/utils")) {
-            return "utils";
-          }
-        },
-      },
-    },
-  },
+  }
 });
