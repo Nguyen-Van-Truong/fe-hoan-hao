@@ -7,26 +7,29 @@ import { BrowserRouter } from "react-router-dom";
 import { TempoDevtools } from "tempo-devtools";
 TempoDevtools.init();
 
-// Fix for useLayoutEffect warning in SSR
-// This ensures the check works in all environments
-if (typeof window === "undefined" || typeof document === "undefined") {
-  // @ts-ignore
-  React.useLayoutEffect = React.useEffect;
+// SSR safety: Apply this fix before any other code runs
+// This needs to happen before any component imports that might use useLayoutEffect
+if (
+  typeof window === "undefined" ||
+  !window ||
+  typeof document === "undefined" ||
+  !document
+) {
+  // Create a noop function for useLayoutEffect during SSR
+  const noop = () => {};
+  // @ts-ignore - Replace React's useLayoutEffect with useEffect for SSR
+  React.useLayoutEffect = noop;
 }
-
-// Alternative approach that's more reliable for Vercel deployments
-const useIsomorphicLayoutEffect =
-  typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
-// Replace React's useLayoutEffect to make it safe for SSR
-// @ts-ignore
-React.useLayoutEffect = useIsomorphicLayoutEffect;
 
 const basename = import.meta.env.BASE_URL;
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <BrowserRouter basename={basename}>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-);
+// Only run client-side code if we're in the browser
+if (typeof document !== "undefined" && document.getElementById("root")) {
+  ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <BrowserRouter basename={basename}>
+        <App />
+      </BrowserRouter>
+    </React.StrictMode>,
+  );
+}
