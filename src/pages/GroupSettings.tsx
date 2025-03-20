@@ -37,7 +37,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
   Users,
@@ -51,9 +50,6 @@ import {
   UserMinus,
   UserPlus,
   AlertTriangle,
-  FileText,
-  MessageSquare,
-  Flag,
   X,
   Plus,
 } from "lucide-react";
@@ -535,12 +531,8 @@ const GroupSettings = () => {
                                   </DialogTitle>
                                   <DialogDescription>
                                     {member.role === "moderator"
-                                      ? t("groups.removeModDescription", {
-                                          name: member.name,
-                                        })
-                                      : t("groups.makeModDescription", {
-                                          name: member.name,
-                                        })}
+                                      ? t("groups.removeModDescription")
+                                      : t("groups.makeModDescription")}
                                   </DialogDescription>
                                 </DialogHeader>
                                 <DialogFooter>
@@ -574,9 +566,7 @@ const GroupSettings = () => {
                                     {t("groups.removeMemberTitle")}
                                   </DialogTitle>
                                   <DialogDescription>
-                                    {t("groups.removeMemberDescription", {
-                                      name: member.name,
-                                    })}
+                                    {t("groups.removeMemberDescription")}
                                   </DialogDescription>
                                 </DialogHeader>
                                 <DialogFooter>
@@ -674,9 +664,7 @@ const GroupSettings = () => {
                                   </Avatar>
                                   <div>
                                     <p className="text-sm font-medium">
-                                      {t("groups.reportedBy", {
-                                        name: report.reportedBy,
-                                      })}
+                                      {t("groups.reportedBy")}
                                     </p>
                                     <p className="text-xs text-gray-500">
                                       {new Date(report.date).toLocaleString()}
