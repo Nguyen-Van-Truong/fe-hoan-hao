@@ -42,12 +42,11 @@ export default function GameStatusBadge({ status }: GameStatusBadgeProps) {
     }
   };
 
-  const { label, variant, icon, className } = getStatusConfig();
+  const { label, icon, className } = getStatusConfig();
 
   return (
     <Badge
-      variant={variant}
-      className={`flex items-center text-xs font-medium ${className}`}
+        className={`flex items-center text-xs font-medium ${className}`}
     >
       {icon}
       {label}
