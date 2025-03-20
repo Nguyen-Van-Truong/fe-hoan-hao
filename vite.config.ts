@@ -38,12 +38,10 @@ export default defineConfig({
   },
   build: {
     // Optimize build size
-    minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
+    minify: "esbuild",
+    // esbuild options
+    esbuildOptions: {
+      drop: ["console", "debugger"],
     },
     // Split chunks for better caching
     rollupOptions: {
