@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { RotateCcw, RefreshCw, Trophy, Clock } from "lucide-react";
 
-type Player = "X" | "O" | null;
+type Player = "X" | "O" | "draw" | null;
 type BoardState = Player[][];
 
 interface GameHistoryItem {

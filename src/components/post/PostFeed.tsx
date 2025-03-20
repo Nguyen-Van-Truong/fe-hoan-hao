@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Post {
   id: string;
-  type: "regular" | "gallery";
+  type: "regular" | "gallery" | string;
   author: {
     name: string;
     avatar: string;
@@ -36,7 +36,7 @@ const initialPosts = [
       timestamp: "2 hours ago",
     },
     content:
-      "Just had the most amazing day! The weather was perfect for a picnic in the park. Anyone else enjoying this beautiful day? #SunnyDays #WeekendVibes",
+        "Just had the most amazing day! The weather was perfect for a picnic in the park. Anyone else enjoying this beautiful day? #SunnyDays #WeekendVibes",
     engagement: {
       likes: 42,
       comments: 12,
@@ -52,7 +52,7 @@ const initialPosts = [
       timestamp: "3 hours ago",
     },
     content:
-      "Just had an amazing weekend with friends! Here are some highlights from our trip to the mountains. The views were breathtaking and the weather was perfect!",
+        "Just had an amazing weekend with friends! Here are some highlights from our trip to the mountains. The views were breathtaking and the weather was perfect!",
     engagement: {
       likes: 124,
       comments: 43,
@@ -79,7 +79,7 @@ const initialPosts = [
       timestamp: "5 hours ago",
     },
     content:
-      "Just finished reading an amazing book! I highly recommend 'The Midnight Library' by Matt Haig. Has anyone else read it? What did you think? #BookRecommendations #Reading",
+        "Just finished reading an amazing book! I highly recommend 'The Midnight Library' by Matt Haig. Has anyone else read it? What did you think? #BookRecommendations #Reading",
     engagement: {
       likes: 78,
       comments: 25,
@@ -95,7 +95,7 @@ const initialPosts = [
       timestamp: "Yesterday",
     },
     content:
-      "Just got a promotion at work! So excited for this new chapter in my career. Thanks to everyone who supported me along the way! #CareerMilestone #Grateful",
+        "Just got a promotion at work! So excited for this new chapter in my career. Thanks to everyone who supported me along the way! #CareerMilestone #Grateful",
     engagement: {
       likes: 156,
       comments: 64,
@@ -130,7 +130,7 @@ const initialPosts = [
       timestamp: "6 hours ago",
     },
     content:
-      "Cooking class was amazing today! Made these two dishes from scratch. #FoodLover #Cooking",
+        "Cooking class was amazing today! Made these two dishes from scratch. #FoodLover #Cooking",
     engagement: {
       likes: 112,
       comments: 28,
@@ -141,79 +141,6 @@ const initialPosts = [
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=80",
     ],
     totalImages: 2,
-  },
-];
-
-// Additional posts to load when scrolling
-const additionalPosts = [
-  {
-    id: "7",
-    type: "gallery",
-    author: {
-      name: "David Kim",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
-      timestamp: "8 hours ago",
-    },
-    content:
-      "Weekend road trip with the family. These three spots were our favorites! #FamilyTime #RoadTrip",
-    engagement: {
-      likes: 143,
-      comments: 37,
-      shares: 14,
-    },
-    images: [
-      "https://images.unsplash.com/photo-1533227268428-f9ed0900fb3b?w=500&q=80",
-      "https://images.unsplash.com/photo-1566217688581-b2191944c2f9?w=500&q=80",
-      "https://images.unsplash.com/photo-1528127269322-539801943592?w=500&q=80",
-    ],
-    totalImages: 3,
-  },
-  {
-    id: "8",
-    type: "gallery",
-    author: {
-      name: "Sophia Martinez",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sophia",
-      timestamp: "Yesterday",
-    },
-    content:
-      "My garden is finally blooming! Four months of hard work paying off. #GardenLife #Spring",
-    engagement: {
-      likes: 98,
-      comments: 22,
-      shares: 5,
-    },
-    images: [
-      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&q=80",
-      "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=500&q=80",
-      "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=500&q=80",
-      "https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?w=500&q=80",
-    ],
-    totalImages: 4,
-  },
-  {
-    id: "9",
-    type: "gallery",
-    author: {
-      name: "Alex Thompson",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
-      timestamp: "2 days ago",
-    },
-    content:
-      "My art exhibition is open! Here's a preview of five of my favorite pieces. #ArtExhibition #ContemporaryArt",
-    engagement: {
-      likes: 187,
-      comments: 53,
-      shares: 29,
-    },
-    images: [
-      "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=500&q=80",
-      "https://images.unsplash.com/photo-1549490349-8643362247b5?w=500&q=80",
-      "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=500&q=80",
-      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500&q=80",
-      "https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?w=500&q=80",
-    ],
-    totalImages: 5,
   },
 ];
 
@@ -340,12 +267,12 @@ const PostFeed = ({ posts: propPosts }: PostFeedProps) => {
   // Set up intersection observer for infinite scrolling
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMorePosts();
-        }
-      },
-      { threshold: 1.0 },
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            loadMorePosts();
+          }
+        },
+        { threshold: 1.0 },
     );
 
     if (loaderRef.current) {
@@ -360,33 +287,33 @@ const PostFeed = ({ posts: propPosts }: PostFeedProps) => {
   }, [loadMorePosts]);
 
   return (
-    <div className="w-full space-y-4 bg-gray-50 p-4">
-      {posts.map((post) => (
-        <div key={post.id}>
-          <PhotoGalleryPost
-            author={post.author}
-            content={post.content}
-            images={post.type === "gallery" ? post.images : undefined}
-            totalImages={post.type === "gallery" ? post.totalImages : 0}
-            likes={post.engagement.likes}
-            comments={post.engagement.comments}
-            shares={post.engagement.shares}
-          />
-        </div>
-      ))}
+      <div className="w-full space-y-4 bg-gray-50 p-4">
+        {posts.map((post) => (
+            <div key={post.id}>
+              <PhotoGalleryPost
+                  author={post.author}
+                  content={post.content}
+                  images={post.type === "gallery" ? post.images : undefined}
+                  totalImages={post.type === "gallery" ? post.totalImages : 0}
+                  likes={post.engagement.likes}
+                  comments={post.engagement.comments}
+                  shares={post.engagement.shares}
+              />
+            </div>
+        ))}
 
-      {/* Loading indicator */}
-      <div ref={loaderRef} className="flex justify-center py-4">
-        {loading && (
-          <div className="flex flex-col items-center">
-            <Loader2 className="h-8 w-8 animate-spin text-pink-500" />
-            <p className="text-sm text-gray-500 mt-2">
-              {t("post.loadingMorePosts") || "Loading more posts..."}
-            </p>
-          </div>
-        )}
+        {/* Loading indicator */}
+        <div ref={loaderRef} className="flex justify-center py-4">
+          {loading && (
+              <div className="flex flex-col items-center">
+                <Loader2 className="h-8 w-8 animate-spin text-pink-500" />
+                <p className="text-sm text-gray-500 mt-2">
+                  {t("post.loadingMorePosts") || "Loading more posts..."}
+                </p>
+              </div>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 
