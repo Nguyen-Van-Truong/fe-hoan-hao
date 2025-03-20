@@ -48,10 +48,23 @@ export default defineConfig({
     // Split chunks for better caching
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ["react", "react-dom", "react-router-dom"],
-          ui: ["@/components/ui"],
-          utils: ["@/lib/utils"],
+        manualChunks: (id) => {
+          if (id.includes("node_modules")) {
+            if (
+              id.includes("react") ||
+              id.includes("react-dom") ||
+              id.includes("react-router-dom")
+            ) {
+              return "vendor";
+            }
+            return "vendor-other";
+          }
+          if (id.includes("/components/ui/")) {
+            return "ui";
+          }
+          if (id.includes("/lib/utils")) {
+            return "utils";
+          }
         },
       },
     },
