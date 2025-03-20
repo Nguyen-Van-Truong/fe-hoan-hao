@@ -9,12 +9,7 @@ TempoDevtools.init();
 
 // SSR safety: Apply this fix before any other code runs
 // This needs to happen before any component imports that might use useLayoutEffect
-if (
-  typeof window === "undefined" ||
-  !window ||
-  typeof document === "undefined" ||
-  !document
-) {
+if (typeof window === "undefined" || typeof document === "undefined") {
   // Create a noop function for useLayoutEffect during SSR
   const noop = () => {};
   // @ts-ignore - Replace React's useLayoutEffect with useEffect for SSR
