@@ -1,13 +1,13 @@
 import path from "path";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react"; // Use Babel-based plugin for React
 import { tempo } from "tempo-devtools/dist/vite";
 
 const conditionalPlugins: [string, Record<string, any>][] = [];
 
 // @ts-ignore
 if (process.env.TEMPO === "true") {
-  conditionalPlugins.push(["tempo-devtools/swc", {}]);
+  conditionalPlugins.push(["tempo-devtools", {}]); // Ensure the correct plugin name
 }
 
 // https://vitejs.dev/config/
