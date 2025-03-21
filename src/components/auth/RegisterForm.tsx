@@ -6,24 +6,31 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import { Loader2, Calendar } from "lucide-react";
+import { registerUser } from "@/api";
+import { toast } from "react-hot-toast";
 
 // Schema xác thực
 const registerSchema = z
   .object({
-    name: z.string().min(2, "Tên phải có ít nhất 2 ký tự"),
+    fullName: z.string().min(2, "Họ tên phải có ít nhất 2 ký tự"),
+    username: z.string().min(3, "Tên người dùng phải có ít nhất 3 ký tự"),
     email: z.string().email("Email không hợp lệ"),
     password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
     confirmPassword: z
       .string()
       .min(6, "Xác nhận mật khẩu phải có ít nhất 6 ký tự"),
+    dateOfBirth: z.string().min(1, "Ngày sinh không được để trống"),
+    phoneNumber: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Mật khẩu không khớp",
     path: ["confirmPassword"],
   });
 
-type RegisterFormValues = z.infer<typeof registerSchema>;
+type RegisterFormValues = z.infer<typeof registerSchema> & {
+  countryCode: string;
+};
 
 const RegisterForm = () => {
   const { register: registerUser } = useAuth();
@@ -37,19 +44,40 @@ const RegisterForm = () => {
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name: "",
+      fullName: "",
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
+      dateOfBirth: "",
+      phoneNumber: "",
+      countryCode: "+84",
     },
   });
 
   const onSubmit = async (data: RegisterFormValues) => {
     setIsSubmitting(true);
     try {
-      const success = await registerUser(data.name, data.email, data.password);
-      if (success) {
-        navigate("/login");
+      // Gọi API đăng ký
+      const userData = {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        fullName: data.fullName,
+        dateOfBirth: data.dateOfBirth,
+        countryCode: data.countryCode,
+        phoneNumber: data.phoneNumber || "",
+      };
+
+      const response = await registerUser(userData);
+
+      toast.success("Đăng ký thành công! Vui lòng đăng nhập.");
+      navigate("/login");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Đã xảy ra lỗi khi đăng ký");
       }
     } finally {
       setIsSubmitting(false);
@@ -74,17 +102,36 @@ const RegisterForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="name" className="text-sm font-medium">
+          <label htmlFor="fullName" className="text-sm font-medium">
             Họ tên
           </label>
           <Input
-            id="name"
+            id="fullName"
             placeholder="Nguyễn Văn A"
-            {...register("name")}
-            className={errors.name ? "border-destructive" : ""}
+            {...register("fullName")}
+            className={errors.fullName ? "border-destructive" : ""}
           />
-          {errors.name && (
-            <p className="text-destructive text-sm">{errors.name.message}</p>
+          {errors.fullName && (
+            <p className="text-destructive text-sm">
+              {errors.fullName.message}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="username" className="text-sm font-medium">
+            Tên người dùng
+          </label>
+          <Input
+            id="username"
+            placeholder="username123"
+            {...register("username")}
+            className={errors.username ? "border-destructive" : ""}
+          />
+          {errors.username && (
+            <p className="text-destructive text-sm">
+              {errors.username.message}
+            </p>
           )}
         </div>
 
@@ -100,6 +147,52 @@ const RegisterForm = () => {
           />
           {errors.email && (
             <p className="text-destructive text-sm">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="dateOfBirth" className="text-sm font-medium">
+            Ngày sinh
+          </label>
+          <div className="relative">
+            <Input
+              id="dateOfBirth"
+              type="date"
+              {...register("dateOfBirth")}
+              className={errors.dateOfBirth ? "border-destructive" : ""}
+            />
+            <Calendar className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
+          </div>
+          {errors.dateOfBirth && (
+            <p className="text-destructive text-sm">
+              {errors.dateOfBirth.message}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="phoneNumber" className="text-sm font-medium">
+            Số điện thoại (tùy chọn)
+          </label>
+          <div className="flex">
+            <div className="w-20 mr-2">
+              <Input
+                id="countryCode"
+                defaultValue="+84"
+                {...register("countryCode")}
+              />
+            </div>
+            <Input
+              id="phoneNumber"
+              placeholder="0987654321"
+              {...register("phoneNumber")}
+              className={errors.phoneNumber ? "border-destructive" : ""}
+            />
+          </div>
+          {errors.phoneNumber && (
+            <p className="text-destructive text-sm">
+              {errors.phoneNumber.message}
+            </p>
           )}
         </div>
 
