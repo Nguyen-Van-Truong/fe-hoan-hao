@@ -112,14 +112,21 @@ const PostDetail: React.FC<PostDetailProps> = () => {
 
   // Handlers for comment interactions in PostDetail
   const handleCommentAdded = (newComment: Comment) => {
-    setPost((prevPost) => ({
-      ...prevPost,
-      comments: [newComment, ...prevPost.comments],
-      engagement: {
-        ...prevPost.engagement,
-        comments: prevPost.engagement.comments + 1,
-      },
-    }));
+    setPost((prevPost) => {
+      // Ensure newComment has replies property
+      const commentWithReplies = {
+        ...newComment,
+        replies: newComment.replies || [],
+      };
+      return {
+        ...prevPost,
+        comments: [commentWithReplies, ...prevPost.comments],
+        engagement: {
+          ...prevPost.engagement,
+          comments: prevPost.engagement.comments + 1,
+        },
+      };
+    });
   };
 
   const handleCommentLiked = (commentId: string) => {
