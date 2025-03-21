@@ -1,8 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PhotoGalleryPost from "./PhotoGalleryPost";
-import { Loader2 } from "lucide-react";
+import { Loader2, TrendingUp, Clock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Comment, Reply } from "./types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { PostData } from "./types";
 
@@ -10,6 +17,7 @@ type Post = PostData;
 
 interface PostFeedProps {
   posts?: Post[];
+  showFilters?: boolean;
 }
 
 // Initial posts data
@@ -227,11 +235,19 @@ const generateRandomPosts = (count: number): Post[] => {
   return randomPosts;
 };
 
-const PostFeed = ({ posts: propPosts }: PostFeedProps) => {
+type SortOption = "newest" | "popular";
+type TimeRange = "day" | "week" | "month" | "year";
+
+const PostFeed = ({ posts: propPosts, showFilters = true }: PostFeedProps) => {
   const { t } = useLanguage();
   const [posts, setPosts] = useState<Post[]>(propPosts || initialPosts);
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>(
+    propPosts || initialPosts,
+  );
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState<SortOption>("newest");
+  const [timeRange, setTimeRange] = useState<TimeRange>("week");
   const loaderRef = useRef<HTMLDivElement>(null);
 
   // Function to load more posts
@@ -250,6 +266,30 @@ const PostFeed = ({ posts: propPosts }: PostFeedProps) => {
       setLoading(false);
     }, 1500); // Simulate network delay
   }, [loading, page]);
+
+  // Apply filters to posts
+  useEffect(() => {
+    let sorted = [...posts];
+
+    // Sort by selected option
+    if (sortBy === "newest") {
+      // For demo purposes, we'll just use the existing order as "newest"
+      // In a real app, you would sort by actual timestamps
+    } else if (sortBy === "popular") {
+      // Sort by engagement (likes + comments + shares)
+      sorted = sorted.sort((a, b) => {
+        const engagementA =
+          a.engagement.likes + a.engagement.comments + a.engagement.shares;
+        const engagementB =
+          b.engagement.likes + b.engagement.comments + b.engagement.shares;
+        return engagementB - engagementA;
+      });
+    }
+
+    // In a real app, you would filter by the selected time range
+    // For this demo, we'll just use the sorted posts
+    setFilteredPosts(sorted);
+  }, [posts, sortBy, timeRange]);
 
   // Set up intersection observer for infinite scrolling
   useEffect(() => {
@@ -337,9 +377,67 @@ const PostFeed = ({ posts: propPosts }: PostFeedProps) => {
     });
   };
 
+  const handleSortChange = (value: SortOption) => {
+    setSortBy(value);
+  };
+
+  const handleTimeRangeChange = (value: TimeRange) => {
+    setTimeRange(value);
+  };
+
   return (
     <div className="w-full space-y-4 bg-gray-50 p-4">
-      {posts.map((post) => (
+      {showFilters && (
+        <div className="flex items-center justify-between bg-white rounded-lg p-3 shadow-sm mb-4">
+          <h2 className="text-lg font-medium text-gray-700">
+            {t("post.feed") || "Feed"}
+          </h2>
+          <div className="flex gap-2">
+            <Select value={sortBy} onValueChange={handleSortChange}>
+              <SelectTrigger className="w-[140px] h-9 bg-white border-gray-200">
+                <div className="flex items-center gap-2">
+                  {sortBy === "newest" ? (
+                    <Clock className="h-4 w-4 text-gray-500" />
+                  ) : (
+                    <TrendingUp className="h-4 w-4 text-gray-500" />
+                  )}
+                  <SelectValue placeholder="Sort by" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">
+                  {t("post.newest") || "Newest"}
+                </SelectItem>
+                <SelectItem value="popular">
+                  {t("post.popular") || "Popular"}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={timeRange} onValueChange={handleTimeRangeChange}>
+              <SelectTrigger className="w-[120px] h-9 bg-white border-gray-200">
+                <SelectValue placeholder="Time range" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="day">
+                  {t("post.today") || "Today"}
+                </SelectItem>
+                <SelectItem value="week">
+                  {t("post.thisWeek") || "This Week"}
+                </SelectItem>
+                <SelectItem value="month">
+                  {t("post.thisMonth") || "This Month"}
+                </SelectItem>
+                <SelectItem value="year">
+                  {t("post.thisYear") || "This Year"}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      )}
+
+      {filteredPosts.map((post) => (
         <div key={post.id}>
           <PhotoGalleryPost
             postId={post.id}
