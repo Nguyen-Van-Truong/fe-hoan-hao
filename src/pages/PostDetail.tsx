@@ -42,6 +42,7 @@ const PostDetail: React.FC<PostDetailProps> = () => {
         content: "Trông thật tuyệt vời! Bạn đã đi đâu vậy?",
         timestamp: "1 hour ago",
         likes: 3,
+        replies: [],
       },
       {
         id: "2",
@@ -52,6 +53,7 @@ const PostDetail: React.FC<PostDetailProps> = () => {
         content: "Thật là một ngày đẹp! Tôi cũng đã đi leo núi hôm nay.",
         timestamp: "45 minutes ago",
         likes: 2,
+        replies: [],
       },
       {
         id: "3",
@@ -62,6 +64,7 @@ const PostDetail: React.FC<PostDetailProps> = () => {
         content: "Những bức ảnh thật tuyệt! Bạn đã sử dụng máy ảnh gì vậy?",
         timestamp: "30 minutes ago",
         likes: 1,
+        replies: [],
       },
       {
         id: "4",
@@ -73,6 +76,7 @@ const PostDetail: React.FC<PostDetailProps> = () => {
           "Tôi cũng muốn đến đó! Bạn có thể chia sẻ thêm thông tin về địa điểm này không?",
         timestamp: "15 minutes ago",
         likes: 0,
+        replies: [],
       },
     ],
   });

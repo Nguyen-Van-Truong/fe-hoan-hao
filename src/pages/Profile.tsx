@@ -114,6 +114,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
         "https://images.unsplash.com/photo-1473186578172-c141e6798cf4?w=500&q=80",
       ],
       totalImages: 3,
+      commentsList: [],
     },
     {
       id: "u2",
@@ -130,6 +131,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
         comments: 15,
         shares: 3,
       },
+      commentsList: [],
     },
     {
       id: "u3",
@@ -150,6 +152,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
         "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=500&q=80",
       ],
       totalImages: 1,
+      commentsList: [],
     },
   ]);
 
@@ -340,12 +343,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
               </TabsList>
 
               <TabsContent value="posts" className="mt-4">
-                <PostFeed
-                  posts={userPosts.map((post) => ({
-                    ...post,
-                    commentsList: post.commentsList || [],
-                  }))}
-                />
+                <PostFeed posts={userPosts} />
               </TabsContent>
 
               <TabsContent value="about" className="mt-4">
