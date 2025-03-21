@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Comment, Reply } from "@/components/post/types";
 import { useParams, useNavigate } from "react-router-dom";
 import LazyThreeColumnLayout from "../components/layout/LazyThreeColumnLayout";
 import { Avatar } from "../components/ui/avatar";
@@ -92,7 +93,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
   };
 
   // Mock posts specific to this user
-  const userPosts = [
+  const [userPosts, setUserPosts] = useState([
     {
       id: "u1",
       type: "gallery" as const,
@@ -150,7 +151,7 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
       ],
       totalImages: 1,
     },
-  ];
+  ]);
 
   // Mock photos for the photos tab
   const userPhotos = [
@@ -339,7 +340,12 @@ const Profile = ({ isCurrentUser = false }: ProfileProps) => {
               </TabsList>
 
               <TabsContent value="posts" className="mt-4">
-                <PostFeed posts={userPosts} />
+                <PostFeed
+                  posts={userPosts.map((post) => ({
+                    ...post,
+                    commentsList: post.commentsList || [],
+                  }))}
+                />
               </TabsContent>
 
               <TabsContent value="about" className="mt-4">

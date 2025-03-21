@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ThreeColumnLayout from "@/components/layout/ThreeColumnLayout";
 import PhotoGalleryPost from "@/components/post/PhotoGalleryPost";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Comment, Reply } from "@/components/post/types";
 
 interface PostDetailProps {}
 
@@ -17,7 +18,7 @@ const PostDetail: React.FC<PostDetailProps> = () => {
   const { t } = useLanguage();
 
   // Mock post data - in a real app, you would fetch this from an API
-  const post = {
+  const [post, setPost] = useState({
     id: postId || "1",
     author: {
       name: username || "Kevin",
@@ -74,7 +75,7 @@ const PostDetail: React.FC<PostDetailProps> = () => {
         likes: 0,
       },
     ],
-  };
+  });
 
   useEffect(() => {
     // Update page title for SEO
@@ -105,6 +106,42 @@ const PostDetail: React.FC<PostDetailProps> = () => {
     }
   }, [post]);
 
+  // Handlers for comment interactions in PostDetail
+  const handleCommentAdded = (newComment: Comment) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      comments: [newComment, ...prevPost.comments],
+      engagement: {
+        ...prevPost.engagement,
+        comments: prevPost.engagement.comments + 1,
+      },
+    }));
+  };
+
+  const handleCommentLiked = (commentId: string) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      comments: prevPost.comments.map((comment) =>
+        comment.id === commentId
+          ? { ...comment, likes: comment.likes + 1 }
+          : comment,
+      ),
+    }));
+  };
+
+  const handleReplyAdded = (commentId: string, newReply: Reply) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      comments: prevPost.comments.map((comment) => {
+        if (comment.id === commentId) {
+          const replies = comment.replies || [];
+          return { ...comment, replies: [...replies, newReply] };
+        }
+        return comment;
+      }),
+    }));
+  };
+
   return (
     <ThreeColumnLayout>
       <div className="w-full max-w-[950px] mx-auto py-4 px-4">
@@ -120,12 +157,16 @@ const PostDetail: React.FC<PostDetailProps> = () => {
         </div>
 
         <PhotoGalleryPost
+          postId={postId || "default-post"}
           author={post.author}
           content={post.content}
           likes={post.engagement.likes}
           comments={post.engagement.comments}
           shares={post.engagement.shares}
           commentsList={post.comments}
+          onCommentAdded={handleCommentAdded}
+          onCommentLiked={handleCommentLiked}
+          onReplyAdded={handleReplyAdded}
         />
 
         <div className="mt-6 border-t border-gray-200 pt-6">

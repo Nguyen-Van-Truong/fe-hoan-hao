@@ -2,24 +2,11 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import PhotoGalleryPost from "./PhotoGalleryPost";
 import { Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Comment, Reply } from "./types";
 
-interface Post {
-  id: string;
-  type: "regular" | "gallery" | string;
-  author: {
-    name: string;
-    avatar: string;
-    timestamp: string;
-  };
-  content: string;
-  engagement: {
-    likes: number;
-    comments: number;
-    shares: number;
-  };
-  images?: string[];
-  totalImages?: number;
-}
+import { PostData } from "./types";
+
+type Post = PostData;
 
 interface PostFeedProps {
   posts?: Post[];
@@ -36,7 +23,7 @@ const initialPosts = [
       timestamp: "2 hours ago",
     },
     content:
-        "Just had the most amazing day! The weather was perfect for a picnic in the park. Anyone else enjoying this beautiful day? #SunnyDays #WeekendVibes",
+      "Just had the most amazing day! The weather was perfect for a picnic in the park. Anyone else enjoying this beautiful day? #SunnyDays #WeekendVibes",
     engagement: {
       likes: 42,
       comments: 12,
@@ -52,7 +39,7 @@ const initialPosts = [
       timestamp: "3 hours ago",
     },
     content:
-        "Just had an amazing weekend with friends! Here are some highlights from our trip to the mountains. The views were breathtaking and the weather was perfect!",
+      "Just had an amazing weekend with friends! Here are some highlights from our trip to the mountains. The views were breathtaking and the weather was perfect!",
     engagement: {
       likes: 124,
       comments: 43,
@@ -79,7 +66,7 @@ const initialPosts = [
       timestamp: "5 hours ago",
     },
     content:
-        "Just finished reading an amazing book! I highly recommend 'The Midnight Library' by Matt Haig. Has anyone else read it? What did you think? #BookRecommendations #Reading",
+      "Just finished reading an amazing book! I highly recommend 'The Midnight Library' by Matt Haig. Has anyone else read it? What did you think? #BookRecommendations #Reading",
     engagement: {
       likes: 78,
       comments: 25,
@@ -95,7 +82,7 @@ const initialPosts = [
       timestamp: "Yesterday",
     },
     content:
-        "Just got a promotion at work! So excited for this new chapter in my career. Thanks to everyone who supported me along the way! #CareerMilestone #Grateful",
+      "Just got a promotion at work! So excited for this new chapter in my career. Thanks to everyone who supported me along the way! #CareerMilestone #Grateful",
     engagement: {
       likes: 156,
       comments: 64,
@@ -130,7 +117,7 @@ const initialPosts = [
       timestamp: "6 hours ago",
     },
     content:
-        "Cooking class was amazing today! Made these two dishes from scratch. #FoodLover #Cooking",
+      "Cooking class was amazing today! Made these two dishes from scratch. #FoodLover #Cooking",
     engagement: {
       likes: 112,
       comments: 28,
@@ -267,12 +254,12 @@ const PostFeed = ({ posts: propPosts }: PostFeedProps) => {
   // Set up intersection observer for infinite scrolling
   useEffect(() => {
     const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            loadMorePosts();
-          }
-        },
-        { threshold: 1.0 },
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMorePosts();
+        }
+      },
+      { threshold: 1.0 },
     );
 
     if (loaderRef.current) {
@@ -286,34 +273,109 @@ const PostFeed = ({ posts: propPosts }: PostFeedProps) => {
     };
   }, [loadMorePosts]);
 
-  return (
-      <div className="w-full space-y-4 bg-gray-50 p-4">
-        {posts.map((post) => (
-            <div key={post.id}>
-              <PhotoGalleryPost
-                  author={post.author}
-                  content={post.content}
-                  images={post.type === "gallery" ? post.images : undefined}
-                  totalImages={post.type === "gallery" ? post.totalImages : 0}
-                  likes={post.engagement.likes}
-                  comments={post.engagement.comments}
-                  shares={post.engagement.shares}
-              />
-            </div>
-        ))}
+  // Handlers for comment interactions
+  const handleCommentAdded = (postId: string, newComment: Comment) => {
+    setPosts((prevPosts) => {
+      return prevPosts.map((post) => {
+        if (post.id === postId) {
+          // Initialize commentsList if it doesn't exist
+          const commentsList = post.commentsList || [];
 
-        {/* Loading indicator */}
-        <div ref={loaderRef} className="flex justify-center py-4">
-          {loading && (
-              <div className="flex flex-col items-center">
-                <Loader2 className="h-8 w-8 animate-spin text-pink-500" />
-                <p className="text-sm text-gray-500 mt-2">
-                  {t("post.loadingMorePosts") || "Loading more posts..."}
-                </p>
-              </div>
-          )}
+          // Update comments count
+          return {
+            ...post,
+            commentsList: [newComment, ...commentsList],
+            engagement: {
+              ...post.engagement,
+              comments: post.engagement.comments + 1,
+            },
+          };
+        }
+        return post;
+      });
+    });
+  };
+
+  const handleCommentLiked = (postId: string, commentId: string) => {
+    setPosts((prevPosts) => {
+      return prevPosts.map((post) => {
+        if (post.id === postId && post.commentsList) {
+          const updatedComments = post.commentsList.map((comment) => {
+            if (comment.id === commentId) {
+              return { ...comment, likes: comment.likes + 1 };
+            }
+            return comment;
+          });
+
+          return { ...post, commentsList: updatedComments };
+        }
+        return post;
+      });
+    });
+  };
+
+  const handleReplyAdded = (
+    postId: string,
+    commentId: string,
+    newReply: Reply,
+  ) => {
+    setPosts((prevPosts) => {
+      return prevPosts.map((post) => {
+        if (post.id === postId && post.commentsList) {
+          const updatedComments = post.commentsList.map((comment) => {
+            if (comment.id === commentId) {
+              const replies = comment.replies || [];
+              return { ...comment, replies: [...replies, newReply] };
+            }
+            return comment;
+          });
+
+          return { ...post, commentsList: updatedComments };
+        }
+        return post;
+      });
+    });
+  };
+
+  return (
+    <div className="w-full space-y-4 bg-gray-50 p-4">
+      {posts.map((post) => (
+        <div key={post.id}>
+          <PhotoGalleryPost
+            postId={post.id}
+            author={post.author}
+            content={post.content}
+            images={post.type === "gallery" ? post.images : undefined}
+            totalImages={post.type === "gallery" ? post.totalImages : 0}
+            likes={post.engagement.likes}
+            comments={post.engagement.comments}
+            shares={post.engagement.shares}
+            commentsList={post.commentsList}
+            onCommentAdded={(newComment) =>
+              handleCommentAdded(post.id, newComment)
+            }
+            onCommentLiked={(commentId) =>
+              handleCommentLiked(post.id, commentId)
+            }
+            onReplyAdded={(commentId, reply) =>
+              handleReplyAdded(post.id, commentId, reply)
+            }
+          />
         </div>
+      ))}
+
+      {/* Loading indicator */}
+      <div ref={loaderRef} className="flex justify-center py-4">
+        {loading && (
+          <div className="flex flex-col items-center">
+            <Loader2 className="h-8 w-8 animate-spin text-pink-500" />
+            <p className="text-sm text-gray-500 mt-2">
+              {t("post.loadingMorePosts") || "Loading more posts..."}
+            </p>
+          </div>
+        )}
       </div>
+    </div>
   );
 };
 
