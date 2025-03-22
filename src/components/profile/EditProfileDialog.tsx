@@ -53,13 +53,13 @@ const EditProfileDialog = ({
   const [activeTab, setActiveTab] = useState("basic");
 
   const [formData, setFormData] = useState({
-    name: initialData.name || auth.user?.name || "",
+    name: initialData.name || auth.user?.full_name || "",
     bio: initialData.bio || "",
     location: initialData.location || "",
     work: initialData.work || "",
     education: initialData.education || "",
     relationship: initialData.relationship || "",
-    avatar: initialData.avatar || auth.user?.avatar || "",
+    avatar: initialData.avatar || auth.user?.profile_picture_url || "",
     coverPhoto: initialData.coverPhoto || "",
   });
 
