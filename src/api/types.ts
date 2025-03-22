@@ -51,14 +51,13 @@ export interface RegisterRequest {
 }
 
 export interface LoginRequest {
-  email: string;
+  usernameOrEmailOrPhone: string;
   password: string;
 }
 
 export interface LoginResponse {
   accessToken: string;
-  refreshToken?: string;
-  user: User;
+  refreshToken: string;
 }
 
 // Post types
@@ -171,4 +170,25 @@ export interface ConversationMember {
   joinedAt: string;
   leftAt?: string;
   user?: User;
+}
+
+// Profile types
+export interface UserProfile {
+  id: number;
+  username: string;
+  full_name: string;
+  is_active: boolean;
+  is_verified: boolean;
+  last_login_at: string;
+  bio: string;
+  location: string;
+  country_id: number | null;
+  province_id: number | null;
+  district_id: number | null;
+  website: string;
+  profile_picture_url: string;
+  cover_picture_url: string;
+  date_of_birth: string;
+  created_at: string;
+  updated_at: string;
 }

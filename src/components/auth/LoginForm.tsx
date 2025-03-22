@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -11,8 +11,8 @@ import { Loader2 } from "lucide-react";
 
 // Schema xác thực
 const loginSchema = z.object({
-  email: z.string().email("Email không hợp lệ"),
-  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
+  usernameOrEmailOrPhone: z.string().min(1, "Vui lòng nhập tên đăng nhập, email hoặc số điện thoại"),
+  password: z.string().min(1, "Vui lòng nhập mật khẩu"),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -21,6 +21,7 @@ const LoginForm = () => {
   const { login } = useAuth();
   const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -29,7 +30,7 @@ const LoginForm = () => {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      usernameOrEmailOrPhone: "",
       password: "",
     },
   });
@@ -37,7 +38,10 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormValues) => {
     setIsSubmitting(true);
     try {
-      await login(data.email, data.password);
+      const success = await login(data.usernameOrEmailOrPhone, data.password);
+      if (success) {
+        navigate("/"); // Chuyển hướng đến trang chủ sau khi đăng nhập thành công
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -61,17 +65,17 @@ const LoginForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-medium">
-            Email
+          <label htmlFor="usernameOrEmailOrPhone" className="text-sm font-medium">
+            Tên đăng nhập / Email / Số điện thoại
           </label>
           <Input
-            id="email"
-            placeholder="email@example.com"
-            {...register("email")}
-            className={errors.email ? "border-destructive" : ""}
+            id="usernameOrEmailOrPhone"
+            placeholder="Nhập tên đăng nhập, email hoặc số điện thoại"
+            {...register("usernameOrEmailOrPhone")}
+            className={errors.usernameOrEmailOrPhone ? "border-destructive" : ""}
           />
-          {errors.email && (
-            <p className="text-destructive text-sm">{errors.email.message}</p>
+          {errors.usernameOrEmailOrPhone && (
+            <p className="text-destructive text-sm">{errors.usernameOrEmailOrPhone.message}</p>
           )}
         </div>
 
@@ -181,8 +185,8 @@ const LoginForm = () => {
       <div className="text-center text-xs text-muted-foreground">
         <p>
           Thông tin đăng nhập demo: <br />
-          Email: user@example.com <br />
-          Mật khẩu: password123
+          Tên đăng nhập: laga2134 <br />
+          Mật khẩu: 1
         </p>
       </div>
     </div>
